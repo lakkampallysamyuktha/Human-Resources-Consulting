@@ -1,0 +1,888 @@
+/* ==========================================================================
+   About Page — Stackly Human Resources Consulting
+   Uses only tokens defined in global.css.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+.ab-hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
+    padding: calc(var(--header-height) + 80px) 0 70px;
+    background: var(--hr-deep);
+    color: var(--hr-cream);
+    overflow: hidden;
+}
+
+.ab-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.ab-hero__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg, rgba(9, 35, 40, .94) 0%, rgba(9, 35, 40, .68) 45%, rgba(9, 35, 40, .18) 100%),
+        linear-gradient(0deg, rgba(9, 35, 40, .78), transparent 55%);
+}
+
+.ab-hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.ab-hero__content {
+    position: relative;
+    z-index: 1;
+    width: var(--container);
+    margin-inline: auto;
+}
+
+.ab-hero__content .eyebrow {
+    color: var(--hr-sage);
+}
+
+.ab-hero__title {
+    max-width: 900px;
+}
+
+.ab-hero__title em {
+    color: var(--hr-sage);
+    font-weight: 500;
+}
+
+.ab-hero__copy {
+    max-width: 560px;
+    margin: 26px 0 0;
+    color: rgba(245, 248, 244, .78);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    line-height: 1.75;
+}
+
+.ab-hero__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-top: 60px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(245, 248, 244, .22);
+    color: rgba(245, 248, 244, .55);
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   Shared helpers
+   -------------------------------------------------------------------------- */
+.ab-split {
+    display: grid;
+    grid-template-columns: 1.15fr .85fr;
+    gap: clamp(50px, 8vw, 120px);
+    align-items: center;
+}
+
+.ab-split__copy .lead {
+    margin-top: 26px;
+}
+
+.ab-split__media {
+    margin: 0;
+    overflow: hidden;
+}
+
+.ab-split__media img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+}
+
+.ab-caption {
+    margin-top: 14px;
+    color: var(--hr-muted);
+    font-size: .7rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.ab-rule-list {
+    list-style: none;
+    margin: 38px 0 0;
+    padding: 0;
+    border-top: 1px solid var(--hr-line);
+}
+
+.ab-rule-list li {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 24px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--hr-line);
+    font-size: .85rem;
+}
+
+.ab-rule-list span:first-child {
+    color: var(--hr-muted);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-size: .7rem;
+    padding-top: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   01 — Who We Are
+   -------------------------------------------------------------------------- */
+.ab-who {
+    background: var(--hr-cream);
+}
+
+/* --------------------------------------------------------------------------
+   02 — Why We Exist
+   -------------------------------------------------------------------------- */
+.ab-why__inner {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: clamp(40px, 6vw, 90px);
+    align-items: end;
+    margin-bottom: 70px;
+}
+
+.ab-why__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid rgba(245, 248, 244, .22);
+}
+
+.ab-why__item {
+    padding: 32px 26px 32px 0;
+    border-right: 1px solid rgba(245, 248, 244, .14);
+    transition: transform 0.3s ease;
+}
+
+.ab-why__item:hover {
+    transform: translateY(-4px);
+}
+
+.ab-why__item:last-child {
+    border-right: 0;
+    padding-right: 0;
+}
+
+.ab-why__item:not(:first-child) {
+    padding-left: 26px;
+}
+
+.ab-why__item span {
+    display: block;
+    color: var(--hr-sage);
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+}
+
+.ab-why__item p {
+    margin: 0;
+    color: rgba(245, 248, 244, .76);
+    font-size: .92rem;
+    line-height: 1.7;
+}
+
+/* --------------------------------------------------------------------------
+   03 — Our Philosophy of People Strategy
+   -------------------------------------------------------------------------- */
+.ab-philosophy {
+    background: var(--hr-paper);
+}
+
+.ab-philosophy__grid {
+    display: grid;
+    grid-template-columns: .95fr 1.05fr;
+    gap: clamp(50px, 8vw, 120px);
+    align-items: start;
+}
+
+.ab-philosophy__statement .lead {
+    margin-top: 26px;
+}
+
+.ab-philosophy__pillars {
+    border-top: 1px solid var(--hr-line);
+}
+
+.ab-pillar {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 24px;
+    padding: 24px 16px;
+    margin-inline: -16px;
+    border-bottom: 1px solid var(--hr-line);
+    transition: background-color 0.3s ease, border-color 0.3s ease, border-radius 0.3s ease;
+}
+
+.ab-pillar:hover {
+    background-color: var(--hr-white);
+    border-bottom-color: transparent;
+    border-radius: 8px;
+}
+
+.ab-pillar__content {
+    transition: transform 0.3s ease;
+}
+
+.ab-pillar:hover .ab-pillar__content {
+    transform: translateX(6px);
+}
+
+.ab-pillar__mark {
+    color: var(--hr-green);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    padding-top: 4px;
+}
+
+.ab-pillar h3 {
+    margin: 0;
+    font-family: var(--display);
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.ab-pillar p {
+    margin: 8px 0 0;
+    color: var(--hr-muted);
+    font-size: .88rem;
+    line-height: 1.65;
+}
+
+/* --------------------------------------------------------------------------
+   04 — The Principles We Follow
+   -------------------------------------------------------------------------- */
+.ab-principles__head {
+    max-width: 800px;
+    margin-bottom: 60px;
+}
+
+.ab-principles__list {
+    border-top: 1px solid rgba(245, 248, 244, .22);
+}
+
+.ab-principle {
+    display: grid;
+    grid-template-columns: 90px 1fr 1.4fr;
+    gap: 40px;
+    align-items: baseline;
+    padding: 28px 16px;
+    margin-inline: -16px;
+    border-bottom: 1px solid rgba(245, 248, 244, .14);
+    transition: background-color 0.3s ease, border-color 0.3s ease, border-radius 0.3s ease;
+}
+
+.ab-principle:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    border-bottom-color: transparent;
+    border-radius: 8px;
+}
+
+.ab-principle__num {
+    color: var(--hr-sage);
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+}
+
+.ab-principle h3 {
+    margin: 0;
+    font-family: var(--display);
+    font-size: clamp(1.4rem, 2.2vw, 2.1rem);
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--hr-cream);
+}
+
+.ab-principle p {
+    margin: 0;
+    color: rgba(245, 248, 244, .68);
+    font-size: .9rem;
+    line-height: 1.7;
+}
+
+/* --------------------------------------------------------------------------
+   05 — How Our Thinking Has Evolved
+   -------------------------------------------------------------------------- */
+.ab-evolution {
+    background: var(--hr-cream);
+}
+
+.ab-evolution__grid {
+    display: grid;
+    grid-template-columns: .85fr 1.15fr;
+    gap: clamp(50px, 8vw, 120px);
+    align-items: start;
+}
+
+.ab-evolution__intro .lead {
+    margin-top: 26px;
+}
+
+.ab-timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--hr-deep);
+}
+
+.ab-timeline__item {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 30px;
+    padding: 26px 16px;
+    margin-inline: -16px;
+    border-bottom: 1px solid var(--hr-line);
+    transition: background-color 0.3s ease, border-color 0.3s ease, border-radius 0.3s ease;
+}
+
+.ab-timeline__item:hover {
+    background-color: var(--hr-white);
+    border-bottom-color: transparent;
+    border-radius: 8px;
+}
+
+.ab-timeline__content {
+    transition: transform 0.3s ease;
+}
+
+.ab-timeline__item:hover .ab-timeline__content {
+    transform: translateX(6px);
+}
+
+.ab-timeline__mark {
+    color: var(--hr-green);
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    padding-top: 6px;
+}
+
+.ab-timeline__item h3 {
+    margin: 0;
+    font-family: var(--display);
+    font-size: clamp(1.3rem, 1.8vw, 1.7rem);
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.ab-timeline__item p {
+    margin: 8px 0 0;
+    color: var(--hr-muted);
+    font-size: .9rem;
+    line-height: 1.7;
+    max-width: 560px;
+}
+
+/* --------------------------------------------------------------------------
+   06 — The People Behind the Work
+   -------------------------------------------------------------------------- */
+.ab-people {
+    background: var(--hr-paper);
+}
+
+.ab-people__head {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 60px;
+    align-items: end;
+    margin-bottom: 60px;
+}
+
+.ab-people__head .lead {
+    max-width: 460px;
+    margin: 0;
+}
+
+.ab-roles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-top: 1px solid var(--hr-deep);
+}
+
+.ab-role {
+    padding: 32px 40px 32px 0;
+    border-bottom: 1px solid var(--hr-line);
+    border-right: 1px solid var(--hr-line);
+    transition: transform 0.3s ease;
+}
+
+.ab-role:hover {
+    transform: translateY(-4px);
+}
+
+.ab-role:nth-child(even) {
+    border-right: 0;
+    padding-left: 40px;
+    padding-right: 0;
+}
+
+.ab-role__tag {
+    display: block;
+    color: var(--hr-green);
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+
+.ab-role h3 {
+    margin: 0;
+    font-family: var(--display);
+    font-size: clamp(1.4rem, 2vw, 1.9rem);
+    font-weight: 500;
+    line-height: 1.15;
+}
+
+.ab-role p {
+    margin: 12px 0 0;
+    color: var(--hr-muted);
+    font-size: .88rem;
+    line-height: 1.7;
+    max-width: 460px;
+}
+
+/* --------------------------------------------------------------------------
+   07 — Our Relationship With Clients
+   -------------------------------------------------------------------------- */
+.ab-clients__grid {
+    display: grid;
+    grid-template-columns: .9fr 1.1fr;
+    gap: clamp(50px, 8vw, 110px);
+    align-items: start;
+}
+
+.ab-clients__copy .lead {
+    margin-top: 26px;
+}
+
+.ab-clients__points {
+    border-top: 1px solid rgba(245, 248, 244, .22);
+}
+
+.ab-client-point {
+    padding: 24px 16px;
+    margin-inline: -16px;
+    border-bottom: 1px solid rgba(245, 248, 244, .14);
+    transition: background-color 0.3s ease, border-color 0.3s ease, border-radius 0.3s ease;
+}
+
+.ab-client-point:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    border-bottom-color: transparent;
+    border-radius: 8px;
+}
+
+.ab-client-point span {
+    display: block;
+    color: var(--hr-sage);
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.ab-client-point p {
+    margin: 0;
+    color: rgba(245, 248, 244, .74);
+    font-size: .9rem;
+    line-height: 1.7;
+    max-width: 620px;
+}
+
+/* --------------------------------------------------------------------------
+   08 — How We Think About Impact
+   -------------------------------------------------------------------------- */
+.ab-impact {
+    background: var(--hr-cream);
+}
+
+.ab-impact__grid {
+    display: grid;
+    grid-template-columns: .9fr 1.1fr;
+    gap: clamp(50px, 8vw, 110px);
+    align-items: start;
+}
+
+.ab-impact__intro .lead {
+    margin-top: 26px;
+}
+
+.ab-impact__dimensions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-top: 1px solid var(--hr-deep);
+}
+
+.ab-dimension {
+    padding: 26px 26px 26px 0;
+    border-bottom: 1px solid var(--hr-line);
+    border-right: 1px solid var(--hr-line);
+    transition: transform 0.3s ease;
+}
+
+.ab-dimension:hover {
+    transform: translateY(-4px);
+}
+
+.ab-dimension:nth-child(even) {
+    border-right: 0;
+    padding-left: 26px;
+    padding-right: 0;
+}
+
+.ab-dimension__num {
+    display: block;
+    color: var(--hr-green);
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+}
+
+.ab-dimension h3 {
+    margin: 0;
+    font-family: var(--display);
+    font-size: 1.55rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.ab-dimension p {
+    margin: 10px 0 0;
+    color: var(--hr-muted);
+    font-size: .88rem;
+    line-height: 1.7;
+}
+
+.ab-impact__note {
+    grid-column: 2;
+    margin: 26px 0 0;
+    color: var(--hr-muted);
+    font-size: .76rem;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   09 — Beyond HR
+   -------------------------------------------------------------------------- */
+.ab-beyond {
+    background: var(--hr-paper);
+}
+
+.ab-beyond__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(50px, 8vw, 110px);
+    align-items: center;
+}
+
+.ab-beyond__media {
+    margin: 0;
+    overflow: hidden;
+}
+
+.ab-beyond__media img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+}
+
+.ab-beyond__copy .lead {
+    margin-top: 26px;
+}
+
+.ab-beyond__list {
+    margin-top: 40px;
+    border-top: 1px solid var(--hr-line);
+}
+
+.ab-beyond__list > div {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 24px;
+    padding: 18px 16px;
+    margin-inline: -16px;
+    border-bottom: 1px solid var(--hr-line);
+    transition: background-color 0.3s ease, border-color 0.3s ease, border-radius 0.3s ease;
+}
+
+.ab-beyond__list > div:hover {
+    background-color: var(--hr-white);
+    border-bottom-color: transparent;
+    border-radius: 8px;
+}
+
+.ab-beyond__list span:first-child {
+    color: var(--hr-green);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding-top: 3px;
+}
+
+.ab-beyond__list span:last-child {
+    color: var(--hr-deep);
+    font-size: .92rem;
+    line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   10 — The Road Ahead
+   -------------------------------------------------------------------------- */
+.ab-road {
+    background: var(--hr-cream);
+}
+
+.ab-road__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(50px, 8vw, 110px);
+    align-items: center;
+}
+
+.ab-road__copy .lead {
+    margin-top: 26px;
+}
+
+.ab-road__media {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 380px;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    position: relative;
+}
+
+.ab-road__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* --------------------------------------------------------------------------
+   CTA
+   -------------------------------------------------------------------------- */
+.ab-cta {
+    padding: clamp(90px, 10vw, 150px) 0;
+    background: var(--hr-green);
+    color: var(--hr-deep);
+}
+
+.ab-cta__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 60px;
+}
+
+.ab-cta .eyebrow {
+    color: var(--hr-deep);
+}
+
+.ab-cta h2 {
+    max-width: 780px;
+    margin: 0;
+    font-family: var(--display);
+    font-size: clamp(2.6rem, 5.5vw, 5.6rem);
+    line-height: .96;
+    font-weight: 500;
+    letter-spacing: -.04em;
+}
+
+.ab-cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex: 0 0 auto;
+}
+
+.ab-cta .btn {
+    border-color: var(--hr-deep);
+}
+
+.ab-cta .btn:hover {
+    background: var(--hr-cream);
+    border-color: var(--hr-cream);
+    color: var(--hr-deep);
+}
+
+.ab-cta .btn--outline {
+    background: transparent;
+    color: var(--hr-deep);
+}
+
+.ab-cta .btn--outline:hover {
+    background: var(--hr-deep);
+    color: var(--hr-cream);
+    border-color: var(--hr-deep);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive — Tablet
+   -------------------------------------------------------------------------- */
+@media (max-width: 1050px) {
+    .ab-split,
+    .ab-philosophy__grid,
+    .ab-evolution__grid,
+    .ab-clients__grid,
+    .ab-impact__grid,
+    .ab-beyond__grid,
+    .ab-road__inner {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+
+    .ab-why__inner,
+    .ab-people__head {
+        grid-template-columns: 1fr;
+        gap: 26px;
+        margin-bottom: 46px;
+    }
+
+    .ab-why__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ab-why__item,
+    .ab-why__item:not(:first-child),
+    .ab-why__item:last-child {
+        padding: 24px 0;
+        border-right: 0;
+    }
+
+    .ab-principle {
+        grid-template-columns: 70px 1fr;
+        gap: 22px;
+    }
+
+    .ab-principle p {
+        grid-column: 2;
+        margin-top: 8px;
+    }
+
+    .ab-roles {
+        grid-template-columns: 1fr;
+    }
+
+    .ab-role,
+    .ab-role:nth-child(even) {
+        padding: 28px 0;
+        border-right: 0;
+    }
+
+    .ab-impact__dimensions {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .ab-road__inner {
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+
+    .ab-road__media {
+        min-height: 260px;
+        aspect-ratio: 16 / 9;
+    }
+
+    .ab-cta__inner {
+        display: block;
+    }
+
+    .ab-cta__actions {
+        margin-top: 34px;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive — Mobile
+   -------------------------------------------------------------------------- */
+@media (max-width: 680px) {
+    .ab-hero {
+        padding-bottom: 50px;
+    }
+
+    .ab-hero__meta {
+        margin-top: 40px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .ab-rule-list li {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+
+    .ab-timeline__item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .ab-timeline__mark {
+        padding-top: 0;
+    }
+
+    .ab-impact__dimensions {
+        grid-template-columns: 1fr;
+    }
+
+    .ab-dimension,
+    .ab-dimension:nth-child(even) {
+        padding: 22px 0;
+        border-right: 0;
+    }
+
+    .ab-beyond__list > div {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .ab-split__media img,
+    .ab-beyond__media img {
+        aspect-ratio: 5 / 6;
+    }
+
+    .ab-cta h2 {
+        font-size: clamp(2.4rem, 11vw, 4rem);
+    }
+}
+
+@media (max-width: 420px) {
+    .ab-cta__actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ab-road__mark {
+        width: 140px;
+        height: 140px;
+        font-size: 2.6rem;
+    }
+}

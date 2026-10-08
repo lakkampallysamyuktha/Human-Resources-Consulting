@@ -1,0 +1,2584 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#092328">
+    <meta name="description" content="Stackly Admin Dashboard — workforce, talent, leadership, organization and HR initiatives.">
+    <meta name="robots" content="noindex">
+    <title>Admin | Stackly</title>
+    <link rel="stylesheet" href="../global.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <style>
+        /* ==========================================================================
+           Admin Dashboard — chart-first, denser, dark-accented
+           Visually distinct from User dashboard: darker accent, grid layouts,
+           organizational / workforce charts.
+           Uses only tokens defined in global.css.
+           ========================================================================== */
+
+        :root {
+            --ad-header-h: 84px;
+            --ad-sidebar-w: 300px;
+            --ad-accent: var(--hr-dark);   /* darker accent — differentiates from User */
+            --ad-accent-2: var(--hr-green);
+            --ad-panel: #0B2D32;           /* very subtle deeper panel than header */
+        }
+
+        /* --------------------------------------------------------------------
+           Shell
+           -------------------------------------------------------------------- */
+        .ad-body {
+            margin: 0;
+            background: var(--hr-paper);
+            color: var(--hr-deep);
+            font-family: var(--sans);
+            min-height: 100svh;
+            overflow-x: clip;
+        }
+
+        /* Header — darker, denser than user */
+        .ad-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            height: var(--ad-header-h);
+            background: var(--ad-panel);
+            color: var(--hr-cream);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(139, 187, 146, .12);
+        }
+
+        .ad-brand {
+            width: var(--ad-sidebar-w);
+            height: 100%;
+            padding: 0 26px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 6px;
+            border-right: 1px solid rgba(139, 187, 146, .12);
+            text-decoration: none;
+            color: inherit;
+            flex-shrink: 0;
+        }
+
+        .ad-brand img {
+            width: 92px;
+            height: auto;
+            filter: brightness(0) invert(1);
+            display: block;
+        }
+
+        .ad-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: max-content;
+            padding: 3px 8px;
+            background: rgba(18, 84, 79, .38);
+            border: 1px solid rgba(139, 187, 146, .32);
+            color: var(--hr-sage);
+            font-size: .58rem;
+            font-weight: 800;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+        }
+
+        .ad-chip::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--hr-sage);
+        }
+
+        .ad-header__right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 20px;
+            padding: 0 28px;
+        }
+
+        .ad-greet {
+            font-family: var(--display);
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--hr-cream);
+        }
+
+        .ad-greet span {
+            color: var(--hr-sage);
+            font-style: italic;
+        }
+
+        .ad-header__email {
+            display: none;
+            color: rgba(245, 248, 244, .55);
+            font-size: .76rem;
+        }
+
+        .ad-header__scope {
+            display: none;
+            padding: 5px 10px;
+            border: 1px solid rgba(139, 187, 146, .28);
+            color: var(--hr-sage);
+            font-size: .62rem;
+            font-weight: 700;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+        }
+
+        .ad-menu-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            background: transparent;
+            color: var(--hr-cream);
+            cursor: pointer;
+            border: 1px solid rgba(139, 187, 146, .28);
+            border-radius: 4px;
+            position: relative;
+            z-index: 105;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: border-color .3s ease, background-color .3s ease;
+        }
+
+        .ad-menu-toggle span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            margin: 3px 0;
+            background: currentColor;
+            transition: transform .3s ease, opacity .3s ease;
+            transform-origin: center;
+        }
+
+        .ad-body.sidebar-open .ad-menu-toggle span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .ad-body.sidebar-open .ad-menu-toggle span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .ad-body.sidebar-open .ad-menu-toggle span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        .ad-body.sidebar-open {
+            overflow: hidden !important;
+            touch-action: none;
+        }
+
+        /* Sidebar */
+        .ad-sidebar {
+            position: fixed;
+            top: var(--ad-header-h);
+            left: 0;
+            width: var(--ad-sidebar-w);
+            bottom: 0;
+            z-index: 90;
+            background: var(--ad-panel);
+            color: var(--hr-cream);
+            border-right: 1px solid rgba(139, 187, 146, .12);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            transition: transform .35s var(--ease);
+        }
+
+        .ad-nav {
+            padding: 22px 0 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ad-nav__label {
+            padding: 8px 26px 12px;
+            color: rgba(245, 248, 244, .38);
+            font-size: .6rem;
+            font-weight: 700;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+        }
+
+        .ad-nav__link {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 13px 26px;
+            color: rgba(245, 248, 244, .72);
+            font-size: .85rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background .25s ease, color .25s ease;
+        }
+
+        .ad-nav__link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 12%;
+            bottom: 12%;
+            width: 2px;
+            background: var(--hr-sage);
+            transform: scaleY(0);
+            transition: transform .3s var(--ease);
+        }
+
+        .ad-nav__link:hover,
+        .ad-nav__link:focus-visible {
+            outline: none;
+            background: rgba(139, 187, 146, .06);
+            color: var(--hr-cream);
+        }
+
+        .ad-nav__link[aria-current="page"] {
+            background: rgba(139, 187, 146, .1);
+            color: var(--hr-cream);
+        }
+
+        .ad-nav__link[aria-current="page"]::before {
+            transform: scaleY(1);
+        }
+
+        .ad-nav__num {
+            font-size: .66rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            color: var(--hr-sage);
+            opacity: .8;
+        }
+
+        /* Sidebar footer */
+        .ad-sidebar__foot {
+            margin-top: auto;
+            padding: 20px 22px 24px;
+            border-top: 1px solid rgba(139, 187, 146, .12);
+        }
+
+        .ad-profile {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px;
+            background: rgba(18, 84, 79, .28);
+            border: 1px solid rgba(139, 187, 146, .18);
+            margin-bottom: 12px;
+        }
+
+        .ad-profile__avatar {
+            flex-shrink: 0;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: var(--hr-sage);
+            color: var(--hr-deep);
+            font-family: var(--display);
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .ad-profile__body {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .ad-profile__name {
+            display: block;
+            font-family: var(--display);
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--hr-cream);
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .ad-profile__email {
+            display: block;
+            color: rgba(245, 248, 244, .58);
+            font-size: .72rem;
+            line-height: 1.4;
+            word-break: break-all;
+        }
+
+        .ad-profile__role {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 2px 8px;
+            font-size: .56rem;
+            font-weight: 800;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--hr-sage);
+            background: rgba(139, 187, 146, .14);
+        }
+
+        .ad-logout {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 42px;
+            padding: 0 16px;
+            background: transparent;
+            border: 1px solid rgba(245, 248, 244, .22);
+            color: rgba(245, 248, 244, .78);
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background .25s ease, border-color .25s ease, color .25s ease;
+        }
+
+        .ad-logout:hover,
+        .ad-logout:focus-visible {
+            outline: none;
+            background: var(--hr-sage);
+            border-color: var(--hr-sage);
+            color: var(--hr-deep);
+        }
+
+        .ad-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 85;
+            background: rgba(9, 35, 40, .55);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s ease;
+        }
+
+        .ad-body.sidebar-open .ad-backdrop {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Main */
+        .ad-main {
+            margin-left: var(--ad-sidebar-w);
+            padding-top: var(--ad-header-h);
+            min-height: 100svh;
+        }
+
+        .ad-section {
+            display: none;
+            padding: clamp(26px, 3vw, 40px) clamp(22px, 3vw, 44px) clamp(50px, 6vw, 80px);
+        }
+
+        .ad-section.is-active {
+            display: block;
+        }
+
+        /* Section header */
+        .ad-section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 24px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--hr-deep);
+        }
+
+        .ad-section-title {
+            margin: 0;
+            font-family: var(--display);
+            font-weight: 500;
+            font-size: clamp(1.4rem, 2.1vw, 1.9rem);
+            line-height: 1.1;
+            letter-spacing: -.02em;
+            color: var(--hr-deep);
+        }
+
+        .ad-section-title small {
+            display: block;
+            margin-bottom: 6px;
+            font-family: var(--sans);
+            font-size: .64rem;
+            font-weight: 800;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--ad-accent);
+        }
+
+        .ad-sample-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 8px;
+            background: rgba(18, 84, 79, .14);
+            color: var(--ad-accent);
+            font-size: .56rem;
+            font-weight: 800;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        /* --------------------------------------------------------------------
+           Stat strip — different from user tiles (denser, mono-ish)
+           -------------------------------------------------------------------- */
+        .ad-strip {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            background: var(--hr-white);
+            border: 1px solid var(--hr-line);
+            margin-bottom: 20px;
+        }
+
+        .ad-stat {
+            padding: 18px 20px;
+            border-right: 1px solid var(--hr-line);
+        }
+
+        .ad-stat:last-child {
+            border-right: 0;
+        }
+
+        .ad-stat__label {
+            display: block;
+            color: var(--hr-muted);
+            font-size: .6rem;
+            font-weight: 700;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .ad-stat__value {
+            display: block;
+            font-family: var(--display);
+            font-size: clamp(1.5rem, 2.2vw, 2rem);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: -.02em;
+            color: var(--hr-deep);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .ad-stat__value small {
+            font-size: .55em;
+            color: var(--hr-muted);
+            margin-left: 2px;
+        }
+
+        .ad-stat__delta {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 2px 6px;
+            font-size: .62rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            color: var(--hr-green);
+            background: rgba(42, 131, 95, .12);
+        }
+
+        .ad-stat__delta--neg {
+            color: #b04a3c;
+            background: rgba(176, 74, 60, .1);
+        }
+
+        /* --------------------------------------------------------------------
+           Chart grid
+           -------------------------------------------------------------------- */
+        .ad-charts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .ad-chart {
+            background: var(--hr-white);
+            border: 1px solid var(--hr-line);
+            padding: 20px 20px 16px;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .ad-chart--wide {
+            grid-column: span 2;
+        }
+
+        .ad-chart--full {
+            grid-column: 1 / -1;
+        }
+
+        .ad-chart--dark {
+            background: var(--ad-panel);
+            border-color: var(--ad-panel);
+            color: var(--hr-cream);
+        }
+
+        .ad-chart--paper {
+            background: var(--hr-paper);
+        }
+
+        .ad-chart__head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 16px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--hr-line);
+        }
+
+        .ad-chart--dark .ad-chart__head {
+            border-bottom-color: rgba(139, 187, 146, .16);
+        }
+
+        .ad-chart__title {
+            margin: 0;
+            font-family: var(--display);
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.2;
+            color: inherit;
+        }
+
+        .ad-chart__meta {
+            color: var(--hr-muted);
+            font-size: .58rem;
+            font-weight: 700;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .ad-chart--dark .ad-chart__meta {
+            color: rgba(245, 248, 244, .5);
+        }
+
+        .ad-chart__body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 0;
+        }
+
+        .ad-chart__caption {
+            margin: 12px 0 0;
+            padding-top: 10px;
+            border-top: 1px solid var(--hr-line);
+            color: var(--hr-muted);
+            font-size: .66rem;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        .ad-chart--dark .ad-chart__caption {
+            border-top-color: rgba(139, 187, 146, .16);
+            color: rgba(245, 248, 244, .55);
+        }
+
+        /* --------------------------------------------------------------------
+           Chart A — stacked workforce composition bar
+           -------------------------------------------------------------------- */
+        .chart-stack {
+            width: 100%;
+            height: 40px;
+            display: flex;
+            overflow: hidden;
+            border: 1px solid var(--hr-line);
+        }
+
+        .chart-stack__seg {
+            height: 100%;
+            width: 0;
+            transition: width 1s var(--ease);
+        }
+
+        .chart-stack__seg--1 { background: var(--hr-deep); }
+        .chart-stack__seg--2 { background: var(--hr-dark); }
+        .chart-stack__seg--3 { background: var(--hr-green); }
+        .chart-stack__seg--4 { background: var(--hr-sage); }
+        .chart-stack__seg--5 { background: rgba(139, 187, 146, .4); }
+
+        .chart-stack-legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 18px;
+            margin-top: 16px;
+            font-size: .76rem;
+        }
+
+        .chart-stack-legend div {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 5px 0;
+            border-bottom: 1px solid var(--hr-line);
+        }
+
+        .chart-stack-legend span:first-child {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--hr-deep);
+        }
+
+        .chart-stack-legend span:last-child {
+            color: var(--hr-muted);
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .chart-stack-legend i {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+        }
+
+        .chart-stack-legend i.c1 { background: var(--hr-deep); }
+        .chart-stack-legend i.c2 { background: var(--hr-dark); }
+        .chart-stack-legend i.c3 { background: var(--hr-green); }
+        .chart-stack-legend i.c4 { background: var(--hr-sage); }
+        .chart-stack-legend i.c5 { background: rgba(139, 187, 146, .4); }
+
+        /* --------------------------------------------------------------------
+           Chart B — histogram (capability distribution)
+           -------------------------------------------------------------------- */
+        .chart-hist {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            align-items: end;
+            height: 160px;
+            padding-top: 14px;
+        }
+
+        .chart-hist__col {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
+            height: 100%;
+        }
+
+        .chart-hist__bar {
+            width: 100%;
+            background: var(--hr-dark);
+            height: 0;
+            min-height: 3px;
+            transition: height 1s var(--ease);
+        }
+
+        .chart-hist__bar--accent {
+            background: var(--hr-green);
+        }
+
+        .chart-hist__val {
+            font-size: .66rem;
+            font-weight: 700;
+            color: var(--hr-deep);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .chart-hist__label {
+            color: var(--hr-muted);
+            font-size: .58rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .ad-chart--dark .chart-hist__label { color: rgba(245, 248, 244, .5); }
+        .ad-chart--dark .chart-hist__val { color: var(--hr-cream); }
+        .ad-chart--dark .chart-hist__bar { background: var(--hr-sage); }
+        .ad-chart--dark .chart-hist__bar--accent { background: var(--hr-cream); }
+
+        /* --------------------------------------------------------------------
+           Chart C — funnel (succession pipeline)
+           -------------------------------------------------------------------- */
+        .chart-funnel {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .chart-funnel__row {
+            display: grid;
+            grid-template-columns: 130px 1fr 60px;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .chart-funnel__label {
+            font-size: .76rem;
+            color: var(--hr-deep);
+            line-height: 1.3;
+        }
+
+        .ad-chart--dark .chart-funnel__label { color: var(--hr-cream); }
+
+        .chart-funnel__track {
+            height: 22px;
+            background: var(--hr-line);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ad-chart--dark .chart-funnel__track { background: rgba(139, 187, 146, .14); }
+
+        .chart-funnel__fill {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: var(--hr-dark);
+            transition: width 1s var(--ease);
+        }
+
+        .chart-funnel__fill--2 { background: var(--hr-green); }
+        .chart-funnel__fill--3 { background: var(--hr-sage); }
+        .chart-funnel__fill--4 { background: rgba(139, 187, 146, .55); }
+        .chart-funnel__fill--5 { background: rgba(139, 187, 146, .3); }
+
+        .chart-funnel__value {
+            text-align: right;
+            font-size: .76rem;
+            font-weight: 700;
+            color: var(--hr-deep);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .ad-chart--dark .chart-funnel__value { color: var(--hr-cream); }
+
+        /* --------------------------------------------------------------------
+           Chart D — org structure SVG
+           -------------------------------------------------------------------- */
+        .chart-org {
+            width: 100%;
+            display: block;
+        }
+
+        .chart-org__line {
+            stroke: var(--hr-line);
+            stroke-width: 1.2;
+            fill: none;
+        }
+
+        .chart-org__box {
+            fill: var(--hr-white);
+            stroke: var(--hr-deep);
+            stroke-width: 1.2;
+        }
+
+        .chart-org__box--lead {
+            fill: var(--hr-deep);
+            stroke: var(--hr-deep);
+        }
+
+        .chart-org__box--mid {
+            fill: var(--hr-paper);
+            stroke: var(--hr-dark);
+        }
+
+        .chart-org__box--sage {
+            fill: var(--hr-sage);
+            stroke: var(--hr-sage);
+        }
+
+        .chart-org__label {
+            fill: var(--hr-deep);
+            font-family: var(--sans);
+            font-size: 11px;
+            font-weight: 700;
+            text-anchor: middle;
+            letter-spacing: .02em;
+        }
+
+        .chart-org__label--light {
+            fill: var(--hr-cream);
+        }
+
+        .chart-org__sub {
+            fill: var(--hr-muted);
+            font-family: var(--sans);
+            font-size: 9px;
+            font-weight: 700;
+            text-anchor: middle;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        /* --------------------------------------------------------------------
+           Chart E — initiative timeline (Gantt-like CSS)
+           -------------------------------------------------------------------- */
+        .chart-gantt {
+            display: grid;
+            grid-template-columns: 180px repeat(12, 1fr);
+            gap: 4px;
+            font-size: .68rem;
+            align-items: center;
+        }
+
+        .chart-gantt__month {
+            color: var(--hr-muted);
+            font-size: .56rem;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--hr-line);
+        }
+
+        .chart-gantt__row-label {
+            font-size: .76rem;
+            color: var(--hr-deep);
+            padding-right: 12px;
+            align-self: center;
+        }
+
+        .chart-gantt__cell {
+            height: 20px;
+            background: var(--hr-line);
+            border-radius: 2px;
+        }
+
+        .chart-gantt__cell--bar {
+            background: var(--hr-dark);
+        }
+
+        .chart-gantt__cell--bar-alt {
+            background: var(--hr-green);
+        }
+
+        .chart-gantt__cell--bar-sage {
+            background: var(--hr-sage);
+        }
+
+        /* --------------------------------------------------------------------
+           Chart F — horizontal bars (generic)
+           -------------------------------------------------------------------- */
+        .chart-bars-h {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-bar-h {
+            display: grid;
+            grid-template-columns: 165px 1fr 52px;
+            gap: 14px;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--hr-line);
+        }
+
+        .chart-bar-h:last-child {
+            border-bottom: 0;
+        }
+
+        .chart-bar-h__label {
+            font-size: .78rem;
+            color: var(--hr-deep);
+            line-height: 1.35;
+        }
+
+        .ad-chart--dark .chart-bar-h__label { color: var(--hr-cream); }
+
+        .chart-bar-h__track {
+            width: 100%;
+            height: 8px;
+            background: var(--hr-line);
+            overflow: hidden;
+        }
+
+        .ad-chart--dark .chart-bar-h__track { background: rgba(139, 187, 146, .14); }
+
+        .chart-bar-h__fill {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: var(--hr-dark);
+            transition: width 1s var(--ease);
+        }
+
+        .chart-bar-h__fill--green { background: var(--hr-green); }
+        .chart-bar-h__fill--sage  { background: var(--hr-sage); }
+
+        .chart-bar-h__value {
+            text-align: right;
+            color: var(--hr-deep);
+            font-size: .76rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .ad-chart--dark .chart-bar-h__value { color: var(--hr-cream); }
+
+        /* --------------------------------------------------------------------
+           Chart G — donut rings row
+           -------------------------------------------------------------------- */
+        .chart-rings4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            justify-items: center;
+        }
+
+        .chart-ring-mini {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-ring-mini svg {
+            width: 84px;
+            height: 84px;
+        }
+
+        .chart-ring-mini__track {
+            fill: none;
+            stroke: var(--hr-line);
+            stroke-width: 8;
+        }
+
+        .ad-chart--dark .chart-ring-mini__track { stroke: rgba(139, 187, 146, .16); }
+
+        .chart-ring-mini__fill {
+            fill: none;
+            stroke: var(--hr-dark);
+            stroke-width: 8;
+            stroke-linecap: butt;
+            transform: rotate(-90deg);
+            transform-origin: center;
+            transition: stroke-dashoffset 1s var(--ease);
+        }
+
+        .chart-ring-mini__fill--green { stroke: var(--hr-green); }
+        .chart-ring-mini__fill--sage  { stroke: var(--hr-sage); }
+
+        .chart-ring-mini__value {
+            fill: var(--hr-deep);
+            font-family: var(--display);
+            font-size: 17px;
+            font-weight: 500;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        .ad-chart--dark .chart-ring-mini__value { fill: var(--hr-cream); }
+
+        .chart-ring-mini__label {
+            font-size: .62rem;
+            color: var(--hr-muted);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.3;
+            white-space: nowrap;
+            word-break: normal;
+        }
+
+        .ad-chart--dark .chart-ring-mini__label { color: rgba(245, 248, 244, .6); }
+
+        /* --------------------------------------------------------------------
+           Chart H — sparkline
+           -------------------------------------------------------------------- */
+        .chart-spark {
+            width: 100%;
+            display: block;
+        }
+
+        .chart-spark__grid {
+            stroke: var(--hr-line);
+            stroke-width: 1;
+            stroke-dasharray: 3 3;
+        }
+
+        .ad-chart--dark .chart-spark__grid { stroke: rgba(139, 187, 146, .16); }
+
+        .chart-spark__path {
+            fill: none;
+            stroke: var(--hr-dark);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .ad-chart--dark .chart-spark__path { stroke: var(--hr-sage); }
+
+        .chart-spark__area {
+            fill: rgba(18, 84, 79, .12);
+        }
+
+        .ad-chart--dark .chart-spark__area { fill: rgba(139, 187, 146, .12); }
+
+        .chart-spark__point {
+            fill: var(--hr-dark);
+        }
+
+        .ad-chart--dark .chart-spark__point { fill: var(--hr-sage); }
+
+        .chart-spark__axis {
+            fill: var(--hr-muted);
+            font-family: var(--sans);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        /* --------------------------------------------------------------------
+           Chart I — risk matrix grid
+           -------------------------------------------------------------------- */
+        .chart-matrix {
+            display: grid;
+            grid-template-columns: 70px repeat(4, 1fr);
+            grid-auto-rows: 1fr;
+            gap: 6px;
+            aspect-ratio: 1 / .72;
+        }
+
+        .chart-matrix__row-label,
+        .chart-matrix__col-label {
+            display: grid;
+            place-items: center;
+            color: var(--hr-muted);
+            font-size: .58rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        .chart-matrix__col-label {
+            align-self: end;
+            padding-bottom: 4px;
+        }
+
+        .chart-matrix__cell {
+            border-radius: 2px;
+            background: var(--hr-line);
+            position: relative;
+        }
+
+        .chart-matrix__cell[data-level="1"] { background: rgba(139, 187, 146, .22); }
+        .chart-matrix__cell[data-level="2"] { background: rgba(139, 187, 146, .45); }
+        .chart-matrix__cell[data-level="3"] { background: var(--hr-sage); }
+        .chart-matrix__cell[data-level="4"] { background: var(--hr-green); }
+        .chart-matrix__cell[data-level="5"] { background: var(--hr-dark); color: var(--hr-cream); }
+
+        .chart-matrix__cell span {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--hr-deep);
+        }
+
+        .chart-matrix__cell[data-level="5"] span { color: var(--hr-cream); }
+
+        /* --------------------------------------------------------------------
+           Chart J — progress rings pair
+           -------------------------------------------------------------------- */
+        .chart-rings2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            justify-items: center;
+        }
+
+        .chart-ring-lg {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-ring-lg svg {
+            width: 128px;
+            height: 128px;
+        }
+
+        .chart-ring-lg__track {
+            fill: none;
+            stroke: var(--hr-line);
+            stroke-width: 10;
+        }
+
+        .ad-chart--dark .chart-ring-lg__track { stroke: rgba(139, 187, 146, .16); }
+
+        .chart-ring-lg__fill {
+            fill: none;
+            stroke: var(--hr-dark);
+            stroke-width: 10;
+            stroke-linecap: butt;
+            transform: rotate(-90deg);
+            transform-origin: center;
+            transition: stroke-dashoffset 1s var(--ease);
+        }
+
+        .chart-ring-lg__fill--sage { stroke: var(--hr-sage); }
+
+        .chart-ring-lg__value {
+            fill: var(--hr-deep);
+            font-family: var(--display);
+            font-size: 26px;
+            font-weight: 500;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        .ad-chart--dark .chart-ring-lg__value { fill: var(--hr-cream); }
+
+        .chart-ring-lg__unit {
+            fill: var(--hr-muted);
+            font-family: var(--sans);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-anchor: middle;
+            text-transform: uppercase;
+        }
+
+        .chart-ring-lg__label {
+            font-size: .68rem;
+            color: var(--hr-muted);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .ad-chart--dark .chart-ring-lg__label { color: rgba(245, 248, 244, .6); }
+
+        /* --------------------------------------------------------------------
+           Chart K — vertical bars
+           -------------------------------------------------------------------- */
+        .chart-bars-v {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 6px;
+            align-items: end;
+            height: 150px;
+            padding-top: 14px;
+        }
+
+        .chart-bar-v {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 6px;
+            height: 100%;
+        }
+
+        .chart-bar-v__fill {
+            display: block;
+            width: 100%;
+            background: var(--hr-dark);
+            height: 0;
+            min-height: 2px;
+            transition: height 1s var(--ease);
+        }
+
+        .chart-bar-v__fill--green { background: var(--hr-green); }
+        .chart-bar-v__fill--sage  { background: var(--hr-sage); }
+
+        .chart-bar-v__label {
+            color: var(--hr-muted);
+            font-size: .58rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        /* --------------------------------------------------------------------
+           Chart L — compact list
+           -------------------------------------------------------------------- */
+        .chart-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-list__row {
+            display: grid;
+            grid-template-columns: 88px 1fr auto;
+            gap: 14px;
+            align-items: baseline;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--hr-line);
+            font-size: .78rem;
+        }
+
+        .chart-list__row:last-child { border-bottom: 0; }
+
+        .chart-list__when {
+            color: var(--ad-accent);
+            font-size: .6rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        .chart-list__what {
+            color: var(--hr-deep);
+            line-height: 1.4;
+        }
+
+        .chart-list__status {
+            font-size: .6rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--hr-muted);
+        }
+
+        /* --------------------------------------------------------------------
+           Responsive
+           -------------------------------------------------------------------- */
+        @media (max-width: 1280px) {
+            .ad-charts {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .ad-chart--wide { grid-column: span 2; }
+            .ad-strip { grid-template-columns: repeat(3, 1fr); }
+            .ad-stat:nth-child(3) { border-right: 0; }
+            .ad-stat:nth-child(4),
+            .ad-stat:nth-child(5) { border-top: 1px solid var(--hr-line); }
+        }
+
+        @media (max-width: 1000px) {
+            .ad-brand { width: auto; border-right: 0; padding: 0 16px; }
+            .ad-menu-toggle { display: flex; }
+            .ad-sidebar {
+                width: 100%;
+                left: 0;
+                right: 0;
+                transform: translateX(-100%);
+                box-shadow: none;
+            }
+            .ad-body.sidebar-open .ad-sidebar { transform: none; }
+            .ad-main { margin-left: 0; }
+            .ad-header__scope { display: none; }
+            .ad-header__right { gap: 10px; padding: 0 16px; }
+        }
+
+        @media (max-width: 780px) {
+            .ad-charts {
+                grid-template-columns: 1fr;
+            }
+            .ad-chart--wide,
+            .ad-chart--full { grid-column: auto; }
+            .ad-strip { grid-template-columns: repeat(2, 1fr); }
+            .ad-stat,
+            .ad-stat:nth-child(3),
+            .ad-stat:nth-child(4),
+            .ad-stat:nth-child(5) {
+                border-right: 1px solid var(--hr-line);
+                border-top: 0;
+            }
+            .ad-stat:nth-child(2n) { border-right: 0; }
+            .ad-stat:nth-child(n+3) { border-top: 1px solid var(--hr-line); }
+
+            .chart-bar-h { grid-template-columns: 1fr 44px; gap: 6px 12px; }
+            .chart-bar-h__label { grid-column: 1 / -1; }
+            .chart-funnel__row { grid-template-columns: 100px 1fr 48px; gap: 10px; }
+            .chart-gantt { grid-template-columns: 120px repeat(12, 1fr); }
+            .chart-gantt__row-label { font-size: .68rem; }
+            .chart-matrix { grid-template-columns: 56px repeat(4, 1fr); }
+            .chart-rings4 { grid-template-columns: repeat(2, 1fr); }
+            .chart-list__row { grid-template-columns: 1fr; gap: 4px; }
+        }
+
+        @media (max-width: 600px) {
+            :root {
+                --ad-header-h: 68px;
+            }
+            .ad-section {
+                padding: 18px 12px 40px;
+            }
+            .ad-chart {
+                padding: 16px 12px 14px;
+            }
+            .ad-brand img { width: 78px; }
+            .ad-chip { font-size: .5rem; padding: 2px 6px; }
+            .ad-greet { font-size: .95rem; }
+            .chart-bars-v {
+                gap: 2px;
+            }
+            .chart-bar-v__label {
+                font-size: .48rem;
+                letter-spacing: 0;
+            }
+            .chart-gantt-wrap {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .chart-gantt {
+                min-width: 460px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .ad-brand {
+                padding: 0 8px;
+            }
+            .ad-brand img {
+                width: 68px;
+            }
+            .ad-chip {
+                font-size: .44rem;
+                padding: 1px 4px;
+                letter-spacing: .1em;
+            }
+            .ad-header__right {
+                gap: 6px;
+                padding: 0 8px;
+            }
+            .ad-greet {
+                font-size: .85rem;
+                max-width: 130px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .ad-stat {
+                padding: 12px 8px;
+            }
+            .ad-stat__label {
+                font-size: .52rem;
+                letter-spacing: .08em;
+                margin-bottom: 6px;
+            }
+            .ad-stat__value {
+                font-size: 1.3rem;
+            }
+            .ad-stat__delta {
+                font-size: .55rem;
+                padding: 1px 4px;
+            }
+            .chart-rings2 {
+                gap: 8px;
+            }
+            .chart-ring-lg svg {
+                width: 92px;
+                height: 92px;
+            }
+            .chart-ring-lg__value {
+                font-size: 20px;
+            }
+            .chart-ring-lg__unit {
+                font-size: 8px;
+            }
+            .chart-hist {
+                gap: 3px;
+            }
+            .chart-hist__label {
+                font-size: .48rem;
+                letter-spacing: 0;
+            }
+            .chart-hist__val {
+                font-size: .6rem;
+            }
+            .chart-funnel__row {
+                grid-template-columns: 80px 1fr 38px;
+                gap: 6px;
+            }
+            .chart-funnel__label {
+                font-size: .68rem;
+                line-height: 1.2;
+            }
+            .chart-funnel__value {
+                font-size: .68rem;
+            }
+            .chart-matrix {
+                grid-template-columns: 44px repeat(4, 1fr);
+                gap: 3px;
+            }
+            .chart-matrix__row-label,
+            .chart-matrix__col-label {
+                font-size: .48rem;
+            }
+            .chart-stack-legend {
+                grid-template-columns: 1fr;
+                gap: 4px;
+                font-size: .72rem;
+            }
+            .chart-rings4 {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px 4px;
+            }
+            .chart-ring-mini svg {
+                width: 68px;
+                height: 68px;
+            }
+            .chart-ring-mini__value {
+                font-size: 14px;
+            }
+            .chart-ring-mini__label {
+                font-size: .55rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .chart-stack__seg,
+            .chart-hist__bar,
+            .chart-funnel__fill,
+            .chart-bar-h__fill,
+            .chart-bar-v__fill,
+            .chart-ring-mini__fill,
+            .chart-ring-lg__fill,
+            .ad-sidebar,
+            .ad-nav__link,
+            .ad-nav__link::before,
+            .ad-logout,
+            .ad-backdrop {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="ad-body">
+    <a class="skip-link" href="#adMain">Skip to content</a>
+
+    <!-- ============ HEADER ============ -->
+    <header class="ad-header">
+        <a class="ad-brand" href="#section-workforce" data-section="workforce"
+            aria-label="Stackly admin dashboard — go to Workforce Overview">
+            <img src="../logo.webp" alt="Stackly">
+            <span class="ad-chip">Admin</span>
+        </a>
+        <div class="ad-header__right">
+            <span class="ad-header__scope">Sample environment</span>
+            <span class="ad-greet" id="adGreet">Hello</span>
+            <span class="ad-header__email" id="adHeaderEmail">—</span>
+            <button class="ad-menu-toggle" id="adMenuToggle" type="button" aria-label="Open navigation"
+                aria-expanded="false" aria-controls="adSidebar">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="ad-backdrop" id="adBackdrop" aria-hidden="true"></div>
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="ad-sidebar" id="adSidebar" aria-label="Admin dashboard navigation">
+        <nav class="ad-nav">
+            <p class="ad-nav__label">Administration</p>
+            <a class="ad-nav__link" href="#section-workforce" data-section="workforce" aria-current="page">
+                <span class="ad-nav__num">01</span> Workforce Overview
+            </a>
+            <a class="ad-nav__link" href="#section-talent" data-section="talent">
+                <span class="ad-nav__num">02</span> Talent Planning
+            </a>
+            <a class="ad-nav__link" href="#section-leadership" data-section="leadership">
+                <span class="ad-nav__num">03</span> Leadership Pipeline
+            </a>
+            <a class="ad-nav__link" href="#section-org" data-section="org">
+                <span class="ad-nav__num">04</span> Organization Design
+            </a>
+            <a class="ad-nav__link" href="#section-initiatives" data-section="initiatives">
+                <span class="ad-nav__num">05</span> HR Initiatives
+            </a>
+        </nav>
+
+        <div class="ad-sidebar__foot">
+            <div class="ad-profile">
+                <div class="ad-profile__avatar" id="adAvatar" aria-hidden="true">·</div>
+                <div class="ad-profile__body">
+                    <span class="ad-profile__name" id="adProfileName">Guest</span>
+                    <span class="ad-profile__email" id="adProfileEmail">Not signed in</span>
+                    <span class="ad-profile__role">Admin</span>
+                </div>
+            </div>
+            <button class="ad-logout" id="adLogout" type="button">Log out <span aria-hidden="true">→</span></button>
+        </div>
+    </aside>
+
+    <!-- ============ MAIN ============ -->
+    <main class="ad-main" id="adMain">
+
+        <!-- ============ 01 · WORKFORCE OVERVIEW ============ -->
+        <section class="ad-section is-active" id="section-workforce" aria-labelledby="wfTitle">
+            <header class="ad-section-head">
+                <h1 class="ad-section-title" id="wfTitle"><small>01 / Workforce Overview</small>Composition,
+                    distribution and movement.</h1>
+               
+            </header>
+
+            <!-- Stat strip -->
+            <div class="ad-strip">
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Total workforce</span>
+                    <span class="ad-stat__value">428</span>
+                    <span class="ad-stat__delta">+3.4%</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Average tenure</span>
+                    <span class="ad-stat__value">4.2<small>y</small></span>
+                    <span class="ad-stat__delta">+0.3</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Span of control</span>
+                    <span class="ad-stat__value">6.8</span>
+                    <span class="ad-stat__delta">+0.2</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Voluntary exits</span>
+                    <span class="ad-stat__value">6.1<small>%</small></span>
+                    <span class="ad-stat__delta ad-stat__delta--neg">+0.4</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Open positions</span>
+                    <span class="ad-stat__value">23</span>
+                    <span class="ad-stat__delta ad-stat__delta--neg">+5</span>
+                </div>
+            </div>
+
+            <div class="ad-charts">
+
+                <!-- Workforce composition stacked bar -->
+                <div class="ad-chart ad-chart--wide">
+                    <div class="ad-chart__head">
+                        <h2 class="ad-chart__title">Workforce composition</h2>
+                        <span class="ad-chart__meta">By function</span>
+                    </div>
+                    <div class="ad-chart__body">
+                        <div class="chart-stack">
+                            <span class="chart-stack__seg chart-stack__seg--1" data-stack="34"></span>
+                            <span class="chart-stack__seg chart-stack__seg--2" data-stack="26"></span>
+                            <span class="chart-stack__seg chart-stack__seg--3" data-stack="18"></span>
+                            <span class="chart-stack__seg chart-stack__seg--4" data-stack="14"></span>
+                            <span class="chart-stack__seg chart-stack__seg--5" data-stack="8"></span>
+                        </div>
+                        <div class="chart-stack-legend">
+                            <div><span><i class="c1"></i> Operations</span><span>34%</span></div>
+                            <div><span><i class="c2"></i> Client services</span><span>26%</span></div>
+                            <div><span><i class="c3"></i> Technology</span><span>18%</span></div>
+                            <div><span><i class="c4"></i> Corporate functions</span><span>14%</span></div>
+                            <div><span><i class="c5"></i> Leadership</span><span>8%</span></div>
+                        </div>
+                    </div>
+                    <p class="ad-chart__caption">Illustrative composition across five function groups.</p>
+                </div>
+
+                <!-- Headcount trend sparkline -->
+                <div class="ad-chart">
+                    <div class="ad-chart__head">
+                        <h2 class="ad-chart__title">Headcount trend</h2>
+                        <span class="ad-chart__meta">24 months</span>
+                    </div>
+                    <div class="ad-chart__body">
+                        <svg class="chart-spark" viewBox="0 0 400 120" role="img"
+                            aria-label="Line chart of sample headcount across 24 months, ranging from 372 to 428">
+                            <line class="chart-spark__grid" x1="10" y1="100" x2="390" y2="100" />
+                            <line class="chart-spark__grid" x1="10" y1="60" x2="390" y2="60" />
+                            <line class="chart-spark__grid" x1="10" y1="20" x2="390" y2="20" />
+                            <path class="chart-spark__area"
+                                d="M10,90 L44.5,82 L79.1,86 L113.6,72 L148.2,68 L182.7,60 L217.3,64 L251.8,52 L286.4,44 L320.9,36 L355.5,32 L390,26 L390,100 L10,100 Z" />
+                            <path class="chart-spark__path" data-spark
+                                d="M10,90 L44.5,82 L79.1,86 L113.6,72 L148.2,68 L182.7,60 L217.3,64 L251.8,52 L286.4,44 L320.9,36 L355.5,32 L390,26" />
+                            <circle class="chart-spark__point" cx="390" cy="26" r="3.5" />
+                            <text class="chart-spark__axis" x="10" y="115">M1</text>
+                            <text class="chart-spark__axis" x="200" y="115" text-anchor="middle">M12</text>
+                            <text class="chart-spark__axis" x="390" y="115" text-anchor="end">M24</text>
+                        </svg>
+                    </div>
+                    <p class="ad-chart__caption">Sample net growth over two years.</p>
+                </div>
+
+                <!-- Age distribution histogram -->
+                <div class="ad-chart">
+                    <div class="ad-chart__head">
+                        <h2 class="ad-chart__title">Age distribution</h2>
+                        <span class="ad-chart__meta">Bands</span>
+                    </div>
+                    <div class="ad-chart__body">
+                        <div class="chart-hist">
+                            <div class="chart-hist__col">
+                                <span class="chart-hist__val">42</span>
+                                <span class="chart-hist__bar" data-hist="35"></span>
+                                <span class="chart-hist__label">20s</span>
+                            </div>
+                            <div class="chart-hist__col">
+                                <span class="chart-hist__val">126</span>
+                                <span class="chart-hist__bar chart-hist__bar--accent" data-hist="82"></span>
+                                <span class="chart-hist__label">30s</span>
+                            </div>
+                            <div class="chart-hist__col">
+                                <span class="chart-hist__val">148</span>
+                                <span class="chart-hist__bar" data-hist="95"></span>
+                                <span class="chart-hist__label">40s</span>
+                            </div>
+                            <div class="chart-hist__col">
+                                <span class="chart-hist__val">82</span>
+                                <span class="chart-hist__bar" data-hist="55"></span>
+                                <span class="chart-hist__label">50s</span>
+                            </div>
+                            <div class="chart-hist__col">
+                                <span class="chart-hist__val">30</span>
+                                <span class="chart-hist__bar" data-hist="20"></span>
+                                <span class="chart-hist__label">60+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="ad-chart__caption">Illustrative headcount by age band.</p>
+                </div>
+
+                <!-- Gender balance rings -->
+                <div class="ad-chart ad-chart--wide">
+                    <div class="ad-chart__head">
+                        <h2 class="ad-chart__title">Representation</h2>
+                        <span class="ad-chart__meta">Sample</span>
+                    </div>
+                    <div class="chart-rings4">
+                        <div class="chart-ring-mini">
+                            <svg viewBox="0 0 84 84" role="img" aria-label="Overall women in workforce 46 percent">
+                                <circle class="chart-ring-mini__track" cx="42" cy="42" r="32" />
+                                <circle class="chart-ring-mini__fill chart-ring-mini__fill--green" data-ring-mini="46"
+                                    cx="42" cy="42" r="32" stroke-dasharray="201.1" stroke-dashoffset="201.1" />
+                                <text class="chart-ring-mini__value" x="42" y="45">46</text>
+                            </svg>
+                            <span class="chart-ring-mini__label">Women<br>Overall</span>
+                        </div>
+                        <div class="chart-ring-mini">
+                            <svg viewBox="0 0 84 84" role="img" aria-label="Women in leadership 28 percent">
+                                <circle class="chart-ring-mini__track" cx="42" cy="42" r="32" />
+                                <circle class="chart-ring-mini__fill" data-ring-mini="28"
+                                    cx="42" cy="42" r="32" stroke-dasharray="201.1" stroke-dashoffset="201.1" />
+                                <text class="chart-ring-mini__value" x="42" y="45">28</text>
+                            </svg>
+                            <span class="chart-ring-mini__label">Women<br>Leadership</span>
+                        </div>
+                        <div class="chart-ring-mini">
+                            <svg viewBox="0 0 84 84" role="img" aria-label="Women in technology 34 percent">
+                                <circle class="chart-ring-mini__track" cx="42" cy="42" r="32" />
+                                <circle class="chart-ring-mini__fill chart-ring-mini__fill--sage" data-ring-mini="34"
+                                    cx="42" cy="42" r="32" stroke-dasharray="201.1" stroke-dashoffset="201.1" />
+                                <text class="chart-ring-mini__value" x="42" y="45">34</text>
+                            </svg>
+                            <span class="chart-ring-mini__label">Women<br>Technology</span>
+                        </div>
+                        <div class="chart-ring-mini">
+                            <svg viewBox="0 0 84 84" role="img" aria-label="New hires women 52 percent">
+                                <circle class="chart-ring-mini__track" cx="42" cy="42" r="32" />
+                                <circle class="chart-ring-mini__fill chart-ring-mini__fill--green" data-ring-mini="52"
+                                    cx="42" cy="42" r="32" stroke-dasharray="201.1" stroke-dashoffset="201.1" />
+                                <text class="chart-ring-mini__value" x="42" y="45">52</text>
+                            </svg>
+                            <span class="chart-ring-mini__label">Women<br>New hires</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ============ 02 · TALENT PLANNING ============ -->
+        <section class="ad-section" id="section-talent" aria-labelledby="talTitle">
+            <header class="ad-section-head">
+                <h2 class="ad-section-title" id="talTitle"><small>02 / Talent Planning</small>Supply, demand and
+                    critical capability.</h2>
+                
+            </header>
+
+            <div class="ad-strip">
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Critical roles</span>
+                    <span class="ad-stat__value">31</span>
+                    <span class="ad-stat__delta">Sample</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Ready successors</span>
+                    <span class="ad-stat__value">19</span>
+                    <span class="ad-stat__delta">61%</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Skill gaps</span>
+                    <span class="ad-stat__value">8</span>
+                    <span class="ad-stat__delta ad-stat__delta--neg">+2</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Time to fill</span>
+                    <span class="ad-stat__value">42<small>d</small></span>
+                    <span class="ad-stat__delta">−4d</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Internal mobility</span>
+                    <span class="ad-stat__value">18<small>%</small></span>
+                    <span class="ad-stat__delta">+3</span>
+                </div>
+            </div>
+
+            <div class="ad-charts">
+
+                <!-- Funnel: talent pipeline -->
+                <div class="ad-chart ad-chart--wide ad-chart--dark">
+                    <div class="ad-chart__head">
+                        <h2 class="ad-chart__title">Talent pipeline</h2>
+                        <span class="ad-chart__meta">By readiness</span>
+                    </div>
+                    <div class="ad-chart__body">
+                        <div class="chart-funnel">
+                            <div class="chart-funnel__row">
+                                <span class="chart-funnel__label">Identified talent</span>
+                                <span class="chart-funnel__track"><span class="chart-funnel__fill" data-funnel="100"></span></span>
+                                <span class="chart-funnel__value">100%</span>
+                            </div>
+                            <div class="chart-funnel__row">
+                                <span class="chart-funnel__label">Ready in 1–2 yrs</span>
+                                <span class="chart-funnel__track"><span class="chart-funnel__fill chart-funnel__fill--2" data-funnel="64"></span></span>
+                                <span class="chart-funnel__value">64%</span>
+                            </div>
+                            <div class="chart-funnel__row">
+                                <span class="chart-funnel__label">Ready in 2–3 yrs</span>
+                                <span class="chart-funnel__track"><span class="chart-funnel__fill chart-funnel__fill--3" data-funnel="42"></span></span>
+                                <span class="chart-funnel__value">42%</span>
+                            </div>
+                            <div class="chart-funnel__row">
+                                <span class="chart-funnel__label">Ready now</span>
+                                <span class="chart-funnel__track"><span class="chart-funnel__fill chart-funnel__fill--4" data-funnel="26"></span></span>
+                                <span class="chart-funnel__value">26%</span>
+                            </div>
+                            <div class="chart-funnel__row">
+                                <span class="chart-funnel__label">Succession-ready</span>
+                                <span class="chart-funnel__track"><span class="chart-funnel__fill chart-funnel__fill--5" data-funnel="14"></span></span>
+                                <span class="chart-funnel__value">14%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="ad-chart__caption">Illustrative readiness distribution across the talent pool.</p>
+                </div>
+
+                <!-- Critical role coverage -->
+                <div class="ad-chart">
+                    <div class="ad-chart__head">
+                        <h2 class="ad-chart__title">Critical role coverage</h2>
+                        <span class="ad-chart__meta">Sample</span>
+                    </div>
+                    <div class="chart-bars-h">
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Finance</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="88"></span></span>
+                            <span class="chart-bar-h__value">88%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Operations</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="72"></span></span>
+                            <span class="chart-bar-h__value">72%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Technology</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill chart-bar-h__fill--green" data-bar-h="48"></span></span>
+                            <span class="chart-bar-h__value">48%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Client services</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="65"></span></span>
+                            <span class="chart-bar-h__value">65%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Data &amp; analytics</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill chart-bar-h__fill--green" data-bar-h="35"></span></span>
+                            <span class="chart-bar-h__value">35%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skill gap heatmap -->
+                <div class="ad-chart ad-chart--wide">
+                    <div class="ad-chart__head">
+                        <h2 class="ad-chart__title">Skill gap heatmap</h2>
+                        <span class="ad-chart__meta">Demand vs supply</span>
+                    </div>
+                    <div class="chart-matrix">
+                        <span></span>
+                        <span class="chart-matrix__col-label">Low</span>
+                        <span class="chart-matrix__col-label">Med</span>
+                        <span class="chart-matrix__col-label">High</span>
+                        <span class="chart-matrix__col-label">Crit</span>
+
+                        <span class="chart-matrix__row-label">Data</span>
+                        <span class="chart-matrix__cell" data-level="1"></span>
+                        <span class="chart-matrix__cell" data-level="2"></span>
+                        <span class="chart-matrix__cell" data-level="4"></span>
+                        <span class="chart-matrix__cell" data-level="5"><span>8</span></span>
+
+                        <span class="chart-matrix__row-label">Digital</span>
+                        <span class="chart-matrix__cell" data-level="1"></span>
+                        <span class="chart-matrix__cell" data-level="3"></span>
+                        <span class="chart-matrix__cell" data-level="4"><span>3</span></span>
+                        <span class="chart-matrix__cell" data-level="4"></span>
+
+                        <span class="chart-matrix__row-label">Change</span>
+                        <span class="chart-matrix__cell" data-level="2"></span>
+                        <span class="chart-matrix__cell" data-level="3"><span>2</span></span>
+                        <span class="chart-matrix__cell" data-level="3"></span>
+                        <span class="chart-matrix__cell" data-level="4"></span>
+
+                        <span class="chart-matrix__row-label">Lead</span>
+                        <span class="chart-matrix__cell" data-level="1"></span>
+                        <span class="chart-matrix__cell" data-level="2"></span>
+                        <span class="chart-matrix__cell" data-level="3"><span>1</span></span>
+                        <span class="chart-matrix__cell" data-level="3"></span>
+                    </div>
+                    <p class="ad-chart__caption">Illustrative — numbers indicate identified critical gaps.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ============ 03 · LEADERSHIP PIPELINE ============ -->
+        <section class="ad-section" id="section-leadership" aria-labelledby="leadTitle">
+            <header class="ad-section-head">
+                <h2 class="ad-section-title" id="leadTitle"><small>03 / Leadership Pipeline</small>Bench strength and
+                    succession.</h2>
+               
+            </header>
+
+            <div class="ad-strip">
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Leadership roles</span>
+                    <span class="ad-stat__value">42</span>
+                    <span class="ad-stat__delta">Sample</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Bench strength</span>
+                    <span class="ad-stat__value">1.8<small>x</small></span>
+                    <span class="ad-stat__delta">+0.2</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Coverage</span>
+                    <span class="ad-stat__value">76<small>%</small></span>
+                    <span class="ad-stat__delta">+4</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">External hires</span>
+                    <span class="ad-stat__value">34<small>%</small></span>
+                    <span class="ad-stat__delta ad-stat__delta--neg">+2</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">First-time leaders</span>
+                    <span class="ad-stat__value">11</span>
+                    <span class="ad-stat__delta">Sample</span>
+                </div>
+            </div>
+
+            <div class="ad-charts">
+
+                <!-- Succession readiness by level -->
+                <div class="ad-chart ad-chart--wide">
+                    <div class="ad-chart__head">
+                        <h2 class="ad-chart__title">Succession readiness</h2>
+                        <span class="ad-chart__meta">By level</span>
+                    </div>
+                    <div class="chart-bars-h">
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Executive (C-suite)</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="42"></span></span>
+                            <span class="chart-bar-h__value">42%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Senior leadership</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="65"></span></span>
+                            <span class="chart-bar-h__value">65%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Mid-level leadership</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill chart-bar-h__fill--green" data-bar-h="82"></span></span>
+                            <span class="chart-bar-h__value">82%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Front-line leadership</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill chart-bar-h__fill--green" data-bar-h="91"></span></span>
+                            <span class="chart-bar-h__value">91%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Technical leadership</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="54"></span></span>
+                            <span class="chart-bar-h__value">54%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bench strength vs target rings -->
+                <div class="ad-chart">
+                    <div class="ad-chart__head">
+                        <h2 class="ad-chart__title">Bench strength</h2>
+                        <span class="ad-chart__meta">vs target</span>
+                    </div>
+                    <div class="chart-rings2">
+                        <div class="chart-ring-lg">
+                            <svg viewBox="0 0 128 128" role="img" aria-label="Current bench strength 76 percent">
+                                <circle class="chart-ring-lg__track" cx="64" cy="64" r="52" />
+                                <circle class="chart-ring-lg__fill chart-ring-lg__fill--sage" data-ring="76"
+                                    cx="64" cy="64" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7" />
+                                <text class="chart-ring-lg__value" x="64" y="58">76</text>
+                                <text class="chart-ring-lg__unit" x="64" y="76">Percent</text>
+                            </svg>
+                            <span class="chart-ring-lg__label">Current</span>
+                        </div>
+                        <div class="chart-ring-lg">
+                            <svg viewBox="0 0 128 128" role="img" aria-label="Target bench strength 85 percent">
+                                <circle class="chart-ring-lg__track" cx="64" cy="64" r="52" />
+                                <circle class="chart-ring-lg__fill" data-ring="85"
+                                    cx="64" cy="64" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7" />
+                                <text class="chart-ring-lg__value" x="64" y="58">85</text>
+                                <text class="chart-ring-lg__unit" x="64" y="76">Percent</text>
+                            </svg>
+                            <span class="chart-ring-lg__label">Target</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Leadership exits vs promotions -->
+                <div class="ad-chart ad-chart--wide">
+                    <div class="ad-chart__head">
+                        <h2 class="ad-chart__title">Movement by month</h2>
+                        <span class="ad-chart__meta">Sample</span>
+                    </div>
+                    <div class="chart-bars-v">
+                        <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="20"></span><span class="chart-bar-v__label">Jan</span></div>
+                        <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="35"></span><span class="chart-bar-v__label">Feb</span></div>
+                        <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="25"></span><span class="chart-bar-v__label">Mar</span></div>
+                        <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="50"></span><span class="chart-bar-v__label">Apr</span></div>
+                        <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="40"></span><span class="chart-bar-v__label">May</span></div>
+                        <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="65"></span><span class="chart-bar-v__label">Jun</span></div>
+                        <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="45"></span><span class="chart-bar-v__label">Jul</span></div>
+                        <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="55"></span><span class="chart-bar-v__label">Aug</span></div>
+                        <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="70"></span><span class="chart-bar-v__label">Sep</span></div>
+                        <div class="chart-bar-v"><span class="chart-bar-v__fill chart-bar-v__fill--green" data-bar-v="35"></span><span class="chart-bar-v__label">Oct</span></div>
+                        <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="60"></span><span class="chart-bar-v__label">Nov</span></div>
+                        <div class="chart-bar-v"><span class="chart-bar-v__fill chart-bar-v__fill--sage" data-bar-v="30"></span><span class="chart-bar-v__label">Dec</span></div>
+                    </div>
+                    <p class="ad-chart__caption">Sample monthly promotions (dark) and exits (sage).</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ============ 04 · ORGANIZATION DESIGN ============ -->
+        <section class="ad-section" id="section-org" aria-labelledby="orgTitle">
+            <header class="ad-section-head">
+                <h2 class="ad-section-title" id="orgTitle"><small>04 / Organization Design</small>Structure, spans and
+                    layers.</h2>
+                <span class="ad-sample-tag">Illustrative structure</span>
+            </header>
+
+            <div class="ad-strip">
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Layers</span>
+                    <span class="ad-stat__value">6</span>
+                    <span class="ad-stat__delta">Sample</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Avg span</span>
+                    <span class="ad-stat__value">6.8</span>
+                    <span class="ad-stat__delta">+0.2</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Managers</span>
+                    <span class="ad-stat__value">63</span>
+                    <span class="ad-stat__delta">+2</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Manager ratio</span>
+                    <span class="ad-stat__value">1:6.8</span>
+                    <span class="ad-stat__delta">Sample</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Dual-report roles</span>
+                    <span class="ad-stat__value">14</span>
+                    <span class="ad-stat__delta ad-stat__delta--neg">+3</span>
+                </div>
+            </div>
+
+            <div class="ad-charts">
+
+                <!-- Org structure SVG -->
+                <div class="ad-chart ad-chart--full">
+                    <div class="ad-chart__head">
+                        <h2 class="ad-chart__title">Structure overview</h2>
+                        <span class="ad-chart__meta">Illustrative</span>
+                    </div>
+                    <svg class="chart-org" viewBox="0 0 960 420" role="img"
+                        aria-label="Illustrative organization structure with a leadership layer connected to five functional units, each with sub-teams">
+                        <!-- Connector lines -->
+                        <line class="chart-org__line" x1="480" y1="80" x2="480" y2="120" />
+                        <line class="chart-org__line" x1="480" y1="120" x2="120" y2="120" />
+                        <line class="chart-org__line" x1="480" y1="120" x2="300" y2="120" />
+                        <line class="chart-org__line" x1="480" y1="120" x2="660" y2="120" />
+                        <line class="chart-org__line" x1="480" y1="120" x2="840" y2="120" />
+                        <line class="chart-org__line" x1="120" y1="120" x2="120" y2="160" />
+                        <line class="chart-org__line" x1="300" y1="120" x2="300" y2="160" />
+                        <line class="chart-org__line" x1="480" y1="120" x2="480" y2="160" />
+                        <line class="chart-org__line" x1="660" y1="120" x2="660" y2="160" />
+                        <line class="chart-org__line" x1="840" y1="120" x2="840" y2="160" />
+                        <!-- Second layer connectors -->
+                        <line class="chart-org__line" x1="120" y1="240" x2="120" y2="280" />
+                        <line class="chart-org__line" x1="300" y1="240" x2="300" y2="280" />
+                        <line class="chart-org__line" x1="480" y1="240" x2="480" y2="280" />
+                        <line class="chart-org__line" x1="660" y1="240" x2="660" y2="280" />
+                        <line class="chart-org__line" x1="840" y1="240" x2="840" y2="280" />
+
+                        <!-- Leadership -->
+                        <rect class="chart-org__box chart-org__box--lead" x="380" y="40" width="200" height="40" />
+                        <text class="chart-org__label chart-org__label--light" x="480" y="65">Executive</text>
+
+                        <!-- Functional layer -->
+                        <rect class="chart-org__box chart-org__box--mid" x="60" y="160" width="120" height="80" />
+                        <text class="chart-org__label" x="120" y="196">Operations</text>
+                        <text class="chart-org__sub" x="120" y="216">14 teams</text>
+
+                        <rect class="chart-org__box chart-org__box--mid" x="240" y="160" width="120" height="80" />
+                        <text class="chart-org__label" x="300" y="196">Client</text>
+                        <text class="chart-org__sub" x="300" y="216">10 teams</text>
+
+                        <rect class="chart-org__box chart-org__box--mid" x="420" y="160" width="120" height="80" />
+                        <text class="chart-org__label" x="480" y="196">Technology</text>
+                        <text class="chart-org__sub" x="480" y="216">8 teams</text>
+
+                        <rect class="chart-org__box chart-org__box--mid" x="600" y="160" width="120" height="80" />
+                        <text class="chart-org__label" x="660" y="196">Finance</text>
+                        <text class="chart-org__sub" x="660" y="216">5 teams</text>
+
+                        <rect class="chart-org__box chart-org__box--mid" x="780" y="160" width="120" height="80" />
+                        <text class="chart-org__label" x="840" y="196">People</text>
+                        <text class="chart-org__sub" x="840" y="216">5 teams</text>
+
+                        <!-- Sub-teams -->
+                        <rect class="chart-org__box chart-org__box--sage" x="80" y="280" width="80" height="34" />
+                        <text class="chart-org__label" x="120" y="302">Team A</text>
+                        <rect class="chart-org__box chart-org__box--sage" x="260" y="280" width="80" height="34" />
+                        <text class="chart-org__label" x="300" y="302">Team B</text>
+                        <rect class="chart-org__box chart-org__box--sage" x="440" y="280" width="80" height="34" />
+                        <text class="chart-org__label" x="480" y="302">Team C</text>
+                        <rect class="chart-org__box chart-org__box--sage" x="620" y="280" width="80" height="34" />
+                        <text class="chart-org__label" x="660" y="302">Team D</text>
+                        <rect class="chart-org__box chart-org__box--sage" x="800" y="280" width="80" height="34" />
+                        <text class="chart-org__label" x="840" y="302">Team E</text>
+
+                        <!-- Sub-note -->
+                        <text class="chart-org__sub" x="480" y="390" text-anchor="middle">Illustrative structure — not an actual client organization chart</text>
+                    </svg>
+                </div>
+
+                <!-- Span of control distribution -->
+                <div class="ad-chart">
+                    <div class="ad-chart__head">
+                        <h2 class="ad-chart__title">Span of control</h2>
+                        <span class="ad-chart__meta">Distribution</span>
+                    </div>
+                    <div class="ad-chart__body">
+                        <div class="chart-hist">
+                            <div class="chart-hist__col">
+                                <span class="chart-hist__val">4</span>
+                                <span class="chart-hist__bar" data-hist="15"></span>
+                                <span class="chart-hist__label">≤3</span>
+                            </div>
+                            <div class="chart-hist__col">
+                                <span class="chart-hist__val">18</span>
+                                <span class="chart-hist__bar" data-hist="55"></span>
+                                <span class="chart-hist__label">4–6</span>
+                            </div>
+                            <div class="chart-hist__col">
+                                <span class="chart-hist__val">26</span>
+                                <span class="chart-hist__bar chart-hist__bar--accent" data-hist="80"></span>
+                                <span class="chart-hist__label">7–9</span>
+                            </div>
+                            <div class="chart-hist__col">
+                                <span class="chart-hist__val">11</span>
+                                <span class="chart-hist__bar" data-hist="34"></span>
+                                <span class="chart-hist__label">10–12</span>
+                            </div>
+                            <div class="chart-hist__col">
+                                <span class="chart-hist__val">4</span>
+                                <span class="chart-hist__bar" data-hist="12"></span>
+                                <span class="chart-hist__label">13+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="ad-chart__caption">Sample manager count by direct reports.</p>
+                </div>
+
+                <!-- Layer depth -->
+                <div class="ad-chart ad-chart--wide">
+                    <div class="ad-chart__head">
+                        <h2 class="ad-chart__title">Layer depth</h2>
+                        <span class="ad-chart__meta">Headcount by level</span>
+                    </div>
+                    <div class="chart-bars-h">
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">L1 — Executive</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="3"></span></span>
+                            <span class="chart-bar-h__value">12</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">L2 — Senior leadership</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="7"></span></span>
+                            <span class="chart-bar-h__value">30</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">L3 — Mid leadership</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="15"></span></span>
+                            <span class="chart-bar-h__value">63</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">L4 — Team leads</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill chart-bar-h__fill--green" data-bar-h="32"></span></span>
+                            <span class="chart-bar-h__value">136</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">L5 — Individual contributors</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill chart-bar-h__fill--green" data-bar-h="44"></span></span>
+                            <span class="chart-bar-h__value">187</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ============ 05 · HR INITIATIVES ============ -->
+        <section class="ad-section" id="section-initiatives" aria-labelledby="initTitle">
+            <header class="ad-section-head">
+                <h2 class="ad-section-title" id="initTitle"><small>05 / HR Initiatives</small>Portfolio, pace and
+                    progress.</h2>
+                
+            </header>
+
+            <div class="ad-strip">
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Active</span>
+                    <span class="ad-stat__value">14</span>
+                    <span class="ad-stat__delta">Sample</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">At risk</span>
+                    <span class="ad-stat__value">3</span>
+                    <span class="ad-stat__delta ad-stat__delta--neg">+1</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">On track</span>
+                    <span class="ad-stat__value">82<small>%</small></span>
+                    <span class="ad-stat__delta">+4</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Completed this year</span>
+                    <span class="ad-stat__value">9</span>
+                    <span class="ad-stat__delta">Sample</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat__label">Avg duration</span>
+                    <span class="ad-stat__value">14<small>w</small></span>
+                    <span class="ad-stat__delta">−1</span>
+                </div>
+            </div>
+
+            <div class="ad-charts">
+
+                <!-- Gantt-like timeline -->
+                <div class="ad-chart ad-chart--full">
+                    <div class="ad-chart__head">
+                        <h2 class="ad-chart__title">Initiative timeline</h2>
+                        <span class="ad-chart__meta">12 months · Sample</span>
+                    </div>
+                    <div class="chart-gantt-wrap">
+                    <div class="chart-gantt">
+                        <span></span>
+                        <span class="chart-gantt__month">J</span>
+                        <span class="chart-gantt__month">F</span>
+                        <span class="chart-gantt__month">M</span>
+                        <span class="chart-gantt__month">A</span>
+                        <span class="chart-gantt__month">M</span>
+                        <span class="chart-gantt__month">J</span>
+                        <span class="chart-gantt__month">J</span>
+                        <span class="chart-gantt__month">A</span>
+                        <span class="chart-gantt__month">S</span>
+                        <span class="chart-gantt__month">O</span>
+                        <span class="chart-gantt__month">N</span>
+                        <span class="chart-gantt__month">D</span>
+
+                        <span class="chart-gantt__row-label">Leadership program</span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+
+                        <span class="chart-gantt__row-label">Org design refresh</span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-alt"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-alt"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-alt"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-alt"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-alt"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-alt"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+
+                        <span class="chart-gantt__row-label">HRIS migration</span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-sage"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-sage"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-sage"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-sage"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-sage"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-sage"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+
+                        <span class="chart-gantt__row-label">Manager capability</span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar"></span>
+
+                        <span class="chart-gantt__row-label">Culture &amp; values</span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-alt"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-alt"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-alt"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-alt"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+
+                        <span class="chart-gantt__row-label">Employee experience</span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-sage"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-sage"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-sage"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-sage"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-sage"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-sage"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-sage"></span>
+                        <span class="chart-gantt__cell chart-gantt__cell--bar-sage"></span>
+                    </div>
+                    </div>
+                    <p class="ad-chart__caption">Illustrative twelve-month plan. Bars show active window; no dates or real programs implied.</p>
+                </div>
+
+                <!-- Initiative status rings -->
+                <div class="ad-chart">
+                    <div class="ad-chart__head">
+                        <h2 class="ad-chart__title">Portfolio status</h2>
+                        <span class="ad-chart__meta">14 active</span>
+                    </div>
+                    <div class="chart-rings4">
+                        <div class="chart-ring-mini">
+                            <svg viewBox="0 0 84 84" role="img" aria-label="On track 82 percent">
+                                <circle class="chart-ring-mini__track" cx="42" cy="42" r="32" />
+                                <circle class="chart-ring-mini__fill chart-ring-mini__fill--green" data-ring-mini="82"
+                                    cx="42" cy="42" r="32" stroke-dasharray="201.1" stroke-dashoffset="201.1" />
+                                <text class="chart-ring-mini__value" x="42" y="45">82</text>
+                            </svg>
+                            <span class="chart-ring-mini__label">On Track</span>
+                        </div>
+                        <div class="chart-ring-mini">
+                            <svg viewBox="0 0 84 84" role="img" aria-label="At risk 12 percent">
+                                <circle class="chart-ring-mini__track" cx="42" cy="42" r="32" />
+                                <circle class="chart-ring-mini__fill chart-ring-mini__fill--sage" data-ring-mini="12"
+                                    cx="42" cy="42" r="32" stroke-dasharray="201.1" stroke-dashoffset="201.1" />
+                                <text class="chart-ring-mini__value" x="42" y="45">12</text>
+                            </svg>
+                            <span class="chart-ring-mini__label">At Risk</span>
+                        </div>
+                        <div class="chart-ring-mini">
+                            <svg viewBox="0 0 84 84" role="img" aria-label="Delayed 6 percent">
+                                <circle class="chart-ring-mini__track" cx="42" cy="42" r="32" />
+                                <circle class="chart-ring-mini__fill" data-ring-mini="6"
+                                    cx="42" cy="42" r="32" stroke-dasharray="201.1" stroke-dashoffset="201.1" />
+                                <text class="chart-ring-mini__value" x="42" y="45">6</text>
+                            </svg>
+                            <span class="chart-ring-mini__label">Delayed</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Active initiative list -->
+                <div class="ad-chart ad-chart--wide">
+                    <div class="ad-chart__head">
+                        <h2 class="ad-chart__title">Active initiatives</h2>
+                        <span class="ad-chart__meta">Sample register</span>
+                    </div>
+                    <div class="chart-list">
+                        <div class="chart-list__row">
+                            <span class="chart-list__when">Q3 · Active</span>
+                            <span class="chart-list__what">Manager capability program — cohort 2</span>
+                            <span class="chart-list__status">On track</span>
+                        </div>
+                        <div class="chart-list__row">
+                            <span class="chart-list__when">Q3 · Active</span>
+                            <span class="chart-list__what">Organization design refresh — client services</span>
+                            <span class="chart-list__status">On track</span>
+                        </div>
+                        <div class="chart-list__row">
+                            <span class="chart-list__when">Q4 · Active</span>
+                            <span class="chart-list__what">HRIS migration — phase 1</span>
+                            <span class="chart-list__status">On track</span>
+                        </div>
+                        <div class="chart-list__row">
+                            <span class="chart-list__when">Q4 · Active</span>
+                            <span class="chart-list__what">Culture &amp; values rollout</span>
+                            <span class="chart-list__status">At risk</span>
+                        </div>
+                        <div class="chart-list__row">
+                            <span class="chart-list__when">Q4 · Active</span>
+                            <span class="chart-list__what">Employee experience — onboarding refresh</span>
+                            <span class="chart-list__status">Delayed</span>
+                        </div>
+                        <div class="chart-list__row">
+                            <span class="chart-list__when">Q4 · Active</span>
+                            <span class="chart-list__what">Succession planning — senior leadership</span>
+                            <span class="chart-list__status">On track</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            /* -----------------------------------------------------------------
+               1. Greeting & profile (from stored email)
+               ----------------------------------------------------------------- */
+            const email = (() => { try { return localStorage.getItem('stackly.email') || ''; } catch (_) { return ''; } })();
+            const localPart = email.split('@')[0] || '';
+            const displayName = localPart ? localPart.charAt(0).toUpperCase() + localPart.slice(1) : '';
+
+            const greetEl = document.getElementById('adGreet');
+            const headerEmailEl = document.getElementById('adHeaderEmail');
+            const profileNameEl = document.getElementById('adProfileName');
+            const profileEmailEl = document.getElementById('adProfileEmail');
+            const avatarEl = document.getElementById('adAvatar');
+
+            if (displayName) {
+                greetEl.innerHTML = 'Hello <span>' + displayName + '</span>';
+                profileNameEl.textContent = displayName;
+                avatarEl.textContent = displayName.charAt(0).toUpperCase();
+            }
+            headerEmailEl.textContent = email || 'Not signed in';
+            profileEmailEl.textContent = email || 'Not signed in';
+
+            /* -----------------------------------------------------------------
+               2. Mobile sidebar
+               ----------------------------------------------------------------- */
+            const body = document.body;
+            const menuToggle = document.getElementById('adMenuToggle');
+            const backdrop = document.getElementById('adBackdrop');
+
+            const setSidebar = (open) => {
+                body.classList.toggle('sidebar-open', open);
+                menuToggle.setAttribute('aria-expanded', String(open));
+                menuToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+                document.body.style.overflow = open ? 'hidden' : '';
+            };
+            menuToggle.addEventListener('click', () => setSidebar(!body.classList.contains('sidebar-open')));
+            backdrop.addEventListener('click', () => setSidebar(false));
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && body.classList.contains('sidebar-open')) setSidebar(false);
+            });
+
+            /* -----------------------------------------------------------------
+               3. Chart animation — dispatch by data attribute
+               ----------------------------------------------------------------- */
+            const animateChart = (root) => {
+                const animate = window.gsap && !reduce;
+
+                /* Stacked bar segments */
+                root.querySelectorAll('[data-stack]').forEach((seg, i) => {
+                    const w = seg.dataset.stack + '%';
+                    if (animate) gsap.fromTo(seg, { width: '0%' }, { width: w, duration: 1, delay: i * .08, ease: 'power2.out' });
+                    else seg.style.width = w;
+                });
+
+                /* Histogram bars */
+                root.querySelectorAll('[data-hist]').forEach((bar, i) => {
+                    const h = bar.dataset.hist + '%';
+                    if (animate) gsap.fromTo(bar, { height: '0%' }, { height: h, duration: .9, delay: i * .07, ease: 'power2.out' });
+                    else bar.style.height = h;
+                });
+
+                /* Funnel fills */
+                root.querySelectorAll('[data-funnel]').forEach((bar, i) => {
+                    const w = bar.dataset.funnel + '%';
+                    if (animate) gsap.fromTo(bar, { width: '0%' }, { width: w, duration: 1, delay: i * .09, ease: 'power2.out' });
+                    else bar.style.width = w;
+                });
+
+                /* Horizontal bars */
+                root.querySelectorAll('[data-bar-h]').forEach((bar, i) => {
+                    const w = bar.dataset.barH + '%';
+                    if (animate) gsap.fromTo(bar, { width: '0%' }, { width: w, duration: 1, delay: i * .05, ease: 'power2.out' });
+                    else bar.style.width = w;
+                });
+
+                /* Vertical bars */
+                root.querySelectorAll('[data-bar-v]').forEach((bar, i) => {
+                    const h = bar.dataset.barV + '%';
+                    if (animate) gsap.fromTo(bar, { height: '0%' }, { height: h, duration: .9, delay: i * .04, ease: 'power2.out' });
+                    else bar.style.height = h;
+                });
+
+                /* Mini rings */
+                root.querySelectorAll('[data-ring-mini]').forEach((ring, i) => {
+                    const pct = parseFloat(ring.dataset.ringMini) / 100;
+                    const c = parseFloat(ring.getAttribute('stroke-dasharray'));
+                    const target = c * (1 - pct);
+                    if (animate) gsap.fromTo(ring, { strokeDashoffset: c }, { strokeDashoffset: target, duration: 1.1, delay: .15 + i * .06, ease: 'power2.out' });
+                    else ring.setAttribute('stroke-dashoffset', target);
+                });
+
+                /* Large rings */
+                root.querySelectorAll('[data-ring]').forEach((ring, i) => {
+                    const pct = parseFloat(ring.dataset.ring) / 100;
+                    const c = parseFloat(ring.getAttribute('stroke-dasharray'));
+                    const target = c * (1 - pct);
+                    if (animate) gsap.fromTo(ring, { strokeDashoffset: c }, { strokeDashoffset: target, duration: 1.2, delay: .15 + i * .1, ease: 'power2.out' });
+                    else ring.setAttribute('stroke-dashoffset', target);
+                });
+
+                /* Sparkline */
+                const spark = root.querySelector('[data-spark]');
+                if (spark && animate) {
+                    const len = spark.getTotalLength ? spark.getTotalLength() : 500;
+                    gsap.fromTo(spark,
+                        { strokeDasharray: len, strokeDashoffset: len },
+                        { strokeDashoffset: 0, duration: 1.4, ease: 'power2.out', delay: .15 });
+                }
+
+                /* Matrix cells */
+                const matrixCells = root.querySelectorAll('.chart-matrix__cell');
+                if (matrixCells.length && animate) {
+                    gsap.fromTo(matrixCells,
+                        { autoAlpha: 0, scale: .7 },
+                        { autoAlpha: 1, scale: 1, duration: .45, stagger: .015, ease: 'power2.out' });
+                }
+
+                /* Gantt bars */
+                const ganttBars = root.querySelectorAll('.chart-gantt__cell--bar, .chart-gantt__cell--bar-alt, .chart-gantt__cell--bar-sage');
+                if (ganttBars.length && animate) {
+                    gsap.fromTo(ganttBars,
+                        { autoAlpha: 0, scaleX: .4, transformOrigin: 'left center' },
+                        { autoAlpha: 1, scaleX: 1, duration: .5, stagger: .01, ease: 'power2.out' });
+                }
+
+                /* Org structure boxes */
+                const orgBoxes = root.querySelectorAll('.chart-org__box');
+                if (orgBoxes.length && animate) {
+                    gsap.fromTo(orgBoxes,
+                        { autoAlpha: 0, y: 8 },
+                        { autoAlpha: 1, y: 0, duration: .6, stagger: .04, ease: 'power2.out' });
+                }
+                const orgLines = root.querySelectorAll('.chart-org__line');
+                if (orgLines.length && animate) {
+                    gsap.fromTo(orgLines,
+                        { autoAlpha: 0 },
+                        { autoAlpha: 1, duration: .6, stagger: .02, ease: 'power2.out', delay: .3 });
+                }
+            };
+
+            /* -----------------------------------------------------------------
+               4. Section switching
+               ----------------------------------------------------------------- */
+            const sections = Array.from(document.querySelectorAll('.ad-section'));
+            const navLinks = Array.from(document.querySelectorAll('[data-section]'));
+
+            const activate = (name, { animate = true } = {}) => {
+                let active = null;
+                sections.forEach(s => {
+                    const isActive = s.id === 'section-' + name;
+                    s.classList.toggle('is-active', isActive);
+                    if (isActive) active = s;
+                });
+                navLinks.forEach(l => {
+                    if (l.dataset.section === name) l.setAttribute('aria-current', 'page');
+                    else l.removeAttribute('aria-current');
+                });
+                setSidebar(false);
+                window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+                if (animate && active) requestAnimationFrame(() => animateChart(active));
+            };
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    activate(link.dataset.section);
+                });
+            });
+
+            /* -----------------------------------------------------------------
+               5. Logout
+               ----------------------------------------------------------------- */
+            document.getElementById('adLogout').addEventListener('click', () => {
+                try {
+                    localStorage.removeItem('stackly.email');
+                    localStorage.removeItem('stackly.role');
+                } catch (_) { }
+                window.location.href = 'login.html';
+            });
+
+            /* -----------------------------------------------------------------
+               6. Initial animation
+               ----------------------------------------------------------------- */
+            const workforce = document.getElementById('section-workforce');
+            requestAnimationFrame(() => animateChart(workforce));
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#092328">
+    <meta name="description"
+        content="Stackly Human Resources Consulting services — people strategy, talent & workforce, leadership, organization design, employee experience, culture, HR transformation and performance.">
+    <title>Services | Stackly Human Resources Consulting</title>
+    <link rel="stylesheet" href="../global.css">
+    <link rel="stylesheet" href="../css/services.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+
+<body class="services-page">
+    <div class="preloader" id="preloader">
+        <div class="preloader__inner">
+            <span class="preloader__text">Stackly</span>
+            <div class="preloader__loader"></div>
+        </div>
+    </div>
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const p = document.getElementById('preloader');
+                if (p) p.classList.add('is-hidden');
+            }, 1500);
+        });
+    </script>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header" id="siteHeader">
+        <div class="site-header__inner">
+            <a class="brand" href="../index.html" aria-label="Stackly home"><img src="../logo.webp" alt="Stackly"></a>
+            <nav class="desktop-nav" aria-label="Primary navigation">
+                <a href="../index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html" aria-current="page">Services</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <a class="header-login" href="login.html">Login</a>
+            <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false"
+                aria-controls="mobileMenu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+        <div class="mobile-menu__top">
+            <a href="../index.html" aria-label="Stackly home"><img class="mobile-menu__logo" src="../logo.webp"
+                    alt="Stackly"></a>
+            <button class="mobile-menu__close" id="menuClose" type="button" aria-label="Close menu">×</button>
+        </div>
+        <nav class="mobile-menu__nav" aria-label="Mobile navigation">
+            <ul class="mobile-menu__list">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html" aria-current="page">Services</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div>
+            <a class="btn btn--light mobile-menu__login" href="login.html">Login <span class="btn__arrow">→</span></a>
+            <p class="mobile-menu__statement">Ten connected areas of practice — one way of thinking about the decisions
+                that shape how organizations perform.</p>
+        </div>
+    </div>
+
+    <main id="main">
+
+        <!-- Services Hero -->
+        <section class="sv-hero" aria-labelledby="svHeroTitle">
+            <div class="sv-hero__media image-reveal reveal">
+                <img src="../assets/photo-1600880292089-90a7e086ee0c-2200w.webp"
+                    alt="Consultants in conversation with a leadership team" fetchpriority="high">
+            </div>
+            <div class="container sv-hero__head">
+                <p class="eyebrow reveal-left">Services</p>
+                <h1 class="display-title sv-hero__title reveal-left" id="svHeroTitle">The work behind <em>better
+                        organizations.</em></h1>
+                <div class="sv-hero__lede">
+                    <p class="lead reveal-right">Ten areas of practice, one connected way of thinking about people,
+                        leadership and the decisions that shape how organizations actually work.</p>
+                    <div class="sv-hero__index reveal-right">
+                        <span>01 — 10 / Practice Areas</span>
+                        <span>Advisory · Design · Capability</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 01 — People Strategy -->
+        <section class="section sv-strategy" aria-labelledby="svStrategyTitle">
+            <div class="container sv-strategy__grid">
+                <div class="sv-strategy__copy">
+                    <p class="eyebrow reveal-left">01 / People Strategy</p>
+                    <h2 class="section-title reveal-left" id="svStrategyTitle">People strategy is a set of decisions,
+                        not a document.</h2>
+                    <p class="lead reveal-left">We help leaders connect workforce, capability and organizational choices
+                        to the priorities the business is actually trying to deliver. The output is not a slide deck —
+                        it is a clearer point of view on what to do next and why.</p>
+                    <ul class="sv-list reveal-left">
+                        <li>People strategy articulation</li>
+                        <li>Workforce and capability priorities</li>
+                        <li>Strategic workforce scenarios</li>
+                        <li>Alignment between business and people agendas</li>
+                    </ul>
+                </div>
+                <figure class="sv-strategy__media image-reveal reveal-right">
+                    <img src="../assets/photo-1542744173-8e7e53415bb0-1400w.webp"
+                        alt="Two leaders discussing strategy across a table" loading="lazy">
+                    <figcaption class="sv-media-caption">Strategy shaped by context, not templates.</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- 02 — Talent & Workforce Advisory -->
+        <section class="section sv-talent" aria-labelledby="svTalentTitle">
+            <div class="container sv-talent__grid">
+                <div class="sv-talent__intro">
+                    <p class="eyebrow reveal-left">02 / Talent & Workforce Advisory</p>
+                    <h2 class="section-title reveal-left" id="svTalentTitle">Talent decisions become stronger when they
+                        are connected to the work.</h2>
+                    <p class="lead reveal-left">We look at talent as an architecture — the roles, capabilities and
+                        pathways that matter most to what the organization is trying to become.</p>
+                </div>
+                <div class="sv-talent__list">
+                    <a href="../404.html" class="sv-row reveal-right">
+                        <span class="sv-row__num">01</span>
+                        <div class="sv-row__body">
+                            <h3>Workforce planning</h3>
+                            <p>Build a considered view of the capability and shape of the workforce over time.</p>
+                        </div>
+                    </a>
+                    <a href="../404.html" class="sv-row reveal-right">
+                        <span class="sv-row__num">02</span>
+                        <div class="sv-row__body">
+                            <h3>Talent architecture</h3>
+                            <p>Clarify the roles, segments and pathways that deserve disproportionate attention.</p>
+                        </div>
+                    </a>
+                    <a href="../404.html" class="sv-row reveal-right">
+                        <span class="sv-row__num">03</span>
+                        <div class="sv-row__body">
+                            <h3>Succession thinking</h3>
+                            <p>Understand where leadership and critical-role cover needs to be more deliberate.</p>
+                        </div>
+                    </a>
+                    <a href="../404.html" class="sv-row reveal-right">
+                        <span class="sv-row__num">04</span>
+                        <div class="sv-row__body">
+                            <h3>Capability mapping</h3>
+                            <p>Translate strategy into the capabilities the organization must build or buy.</p>
+                        </div>
+                    </a>
+                    <a href="../404.html" class="sv-row reveal-right">
+                        <span class="sv-row__num">05</span>
+                        <div class="sv-row__body">
+                            <h3>Critical-role planning</h3>
+                            <p>Identify the roles where the wrong decision costs the most — and plan around them.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03 — Leadership Development -->
+        <section class="section sv-leadership" aria-labelledby="svLeadershipTitle">
+            <div class="container sv-leadership__grid">
+                <div class="sv-leadership__copy">
+                    <p class="eyebrow reveal-left">03 / Leadership Development</p>
+                    <h2 class="section-title reveal-left" id="svLeadershipTitle">Leadership shows up in the way an
+                        organization behaves.</h2>
+                    <p class="lead reveal-left">Development works when it is connected to the situations leaders
+                        actually face — decisions, teams, change, difficult conversations and unclear priorities. We
+                        build capability around real context, not generic frameworks.</p>
+                </div>
+                <div class="sv-leadership__media image-reveal reveal-right">
+                    <img src="../assets/photo-1573497019940-1c28c88b4f3e-1500w.webp"
+                        alt="A leader speaking with a colleague in a workspace" loading="lazy">
+                </div>
+                <div class="sv-leadership__points">
+                    <a href="../404.html" class="sv-point reveal-right">
+                        <span>Manager capability</span>
+                        <h3>Everyday leadership, not only senior development.</h3>
+                    </a>
+                    <a href="../404.html" class="sv-point reveal-right">
+                        <span>Leadership alignment</span>
+                        <h3>A shared point of view on what good leadership looks like here.</h3>
+                    </a>
+                    <a href="../404.html" class="sv-point reveal-right">
+                        <span>Development design</span>
+                        <h3>Programs and interventions built around real organizational situations.</h3>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04 — Organization Design -->
+        <section class="section sv-org" aria-labelledby="svOrgTitle">
+            <div class="container sv-org__grid">
+                <div class="sv-org__copy">
+                    <p class="eyebrow reveal-left">04 / Organization Design</p>
+                    <h2 class="section-title reveal-left" id="svOrgTitle">Make the organization easier to understand —
+                        and easier to lead.</h2>
+                    <p class="lead reveal-left">Design is not a re-drawing of boxes. It is the deliberate choice of how
+                        roles, decisions, teams and interfaces fit together so work moves without unnecessary friction.
+                    </p>
+                    <ul class="sv-list reveal-left">
+                        <li>Operating model and structure choices</li>
+                        <li>Role clarity and accountabilities</li>
+                        <li>Decision rights and forums</li>
+                        <li>Team interfaces and collaboration</li>
+                    </ul>
+                    <p class="sv-note reveal-left">The diagram alongside is a methodology illustration, not a client
+                        organization chart.</p>
+                </div>
+                <div class="sv-org__diagram reveal-right" role="img"
+                    aria-label="Illustrative organization design framework showing strategy connected to capability, structure and decisions, informing ways of working">
+                    <svg viewBox="0 0 620 460" xmlns="http://www.w3.org/2000/svg" class="sv-diagram">
+                        <!-- connectors -->
+                        <line x1="310" y1="120" x2="310" y2="180" class="sv-diagram__line" />
+                        <line x1="310" y1="180" x2="120" y2="180" class="sv-diagram__line" />
+                        <line x1="310" y1="180" x2="500" y2="180" class="sv-diagram__line" />
+                        <line x1="120" y1="230" x2="120" y2="300" class="sv-diagram__line" />
+                        <line x1="310" y1="230" x2="310" y2="300" class="sv-diagram__line" />
+                        <line x1="500" y1="230" x2="500" y2="300" class="sv-diagram__line" />
+                        <line x1="120" y1="350" x2="500" y2="350" class="sv-diagram__line" />
+                        <line x1="310" y1="350" x2="310" y2="400" class="sv-diagram__line" />
+
+                        <!-- top: strategy -->
+                        <rect x="210" y="70" width="200" height="50"
+                            class="sv-diagram__node sv-diagram__node--accent" />
+                        <text x="310" y="100" class="sv-diagram__label sv-diagram__label--light">Strategy</text>
+
+                        <!-- mid row -->
+                        <rect x="30" y="180" width="180" height="50" class="sv-diagram__node" />
+                        <text x="120" y="210" class="sv-diagram__label">Capability</text>
+
+                        <rect x="220" y="180" width="180" height="50" class="sv-diagram__node" />
+                        <text x="310" y="210" class="sv-diagram__label">Structure</text>
+
+                        <rect x="410" y="180" width="180" height="50" class="sv-diagram__node" />
+                        <text x="500" y="210" class="sv-diagram__label">Decisions</text>
+
+                        <!-- ways of working -->
+                        <rect x="210" y="300" width="200" height="50" class="sv-diagram__node" />
+                        <text x="310" y="330" class="sv-diagram__label">Ways of working</text>
+
+                        <!-- outcomes -->
+                        <rect x="210" y="400" width="200" height="46" class="sv-diagram__node sv-diagram__node--sage" />
+                        <text x="310" y="428" class="sv-diagram__label">Outcomes</text>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- 05 — Employee Experience -->
+        <section class="section sv-journey section--dark" aria-labelledby="svJourneyTitle">
+            <div class="container">
+                <div class="sv-journey__head">
+                    <div>
+                        <p class="eyebrow reveal-left">05 / Employee Experience</p>
+                        <h2 class="section-title reveal-left" id="svJourneyTitle">Design the moments people actually
+                            experience.</h2>
+                    </div>
+                    <p class="lead reveal-right">Experience is the accumulated effect of everyday systems, conversations
+                        and opportunities — not a one-time campaign.</p>
+                </div>
+                <div class="sv-journey__line">
+                    <a href="../404.html" class="sv-journey__step reveal-left">
+                        <span>01</span>
+                        <h3>Join</h3>
+                        <p>Enter with clarity, context and belonging.</p>
+                    </a>
+                    <a href="../404.html" class="sv-journey__step reveal-left">
+                        <span>02</span>
+                        <h3>Learn</h3>
+                        <p>Build the knowledge and capability to contribute.</p>
+                    </a>
+                    <a href="../404.html" class="sv-journey__step reveal-left">
+                        <span>03</span>
+                        <h3>Contribute</h3>
+                        <p>Understand how work connects to the wider organization.</p>
+                    </a>
+                    <a href="../404.html" class="sv-journey__step reveal-right">
+                        <span>04</span>
+                        <h3>Grow</h3>
+                        <p>See meaningful pathways for development and responsibility.</p>
+                    </a>
+                    <a href="../404.html" class="sv-journey__step reveal-right">
+                        <span>05</span>
+                        <h3>Lead</h3>
+                        <p>Take responsibility for people, decisions and outcomes.</p>
+                    </a>
+                    <a href="../404.html" class="sv-journey__step reveal-right">
+                        <span>06</span>
+                        <h3>Transition</h3>
+                        <p>Move, change role or leave with dignity and clarity.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 06 — Culture & Change -->
+        <section class="section sv-culture" aria-labelledby="svCultureTitle">
+            <div class="container sv-culture__grid">
+                <figure class="sv-culture__media image-reveal reveal-left">
+                    <img src="../assets/photo-1541746972996-4e0b0f43e02a-1500w.webp"
+                        alt="Team working through a workshop in a studio space" loading="lazy">
+                </figure>
+                <div class="sv-culture__copy">
+                    <p class="eyebrow reveal-right">06 / Culture & Change</p>
+                    <h2 class="section-title reveal-right" id="svCultureTitle">Culture is what people experience, not
+                        what a poster says.</h2>
+                    <p class="lead reveal-right">We help organizations make culture and change concrete — the
+                        behaviors, rituals, decisions and everyday practices that shape how people work together.</p>
+                        <a href="../404.html" class="sv-culture__item reveal-right">
+                            <span>Behavior</span>
+                            <p>Translate intent into the behaviors leaders and teams can actually recognize.</p>
+                        </a>
+                        <a href="../404.html" class="sv-culture__item reveal-right">
+                            <span>Change</span>
+                            <p>Sequence change so it survives contact with a busy, real organization.</p>
+                        </a>
+                        <a href="../404.html" class="sv-culture__item reveal-right">
+                            <span>Adoption</span>
+                            <p>Help leaders carry the change beyond the launch moment.</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 07 — HR Transformation -->
+        <section class="section sv-transform" aria-labelledby="svTransformTitle">
+            <div class="container">
+                <div class="sv-transform__intro">
+                    <div>
+                        <p class="eyebrow reveal-left">07 / HR Transformation</p>
+                        <h2 class="section-title reveal-left" id="svTransformTitle">Move HR from activity to connected
+                            business value.</h2>
+                    </div>
+                    <p class="lead reveal-right">Transformation is not only a technology project. It is a rethink of how
+                        HR services, data, capability and leadership fit together.</p>
+                </div>
+                <div class="sv-transform__stages">
+                    <a href="../404.html" class="sv-stage reveal-left">
+                        <span class="sv-stage__num">01 / ASSESS</span>
+                        <h3>Understand the current system</h3>
+                        <p>Priorities, pain points, service experiences and capability constraints.</p>
+                    </a>
+                    <a href="../404.html" class="sv-stage reveal-left">
+                        <span class="sv-stage__num">02 / PRIORITIZE</span>
+                        <h3>Choose what matters most</h3>
+                        <p>The few changes that can make the wider system work better.</p>
+                    </a>
+                    <a href="../404.html" class="sv-stage reveal-right">
+                        <span class="sv-stage__num">03 / DESIGN</span>
+                        <h3>Build the operating model</h3>
+                        <p>Align people, process, technology and capability instead of solving each in isolation.</p>
+                    </a>
+                    <a href="../404.html" class="sv-stage reveal-right">
+                        <span class="sv-stage__num">04 / ENABLE</span>
+                        <h3>Support new ways of working</h3>
+                        <p>Help leaders and teams make the model part of everyday practice.</p>
+                    </a>
+                    <a href="../404.html" class="sv-stage reveal-right">
+                        <span class="sv-stage__num">05 / SUSTAIN</span>
+                        <h3>Keep the model alive</h3>
+                        <p>Governance, capability and rhythm that keep the change in place.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 08 — Performance & Capability -->
+        <section class="section sv-capability" aria-labelledby="svCapabilityTitle">
+            <div class="container sv-capability__grid">
+                <div class="sv-capability__copy">
+                    <p class="eyebrow reveal-left">08 / Performance & Capability</p>
+                    <h2 class="section-title reveal-left" id="svCapabilityTitle">Performance improves when expectations
+                        are clear and capability is real.</h2>
+                    <p class="lead reveal-left">We help organizations connect performance conversations, capability
+                        development and role expectations into something people can act on — without reducing the work
+                        to a rating.</p>
+                    <ul class="sv-list reveal-left">
+                        <li>Performance frameworks and rhythms</li>
+                        <li>Capability development priorities</li>
+                        <li>Role expectation and contribution clarity</li>
+                        <li>Feedback and development practice</li>
+                    </ul>
+                </div>
+                <div class="sv-capability__matrix reveal-right" aria-label="Illustrative capability matrix">
+                    <div class="sv-matrix__head">
+                        <span>Capability focus</span>
+                        <span>Build</span>
+                        <span>Buy</span>
+                        <span>Borrow</span>
+                    </div>
+                    <div class="sv-matrix__row">
+                        <span>Leadership</span>
+                        <i class="sv-matrix__cell sv-matrix__cell--on"></i>
+                        <i class="sv-matrix__cell"></i>
+                        <i class="sv-matrix__cell"></i>
+                    </div>
+                    <div class="sv-matrix__row">
+                        <span>Data & insight</span>
+                        <i class="sv-matrix__cell"></i>
+                        <i class="sv-matrix__cell sv-matrix__cell--on"></i>
+                        <i class="sv-matrix__cell"></i>
+                    </div>
+                    <div class="sv-matrix__row">
+                        <span>Digital fluency</span>
+                        <i class="sv-matrix__cell"></i>
+                        <i class="sv-matrix__cell"></i>
+                        <i class="sv-matrix__cell sv-matrix__cell--on"></i>
+                    </div>
+                    <div class="sv-matrix__row">
+                        <span>Change craft</span>
+                        <i class="sv-matrix__cell sv-matrix__cell--on"></i>
+                        <i class="sv-matrix__cell"></i>
+                        <i class="sv-matrix__cell"></i>
+                    </div>
+                    <p class="sv-matrix__note">Illustrative methodology — not a client assessment.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 09 — Advisory for Critical People Decisions -->
+        <section class="section sv-advisory" aria-labelledby="svAdvisoryTitle">
+            <div class="container sv-advisory__grid">
+                <div>
+                    <p class="eyebrow reveal-left">09 / Advisory for Critical People Decisions</p>
+                    <h2 class="section-title reveal-left" id="svAdvisoryTitle">A second perspective, when the decision
+                        matters.</h2>
+                    <p class="lead reveal-left">Sometimes the work is not a program. It is one decision — a restructure,
+                        a leadership appointment, a capability question — that deserves careful, independent thinking.
+                    </p>
+                </div>
+                <div class="sv-advisory__faq">
+                    <article class="sv-acc reveal-right">
+                        <button class="sv-acc__q" type="button" aria-expanded="false" aria-controls="svAcc1">
+                            <span>When does independent advisory help most?</span>
+                            <span class="sv-acc__icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="sv-acc__a" id="svAcc1" role="region">
+                            <div>
+                                <p>Usually when a people decision has become consequential enough to require outside
+                                    perspective, additional capacity or a more structured way to think it through.</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="sv-acc reveal-right">
+                        <button class="sv-acc__q" type="button" aria-expanded="false" aria-controls="svAcc2">
+                            <span>What does an advisory engagement look like?</span>
+                            <span class="sv-acc__icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="sv-acc__a" id="svAcc2" role="region">
+                            <div>
+                                <p>Often a small number of focused conversations, a structured point of view and a
+                                    clear recommendation — shaped around the actual decision on the table.</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="sv-acc reveal-right">
+                        <button class="sv-acc__q" type="button" aria-expanded="false" aria-controls="svAcc3">
+                            <span>How do you handle confidentiality?</span>
+                            <span class="sv-acc__icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="sv-acc__a" id="svAcc3" role="region">
+                            <div>
+                                <p>Discretion is part of the practice. Engagement scope, participants and
+                                    confidentiality
+                                    expectations are agreed before work begins.</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="sv-acc reveal-right">
+                        <button class="sv-acc__q" type="button" aria-expanded="false" aria-controls="svAcc4">
+                            <span>Can you work alongside an internal HR team?</span>
+                            <span class="sv-acc__icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="sv-acc__a" id="svAcc4" role="region">
+                            <div>
+                                <p>Yes — most of the work is done alongside internal teams, with the aim of
+                                    strengthening
+                                    internal decision-making rather than replacing it.</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10 — Build the Right Engagement -->
+        <section class="section sv-engagement section--dark" aria-labelledby="svEngagementTitle">
+            <div class="container">
+                <div class="sv-engagement__intro">
+                    <div>
+                        <p class="eyebrow reveal-left">10 / Build the Right Engagement</p>
+                        <h2 class="section-title reveal-left" id="svEngagementTitle">Shape the work around the need — not
+                            the other way around.</h2>
+                    </div>
+                    <p class="lead reveal-right">Engagements are shaped around the actual question, the available
+                        context and the pace at which decisions need to be made.</p>
+                </div>
+                <div class="sv-engagement__models">
+                    <a href="../404.html" class="sv-model reveal-left">
+                        <span class="sv-model__num">Model 01</span>
+                        <h3>Diagnostic</h3>
+                        <p>A focused, time-bound piece of work to understand what is really happening before deciding
+                            what to do.</p>
+                        <span class="sv-model__meta">Typical shape · 3–6 weeks</span>
+                    </a>
+                    <a href="../404.html" class="sv-model reveal-left">
+                        <span class="sv-model__num">Model 02</span>
+                        <h3>Focused advisory</h3>
+                        <p>Independent perspective on a specific decision — structure, leadership, capability or a
+                            critical people question.</p>
+                        <span class="sv-model__meta">Typical shape · Decision-led</span>
+                    </a>
+                    <a href="../404.html" class="sv-model reveal-right">
+                        <span class="sv-model__num">Model 03</span>
+                        <h3>Embedded partnership</h3>
+                        <p>Working alongside leadership and internal HR teams through a period of change or design.</p>
+                        <span class="sv-model__meta">Typical shape · Multi-month</span>
+                    </a>
+                    <a href="../404.html" class="sv-model reveal-right">
+                        <span class="sv-model__num">Model 04</span>
+                        <h3>Capability program</h3>
+                        <p>Building internal capability — leadership, HR or manager — around the way the organization
+                            actually works.</p>
+                        <span class="sv-model__meta">Typical shape · Cohort-based</span>
+                    </a>
+                </div>
+                <p class="sv-engagement__note reveal">Engagement scope, participants and confidentiality expectations
+                    are agreed before work begins.</p>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="sv-cta" aria-labelledby="svCtaTitle">
+            <div class="container sv-cta__inner">
+                <div class="reveal-left">
+                    <p class="eyebrow">Start a Conversation</p>
+                    <h2 id="svCtaTitle">Tell us what you are trying to solve.</h2>
+                </div>
+                <div class="sv-cta__actions reveal-right">
+                    <a class="btn" href="contact.html">Start a Conversation <span class="btn__arrow">→</span></a>
+                    <a class="btn btn--outline" href="about.html">How We Work <span class="btn__arrow">→</span></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__main">
+            <div class="footer-brand">
+                <a href="../index.html" aria-label="Stackly home"><img src="../logo.webp" alt="Stackly"></a>
+                <p>Human resources consulting for leaders building clearer, more capable and more resilient
+                    organizations.</p>
+                <div class="footer-socials">
+                    <a href="../404.html" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                    </a>
+                    <a href="../404.html" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 0 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </a>
+                    <a href="../404.html" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                    <a href="../404.html" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <p class="footer-title">Navigation</p>
+                <nav class="footer-links">
+                    <a href="../index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="services.html">Services</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+            </div>
+            <div>
+                <p class="footer-title">Expertise</p>
+                <nav class="footer-links">
+                    <a href="../404.html">People Strategy</a>
+                    <a href="../404.html">Talent Advisory</a>
+                    <a href="../404.html">Leadership</a>
+                    <a href="../404.html">Organization Design</a>
+                    <a href="../404.html">HR Transformation</a>
+                </nav>
+            </div>
+            <div>
+                <p class="footer-title">Resources</p>
+                <nav class="footer-links">
+                    <a href="../404.html">Insights</a>
+                    <a href="../404.html">Guides</a>
+                    <a href="../404.html">FAQs</a>
+                    <a href="../404.html">Careers</a>
+                    <a href="../404.html">Privacy / Terms</a>
+                </nav>
+            </div>
+            <div class="footer-contact">
+                <p class="footer-title">Contact</p>
+                <strong>Stackly</strong>
+                <span>Salem, Tamil Nadu, India</span>
+                <span><br>Human Resources Consulting</span>
+                <span><br>Contact details available through our contact page.</span><br>
+                <a class="btn btn--light" href="contact.html">Start a conversation</a>
+            </div>
+        </div>
+        <div class="site-footer__bottom">
+            <span>© 2026 Stackly. All rights reserved.</span>
+            <span>People → Strategy → Clarity → Action</span>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.getElementById('siteHeader');
+            const toggle = document.getElementById('menuToggle');
+            const menu = document.getElementById('mobileMenu');
+            const close = document.getElementById('menuClose');
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            /* Header scroll state */
+            const updateHeader = () => header.classList.toggle('is-scrolled', window.scrollY > 30);
+            updateHeader();
+            window.addEventListener('scroll', updateHeader, { passive: true });
+
+            /* Mobile menu */
+            const setMenu = (open) => {
+                document.body.classList.toggle('menu-open', open);
+                menu.classList.toggle('is-open', open);
+                menu.setAttribute('aria-hidden', String(!open));
+                toggle.setAttribute('aria-expanded', String(open));
+                toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+                if (open) close.focus(); else toggle.focus();
+            };
+            toggle.addEventListener('click', () => setMenu(!menu.classList.contains('is-open')));
+            close.addEventListener('click', () => setMenu(false));
+            menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape' && menu.classList.contains('is-open')) setMenu(false);
+            });
+
+            /* Accordion */
+            document.querySelectorAll('.sv-acc__q').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const item = btn.closest('.sv-acc');
+                    const isOpen = item.classList.contains('is-open');
+
+                    document.querySelectorAll('.sv-acc').forEach(acc => {
+                        acc.classList.remove('is-open');
+                        acc.querySelector('.sv-acc__q').setAttribute('aria-expanded', 'false');
+                    });
+
+                    if (!isOpen) {
+                        item.classList.add('is-open');
+                        btn.setAttribute('aria-expanded', 'true');
+                    }
+                });
+            });
+
+            /* Animation */
+            if (window.gsap && window.ScrollTrigger && !reduce) {
+                gsap.registerPlugin(ScrollTrigger);
+
+                gsap.utils.toArray('.reveal').forEach((el, i) => {
+                    gsap.fromTo(el, { autoAlpha: 0, y: 26 }, {
+                        autoAlpha: 1, y: 0, duration: .85, ease: 'power3.out',
+                        delay: (i % 4) * .04,
+                        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+                    });
+                });
+                gsap.utils.toArray('.reveal-left').forEach((el, i) => {
+                    gsap.fromTo(el, { autoAlpha: 0, x: -55 }, {
+                        autoAlpha: 1, x: 0, duration: .9, ease: 'power3.out',
+                        delay: (i % 3) * .05,
+                        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+                    });
+                });
+                gsap.utils.toArray('.reveal-right').forEach((el, i) => {
+                    gsap.fromTo(el, { autoAlpha: 0, x: 55 }, {
+                        autoAlpha: 1, x: 0, duration: .9, ease: 'power3.out',
+                        delay: (i % 3) * .05,
+                        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+                    });
+                });
+
+                /* Hero entrance */
+                gsap.fromTo('.sv-hero__media img', { scale: 1.08 }, {
+                    scale: 1, duration: 1.8, ease: 'power3.out'
+                });
+
+                /* SVG diagram draw-in */
+                gsap.from('.sv-diagram__line', {
+                    scaleX: 0, transformOrigin: 'left center', duration: .8, stagger: .07, ease: 'power2.out',
+                    scrollTrigger: { trigger: '.sv-org__diagram', start: 'top 80%', once: true }
+                });
+                gsap.from('.sv-diagram__node', {
+                    autoAlpha: 0, y: 12, duration: .7, stagger: .08, ease: 'power2.out',
+                    scrollTrigger: { trigger: '.sv-org__diagram', start: 'top 80%', once: true }
+                });
+                gsap.from('.sv-diagram__label', {
+                    autoAlpha: 0, duration: .5, stagger: .08, delay: .3,
+                    scrollTrigger: { trigger: '.sv-org__diagram', start: 'top 80%', once: true }
+                });
+
+                /* Capability matrix cells */
+                gsap.from('.sv-matrix__row', {
+                    autoAlpha: 0, x: 20, duration: .6, stagger: .1, ease: 'power2.out',
+                    scrollTrigger: { trigger: '.sv-capability__matrix', start: 'top 82%', once: true }
+                });
+            } else {
+                document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'none';
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#092328">
+    <meta name="description"
+        content="The People Practice — Stackly's editorial journal on people strategy, leadership, organization design, employee experience, culture and HR transformation.">
+    <title>Blog | Stackly Human Resources Consulting</title>
+    <link rel="stylesheet" href="../global.css">
+    <link rel="stylesheet" href="../css/blog.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+
+<body class="blog-page">
+    <div class="preloader" id="preloader">
+        <div class="preloader__inner">
+            <span class="preloader__text">Stackly</span>
+            <div class="preloader__loader"></div>
+        </div>
+    </div>
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const p = document.getElementById('preloader');
+                if (p) p.classList.add('is-hidden');
+            }, 1500);
+        });
+    </script>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header is-light" id="siteHeader">
+        <div class="site-header__inner">
+            <a class="brand" href="../index.html" aria-label="Stackly home"><img src="../logo.webp" alt="Stackly"></a>
+            <nav class="desktop-nav" aria-label="Primary navigation">
+                <a href="../index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="blog.html" aria-current="page">Blog</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <a class="header-login" href="login.html">Login</a>
+            <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false"
+                aria-controls="mobileMenu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+        <div class="mobile-menu__top">
+            <a href="../index.html" aria-label="Stackly home"><img class="mobile-menu__logo" src="../logo.webp"
+                    alt="Stackly"></a>
+            <button class="mobile-menu__close" id="menuClose" type="button" aria-label="Close menu">×</button>
+        </div>
+        <nav class="mobile-menu__nav" aria-label="Mobile navigation">
+            <ul class="mobile-menu__list">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="blog.html" aria-current="page">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div>
+            <a class="btn btn--light mobile-menu__login" href="login.html">Login <span class="btn__arrow">→</span></a>
+            <p class="mobile-menu__statement">Notes from the practice — on the people decisions that shape how
+                organizations actually work.</p>
+        </div>
+    </div>
+
+    <main id="main">
+
+        <!-- 01 — The People Practice (masthead) -->
+        <section class="bg-masthead" aria-labelledby="bgMastheadTitle">
+            <div class="bg-masthead__media image-reveal reveal-left">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="../assets/photo-1573497019940-1c28c88b4f3e-1500w.webp">
+                    <img src="../assets/photo-1600880292089-90a7e086ee0c-2200w.webp" alt="Notes from the people side" fetchpriority="high">
+                </picture>
+            </div>
+            <div class="container bg-masthead__head">
+                <p class="eyebrow reveal-left">01 / The People Practice</p>
+                <h1 class="display-title bg-masthead__title reveal-left" id="bgMastheadTitle">Notes from the
+                    <em>people side</em> of organizational life.</h1>
+                <div class="bg-masthead__intro">
+                    <p class="lead reveal-right">A working journal about the decisions that shape how organizations
+                        work — people strategy, leadership, structure, experience and the practice of change.</p>
+                    <div class="bg-masthead__meta reveal-right">
+                        <span>Editorial journal</span>
+                        <span>Updated periodically</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" style="background: var(--hr-cream); padding-top: 40px;">
+            <div class="container bg-featured">
+                <a class="bg-featured__lead reveal-left" href="../404.html">
+                    <div class="bg-featured__media image-reveal">
+                        <img src="../assets/photo-1600880292203-757bb62b4baf-1600w.webp"
+                            alt="Leaders in a candid working conversation" fetchpriority="high">
+                    </div>
+                    <div class="bg-featured__body">
+                        <p class="bg-featured__type">Featured · Leadership</p>
+                        <h2>When leadership capability becomes the constraint, not the solution.</h2>
+                        <p class="bg-featured__excerpt">A practical lens on the moment a leadership gap stops being an
+                            individual question and becomes an organizational one — and what to do about it.</p>
+                        <span class="bg-featured__more">Read the note <span class="bg-arrow">↗</span></span>
+                    </div>
+                </a>
+                <div class="bg-featured__side">
+                    <a class="bg-mini reveal-right" href="../404.html">
+                        <p class="bg-mini__type">Talent & Workforce</p>
+                        <h3>Workforce planning begins with better questions.</h3>
+                        <span class="bg-mini__more">Read <span class="bg-arrow">↗</span></span>
+                    </a>
+                    <a class="bg-mini reveal-right" href="../404.html">
+                        <p class="bg-mini__type">Organization Design</p>
+                        <h3>What good organization design actually makes possible.</h3>
+                        <span class="bg-mini__more">Read <span class="bg-arrow">↗</span></span>
+                    </a>
+                    <a class="bg-mini reveal-right" href="../404.html">
+                        <p class="bg-mini__type">Employee Experience</p>
+                        <h3>The gap between what we promise and what employees experience.</h3>
+                        <span class="bg-mini__more">Read <span class="bg-arrow">↗</span></span>
+                    </a>
+                    <a class="bg-mini reveal-right" href="../404.html">
+                        <p class="bg-mini__type">Culture & Change</p>
+                        <h3>Why change management is not just a communications plan.</h3>
+                        <span class="bg-mini__more">Read <span class="bg-arrow">↗</span></span>
+                    </a>
+                    <a class="bg-mini reveal-right" href="../404.html">
+                        <p class="bg-mini__type">HR Transformation</p>
+                        <h3>Why HR needs to talk about the business, not just the people.</h3>
+                        <span class="bg-mini__more">Read <span class="bg-arrow">↗</span></span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 02 — Talent & Workforce -->
+        <section class="section bg-talent" aria-labelledby="bgTalentTitle">
+            <div class="container bg-split">
+                <figure class="bg-split__media image-reveal reveal-left">
+                    <img src="../assets/photo-1542744173-8e7e53415bb0-1400w.webp"
+                        alt="Two colleagues working through a workforce question" loading="lazy">
+                </figure>
+                <div class="bg-split__copy">
+                    <p class="eyebrow reveal-right">02 / Talent & Workforce</p>
+                    <h2 class="section-title reveal-right" id="bgTalentTitle">Talent decisions deserve an
+                        architecture.</h2>
+                    <p class="lead reveal-right">Writing on workforce planning, capability, succession and the critical
+                        roles that deserve more deliberate attention.</p>
+                    <ul class="bg-bullets reveal-right">
+                        <li><a href="../404.html"><span>Workforce planning starts with better questions</span><span
+                                    class="bg-arrow">↗</span></a></li>
+                        <li><a href="../404.html"><span>Capability mapping without the theatre</span><span
+                                    class="bg-arrow">↗</span></a></li>
+                        <li><a href="../404.html"><span>Succession thinking when the future is uncertain</span><span
+                                    class="bg-arrow">↗</span></a></li>
+                        <li><a href="../404.html"><span>The critical roles you can't afford to guess</span><span
+                                    class="bg-arrow">↗</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03 — Organization Design -->
+        <section class="section bg-org section--dark" aria-labelledby="bgOrgTitle">
+            <div class="container bg-org__grid">
+                <div class="bg-org__lead">
+                    <p class="eyebrow reveal-left">03 / Organization Design</p>
+                    <h2 class="section-title reveal-left" id="bgOrgTitle">Clarity is the quiet performance lever.</h2>
+                    <p class="lead reveal-left">Notes on role clarity, decision rights, structure and the interfaces
+                        that make collaboration deliberate instead of accidental.</p>
+                </div>
+                <ol class="bg-org__list">
+                    <li class="reveal-right"><a href="../404.html">
+                        <span class="bg-org__num">Note 01</span>
+                        <h3>What good organization design makes possible.</h3>
+                        <span class="bg-arrow" aria-hidden="true">↗</span>
+                    </a></li>
+                    <li class="reveal-right"><a href="../404.html">
+                        <span class="bg-org__num">Note 02</span>
+                        <h3>When structure is the symptom, not the problem.</h3>
+                        <span class="bg-arrow" aria-hidden="true">↗</span>
+                    </a></li>
+                    <li class="reveal-right"><a href="../404.html">
+                        <span class="bg-org__num">Note 03</span>
+                        <h3>Decision rights: the design choice nobody names.</h3>
+                        <span class="bg-arrow" aria-hidden="true">↗</span>
+                    </a></li>
+                    <li class="reveal-right"><a href="../404.html">
+                        <span class="bg-org__num">Note 04</span>
+                        <h3>Team interfaces are where strategy slows down.</h3>
+                        <span class="bg-arrow" aria-hidden="true">↗</span>
+                    </a></li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- 04 — Employee Experience -->
+        <section class="section bg-experience" aria-labelledby="bgExperienceTitle">
+            <div class="container bg-experience__head">
+                <div>
+                    <p class="eyebrow reveal-left">04 / Employee Experience</p>
+                    <h2 class="section-title reveal-left" id="bgExperienceTitle">Experience is the accumulated effect
+                        of everyday systems.</h2>
+                </div>
+                <p class="lead reveal-right">Writing on the moments that shape how people join, learn, contribute, grow
+                    and lead inside an organization.</p>
+            </div>
+            <div class="container bg-experience__grid">
+                <a class="bg-exp-row reveal-left" href="../404.html">
+                    <span class="bg-exp-row__num">01</span>
+                    <div>
+                        <h3>Onboarding is a design decision.</h3>
+                        <p>What the first ninety days communicate about an organization — whether intended or not.</p>
+                    </div>
+                    <span class="bg-arrow" aria-hidden="true">↗</span>
+                </a>
+                <a class="bg-exp-row reveal-left" href="../404.html">
+                    <span class="bg-exp-row__num">02</span>
+                    <div>
+                        <h3>The career conversation managers avoid.</h3>
+                        <p>Why growth discussions are often postponed — and what makes them easier to have.</p>
+                    </div>
+                    <span class="bg-arrow" aria-hidden="true">↗</span>
+                </a>
+                <a class="bg-exp-row reveal-right" href="../404.html">
+                    <span class="bg-exp-row__num">03</span>
+                    <div>
+                        <h3>Internal mobility without the friction.</h3>
+                        <p>The systems, incentives and signals that make movement possible — or impossible.</p>
+                    </div>
+                    <span class="bg-arrow" aria-hidden="true">↗</span>
+                </a>
+                <a class="bg-exp-row reveal-right" href="../404.html">
+                    <span class="bg-exp-row__num">04</span>
+                    <div>
+                        <h3>Exits handled with dignity.</h3>
+                        <p>How people leave an organization matters to the ones who stay.</p>
+                    </div>
+                    <span class="bg-arrow" aria-hidden="true">↗</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- 05 — Culture & Change -->
+        <section class="section bg-culture section--green" aria-labelledby="bgCultureTitle">
+            <div class="container bg-culture__grid">
+                <div class="bg-culture__copy">
+                    <p class="eyebrow reveal-left">05 / Culture & Change</p>
+                    <h2 class="section-title reveal-left" id="bgCultureTitle">Culture is what people experience, not
+                        what a poster says.</h2>
+                    <p class="lead reveal-left">Notes on behavior, rituals, change sequencing and the everyday practices
+                        that make culture concrete rather than aspirational.</p>
+                    <ul class="bg-bullets bg-bullets--light reveal-left">
+                        <li><a href="../404.html"><span>The behaviors that actually define culture</span><span
+                                    class="bg-arrow">↗</span></a></li>
+                        <li><a href="../404.html"><span>Why culture programs fail after the launch</span><span
+                                    class="bg-arrow">↗</span></a></li>
+                        <li><a href="../404.html"><span>Change sequencing that survives contact with reality</span><span
+                                    class="bg-arrow">↗</span></a></li>
+                    </ul>
+                </div>
+                <blockquote class="bg-culture__quote reveal-right">
+                    <p>“Culture is not a program. It is what people learn to expect from each other — day after day,
+                        decision after decision.”</p>
+                    <cite>From the practice</cite>
+                </blockquote>
+            </div>
+        </section>
+
+        <!-- 06 — HR Transformation -->
+        <section class="section bg-transform" aria-labelledby="bgTransformTitle">
+            <div class="container bg-row-layout bg-row-layout--reverse">
+                <div class="bg-row-layout__aside">
+                    <p class="eyebrow reveal-right">06 / HR Transformation</p>
+                    <h2 class="section-title reveal-right" id="bgTransformTitle">Making HR more connected, useful and
+                        business-oriented.</h2>
+                    <p class="lead reveal-right">Notes on HR operating models, service design, capability and the
+                        systems that hold a transformation in place.</p>
+                </div>
+                <div class="bg-rows">
+                    <a class="bg-row reveal-left" href="../404.html">
+                        <span class="bg-row__type">Transformation</span>
+                        <h3>HR transformation is not a technology project.</h3>
+                        <p>Why the operating model usually matters more than the platform.</p>
+                        <span class="bg-row__arrow" aria-hidden="true">↗</span>
+                    </a>
+                    <a class="bg-row reveal-left" href="../404.html">
+                        <span class="bg-row__type">Transformation</span>
+                        <h3>What makes a new HR model actually stick.</h3>
+                        <p>Governance, capability and rhythm — the parts that keep change in place.</p>
+                        <span class="bg-row__arrow" aria-hidden="true">↗</span>
+                    </a>
+                    <a class="bg-row reveal-left" href="../404.html">
+                        <span class="bg-row__type">Transformation</span>
+                        <h3>HR capability is not only about HR.</h3>
+                        <p>Why the wider leadership team has to be part of the transformation conversation.</p>
+                        <span class="bg-row__arrow" aria-hidden="true">↗</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 07 — Questions From the Field -->
+        <section class="section bg-questions" aria-labelledby="bgQuestionsTitle">
+            <div class="container bg-questions__grid">
+                <div>
+                    <p class="eyebrow reveal-left">07 / Questions From the Field</p>
+                    <h2 class="section-title reveal-left" id="bgQuestionsTitle">Questions we are asked most often.</h2>
+                    <p class="lead reveal-left">A short, working set of answers to questions that come up repeatedly
+                        with leaders and internal HR teams.</p>
+                </div>
+                <div class="bg-qa">
+                    <article class="bg-qa__item reveal-right">
+                        <button class="bg-qa__q" type="button" aria-expanded="false" aria-controls="bgQa1">
+                            <span>When should an organization bring in external HR advisory?</span>
+                            <span class="bg-qa__icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="bg-qa__a" id="bgQa1" role="region">
+                            <div>
+                                <p>Usually when a people decision has become consequential enough to require outside
+                                    perspective, additional capacity or a more structured way to think it through.</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="bg-qa__item reveal-right">
+                        <button class="bg-qa__q" type="button" aria-expanded="false" aria-controls="bgQa2">
+                            <span>How do we know if organization design is the real issue?</span>
+                            <span class="bg-qa__icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="bg-qa__a" id="bgQa2" role="region">
+                            <div>
+                                <p>Look for recurring confusion around accountability, duplicated work, slow decisions
+                                    or leadership effort spent coordinating rather than leading.</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="bg-qa__item reveal-right">
+                        <button class="bg-qa__q" type="button" aria-expanded="false" aria-controls="bgQa3">
+                            <span>What does useful leadership development look like?</span>
+                            <span class="bg-qa__icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="bg-qa__a" id="bgQa3" role="region">
+                            <div>
+                                <p>It should connect individual development to the situations leaders actually face:
+                                    decisions, teams, change, conflict, priorities and organizational context.</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="bg-qa__item reveal-right">
+                        <button class="bg-qa__q" type="button" aria-expanded="false" aria-controls="bgQa4">
+                            <span>Can workforce planning help before we know the future?</span>
+                            <span class="bg-qa__icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="bg-qa__a" id="bgQa4" role="region">
+                            <div>
+                                <p>Yes. Good planning does not require perfect prediction. It creates useful scenarios,
+                                    identifies critical capabilities and clarifies the choices leaders can influence.
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="bg-qa__item reveal-right">
+                        <button class="bg-qa__q" type="button" aria-expanded="false" aria-controls="bgQa5">
+                            <span>Is HR transformation different from an HRIS implementation?</span>
+                            <span class="bg-qa__icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="bg-qa__a" id="bgQa5" role="region">
+                            <div>
+                                <p>Yes. An HRIS is one enabler. Transformation is the wider rethink of how HR services,
+                                    data, capability and leadership fit together around the organization's needs.</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 08 — Insight Archive -->
+        <section class="section bg-archive" aria-labelledby="bgArchiveTitle">
+            <div class="container bg-archive__head">
+                <div>
+                    <p class="eyebrow reveal-left">08 / Insight Archive</p>
+                    <h2 class="section-title reveal-left" id="bgArchiveTitle">Everything, in one place.</h2>
+                </div>
+                <p class="lead reveal-right">A running index of notes, guides and questions from the practice.</p>
+            </div>
+            <div class="container bg-archive__table" role="list">
+                <div class="bg-archive__row bg-archive__row--head" aria-hidden="true">
+                    <span>Topic</span><span>Type</span><span>Title</span><span></span>
+                </div>
+                <a class="bg-archive__row reveal" role="listitem" href="../404.html">
+                    <span>Leadership</span><span>Note</span><span>What leadership development gets wrong about
+                        context</span><span class="bg-arrow">↗</span>
+                </a>
+                <a class="bg-archive__row reveal" role="listitem" href="../404.html">
+                    <span>Talent & Workforce</span><span>Note</span><span>Workforce planning starts with better
+                        questions</span><span class="bg-arrow">↗</span>
+                </a>
+                <a class="bg-archive__row reveal" role="listitem" href="../404.html">
+                    <span>Organization Design</span><span>Note</span><span>What good organization design makes
+                        possible</span><span class="bg-arrow">↗</span>
+                </a>
+                <a class="bg-archive__row reveal" role="listitem" href="../404.html">
+                    <span>Employee Experience</span><span>Note</span><span>Onboarding is a design decision</span><span
+                        class="bg-arrow">↗</span>
+                </a>
+                <a class="bg-archive__row reveal" role="listitem" href="../404.html">
+                    <span>Culture & Change</span><span>Note</span><span>The behaviors that actually define
+                        culture</span><span class="bg-arrow">↗</span>
+                </a>
+                <a class="bg-archive__row reveal" role="listitem" href="../404.html">
+                    <span>HR Transformation</span><span>Note</span><span>HR transformation is not a technology
+                        project</span><span class="bg-arrow">↗</span>
+                </a>
+                <a class="bg-archive__row reveal" role="listitem" href="../404.html">
+                    <span>Leadership</span><span>Guide</span><span>Preparing for a leadership transition</span><span
+                        class="bg-arrow">↗</span>
+                </a>
+                <a class="bg-archive__row reveal" role="listitem" href="../404.html">
+                    <span>Talent & Workforce</span><span>Guide</span><span>Designing a workforce plan you can actually
+                        use</span><span class="bg-arrow">↗</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="bg-cta" aria-labelledby="bgCtaTitle">
+            <div class="container bg-cta__inner">
+                <div class="reveal-left">
+                    <p class="eyebrow">Keep Learning With Us</p>
+                    <h2 id="bgCtaTitle">Bring the questions you are carrying.</h2>
+                </div>
+                <div class="bg-cta__actions reveal-right">
+                    <a class="btn" href="contact.html">Start a Conversation <span class="btn__arrow">→</span></a>
+                    <a class="btn btn--outline" href="services.html">Explore Services <span
+                            class="btn__arrow">→</span></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__main">
+            <div class="footer-brand">
+                <a href="../index.html" aria-label="Stackly home"><img src="../logo.webp" alt="Stackly"></a>
+                <p>Human resources consulting for leaders building clearer, more capable and more resilient
+                    organizations.</p>
+                <div class="footer-socials">
+                    <a href="../404.html" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                    </a>
+                    <a href="../404.html" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 0 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </a>
+                    <a href="../404.html" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                    <a href="../404.html" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <p class="footer-title">Navigation</p>
+                <nav class="footer-links">
+                    <a href="../index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="services.html">Services</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+            </div>
+            <div>
+                <p class="footer-title">Expertise</p>
+                <nav class="footer-links">
+                    <a href="../404.html">People Strategy</a>
+                    <a href="../404.html">Talent Advisory</a>
+                    <a href="../404.html">Leadership</a>
+                    <a href="../404.html">Organization Design</a>
+                    <a href="../404.html">HR Transformation</a>
+                </nav>
+            </div>
+            <div>
+                <p class="footer-title">Resources</p>
+                <nav class="footer-links">
+                    <a href="../404.html">Insights</a>
+                    <a href="../404.html">Guides</a>
+                    <a href="../404.html">FAQs</a>
+                    <a href="../404.html">Careers</a>
+                    <a href="../404.html">Privacy / Terms</a>
+                </nav>
+            </div>
+            <div class="footer-contact">
+                <p class="footer-title">Contact</p>
+                <strong>Stackly</strong>
+                <span>Salem, Tamil Nadu, India</span>
+                <span><br>Human Resources Consulting</span>
+                <span><br>Contact details available through our contact page.</span><br>
+                <a class="btn btn--light" href="contact.html">Start a conversation</a>
+            </div>
+        </div>
+        <div class="site-footer__bottom">
+            <span>© 2026 Stackly. All rights reserved.</span>
+            <span>People → Strategy → Clarity → Action</span>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.getElementById('siteHeader');
+            const toggle = document.getElementById('menuToggle');
+            const menu = document.getElementById('mobileMenu');
+            const close = document.getElementById('menuClose');
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            /* Header state — page starts light, becomes scrolled-light */
+            const updateHeader = () => {
+                header.classList.toggle('is-scrolled', window.scrollY > 30);
+                header.classList.add('is-light');
+            };
+            updateHeader();
+            window.addEventListener('scroll', updateHeader, { passive: true });
+
+            /* Mobile menu */
+            const setMenu = (open) => {
+                document.body.classList.toggle('menu-open', open);
+                menu.classList.toggle('is-open', open);
+                menu.setAttribute('aria-hidden', String(!open));
+                toggle.setAttribute('aria-expanded', String(open));
+                toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+                if (open) close.focus(); else toggle.focus();
+            };
+            toggle.addEventListener('click', () => setMenu(!menu.classList.contains('is-open')));
+            close.addEventListener('click', () => setMenu(false));
+            menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape' && menu.classList.contains('is-open')) setMenu(false);
+            });
+
+            /* Accordion */
+            document.querySelectorAll('.bg-qa__q').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const item = btn.closest('.bg-qa__item');
+                    const wasOpen = item.classList.contains('is-open');
+                    
+                    // Close all items
+                    document.querySelectorAll('.bg-qa__item').forEach(otherItem => {
+                        otherItem.classList.remove('is-open');
+                        otherItem.querySelector('.bg-qa__q').setAttribute('aria-expanded', 'false');
+                    });
+
+                    // Open the clicked one if it wasn't already open
+                    if (!wasOpen) {
+                        item.classList.add('is-open');
+                        btn.setAttribute('aria-expanded', 'true');
+                    }
+                });
+            });
+
+            /* Animation */
+            if (window.gsap && window.ScrollTrigger && !reduce) {
+                gsap.registerPlugin(ScrollTrigger);
+
+                gsap.utils.toArray('.reveal').forEach((el, i) => {
+                    gsap.fromTo(el, { autoAlpha: 0, y: 24 }, {
+                        autoAlpha: 1, y: 0, duration: .8, ease: 'power3.out',
+                        delay: (i % 4) * .04,
+                        scrollTrigger: { trigger: el, start: 'top 90%', once: true }
+                    });
+                });
+                gsap.utils.toArray('.reveal-left').forEach((el, i) => {
+                    gsap.fromTo(el, { autoAlpha: 0, x: -50 }, {
+                        autoAlpha: 1, x: 0, duration: .85, ease: 'power3.out',
+                        delay: (i % 3) * .05,
+                        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+                    });
+                });
+                gsap.utils.toArray('.reveal-right').forEach((el, i) => {
+                    gsap.fromTo(el, { autoAlpha: 0, x: 50 }, {
+                        autoAlpha: 1, x: 0, duration: .85, ease: 'power3.out',
+                        delay: (i % 3) * .05,
+                        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+                    });
+                });
+
+                /* Masthead featured image */
+                gsap.fromTo('.bg-featured__media img', { scale: 1.06 }, {
+                    scale: 1, duration: 1.6, ease: 'power3.out'
+                });
+            } else {
+                document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'none';
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

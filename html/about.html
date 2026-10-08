@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#092328">
+    <meta name="description"
+        content="About Stackly — a human-centered HR consulting practice built around people strategy, leadership, organization design and practical change.">
+    <title>About | Stackly Human Resources Consulting</title>
+    <link rel="stylesheet" href="../global.css">
+    <link rel="stylesheet" href="../css/about.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+
+<body class="about-page">
+    <div class="preloader" id="preloader">
+        <div class="preloader__inner">
+            <span class="preloader__text">Stackly</span>
+            <div class="preloader__loader"></div>
+        </div>
+    </div>
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const p = document.getElementById('preloader');
+                if (p) p.classList.add('is-hidden');
+            }, 1500);
+        });
+    </script>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header" id="siteHeader">
+        <div class="site-header__inner">
+            <a class="brand" href="../index.html" aria-label="Stackly home"><img src="../logo.webp" alt="Stackly"></a>
+            <nav class="desktop-nav" aria-label="Primary navigation">
+                <a href="../index.html">Home</a>
+                <a href="about.html" aria-current="page">About</a>
+                <a href="services.html">Services</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <a class="header-login" href="login.html">Login</a>
+            <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false"
+                aria-controls="mobileMenu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+        <div class="mobile-menu__top">
+            <a href="../index.html" aria-label="Stackly home"><img class="mobile-menu__logo" src="../logo.webp"
+                    alt="Stackly"></a>
+            <button class="mobile-menu__close" id="menuClose" type="button" aria-label="Close menu">×</button>
+        </div>
+        <nav class="mobile-menu__nav" aria-label="Mobile navigation">
+            <ul class="mobile-menu__list">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="about.html" aria-current="page">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div>
+            <a class="btn btn--light mobile-menu__login" href="login.html">Login <span class="btn__arrow">→</span></a>
+            <p class="mobile-menu__statement">A people practice built around clarity, discretion and decisions leaders
+                can actually act on.</p>
+        </div>
+    </div>
+
+    <main id="main">
+
+        <!-- Hero -->
+        <section class="ab-hero" aria-labelledby="abHeroTitle">
+            <div class="ab-hero__media image-reveal reveal-left">
+                <img src="../assets/photo-1544027993-37dbfe43562a-2200w.webp"
+                    alt="Leadership team in a natural-light workplace conversation" fetchpriority="high">
+            </div>
+            <div class="ab-hero__content">
+                <p class="eyebrow reveal-left">About Stackly</p>
+                <h1 class="display-title ab-hero__title reveal-left" id="abHeroTitle">A people practice built on
+                    <em>clear thinking.</em></h1>
+                <p class="ab-hero__copy reveal-left">We help organizations make better decisions about people,
+                    leadership and the way work is designed — with discretion, context and a bias toward useful action.
+                </p>
+                <div class="ab-hero__meta reveal">
+                    <span>01 / Human Resources Consulting</span>
+                    <span>Salem, Tamil Nadu, India</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 01 — Who We Are -->
+        <section class="section ab-who" aria-labelledby="abWhoTitle">
+            <div class="container ab-split">
+                <div class="ab-split__copy">
+                    <p class="eyebrow reveal-left">01 / Who We Are</p>
+                    <h2 class="section-title reveal-left" id="abWhoTitle">A human-centered consulting practice — not a
+                        template.</h2>
+                    <p class="lead reveal-left">Stackly is an HR consulting practice working with leaders and internal
+                        HR teams on the questions that sit between business intent and organizational reality — how work
+                        is structured, how leaders behave, how capability develops and how people experience the
+                        organization they are part of.</p>
+                    <ul class="ab-rule-list reveal-left">
+                        <li><span>Practice</span><span>People & Organization Advisory</span></li>
+                        <li><span>Orientation</span><span>Human-centered, strategy-aware</span></li>
+                        <li><span>Base</span><span>Salem, Tamil Nadu, India</span></li>
+                    </ul>
+                </div>
+                <figure class="ab-split__media image-reveal reveal-right">
+                    <img src="../assets/photo-1573496359142-b8d87734a5a2-1200w.webp"
+                        alt="Consultant working thoughtfully in a modern office" loading="lazy">
+                    <figcaption class="ab-caption">Clarity before complexity</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- 02 — Why We Exist -->
+        <section class="section ab-why section--dark" aria-labelledby="abWhyTitle">
+            <div class="container ab-why__inner">
+                <div class="ab-why__copy">
+                    <p class="eyebrow reveal-left">02 / Why We Exist</p>
+                    <h2 class="section-title reveal-left" id="abWhyTitle">The people side of performance deserves the
+                        same seriousness as the business side.</h2>
+                </div>
+                <div class="ab-why__grid">
+                    <article class="ab-why__item reveal-left">
+                        <span>Context</span>
+                        <p>Organizations rarely struggle because they lack another policy. The harder questions are how
+                            leadership, structure, capability and experience fit together.</p>
+                    </article>
+                    <article class="ab-why__item reveal-left">
+                        <span>Friction</span>
+                        <p>People decisions are often made in isolation — with structure, talent, culture and performance
+                            handled by different conversations instead of one connected point of view.</p>
+                    </article>
+                    <article class="ab-why__item reveal-right">
+                        <span>Practice</span>
+                        <p>We exist to bring those conversations together — with clear thinking, usable frameworks and a
+                            respect for the actual context each organization is in.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03 — Our Philosophy of People Strategy -->
+        <section class="section ab-philosophy" aria-labelledby="abPhilosophyTitle">
+            <div class="container ab-philosophy__grid">
+                <div class="ab-philosophy__statement">
+                    <p class="eyebrow reveal-left">03 / Our Philosophy of People Strategy</p>
+                    <h2 class="section-title reveal-right" id="abPhilosophyTitle">People strategy is a set of decisions
+                        about how an organization works — not a document.</h2>
+                    <p class="lead reveal-right">Workforce, leadership, structure and experience are all connected. When
+                        they are treated separately, decisions become inconsistent. When they are treated together, the
+                        organization becomes easier to lead and easier to be part of.</p>
+                </div>
+                <div class="ab-philosophy__pillars">
+                    <a href="../404.html" class="ab-pillar reveal-left">
+                        <span class="ab-pillar__mark">01</span>
+                        <div class="ab-pillar__content">
+                            <h3>Connected to strategy</h3>
+                            <p>People decisions should be traceable to what the organization is actually trying to achieve.</p>
+                        </div>
+                    </a>
+                    <a href="../404.html" class="ab-pillar reveal-left">
+                        <span class="ab-pillar__mark">02</span>
+                        <div class="ab-pillar__content">
+                            <h3>Grounded in the organization</h3>
+                            <p>Advice shaped by context, culture and the people who will have to carry it forward.</p>
+                        </div>
+                    </a>
+                    <a href="../404.html" class="ab-pillar reveal-right">
+                        <span class="ab-pillar__mark">03</span>
+                        <div class="ab-pillar__content">
+                            <h3>Built for real behavior</h3>
+                            <p>Design that accounts for how people actually work — not how we wish they would.</p>
+                        </div>
+                    </a>
+                    <a href="../404.html" class="ab-pillar reveal-right">
+                        <span class="ab-pillar__mark">04</span>
+                        <div class="ab-pillar__content">
+                            <h3>Measured in usefulness</h3>
+                            <p>Success is what leaders and teams can do differently after the work, not how thick the deck was.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04 — The Principles We Follow -->
+        <section class="section ab-principles section--green" aria-labelledby="abPrinciplesTitle">
+            <div class="container">
+                <div class="ab-principles__head">
+                    <p class="eyebrow reveal-left">04 / The Principles We Follow</p>
+                    <h2 class="section-title reveal-left" id="abPrinciplesTitle">Five commitments that shape how we
+                        work.</h2>
+                </div>
+                <div class="ab-principles__list">
+                    <a href="../404.html" class="ab-principle reveal-left">
+                        <span class="ab-principle__num">01</span>
+                        <h3>Listen before prescribing</h3>
+                        <p>Understand the organization, the people and the context before recommending anything.</p>
+                    </a>
+                    <a href="../404.html" class="ab-principle reveal-left">
+                        <span class="ab-principle__num">02</span>
+                        <h3>Make complexity understandable</h3>
+                        <p>Turn ambiguous people and organizational questions into clearer choices.</p>
+                    </a>
+                    <a href="../404.html" class="ab-principle reveal-right">
+                        <span class="ab-principle__num">03</span>
+                        <h3>Design for real behavior</h3>
+                        <p>Assume the organization will behave like an organization — not like a diagram.</p>
+                    </a>
+                    <a href="../404.html" class="ab-principle reveal-right">
+                        <span class="ab-principle__num">04</span>
+                        <h3>Keep leaders accountable</h3>
+                        <p>Change lives with leadership. Our role is to help them lead it, not to carry it for them.</p>
+                    </a>
+                    <a href="../404.html" class="ab-principle reveal-right">
+                        <span class="ab-principle__num">05</span>
+                        <h3>Build capability, not dependency</h3>
+                        <p>The work should leave the organization stronger after we step back.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 05 — How Our Thinking Has Evolved -->
+        <section class="section ab-evolution" aria-labelledby="abEvolutionTitle">
+            <div class="container ab-evolution__grid">
+                <div class="ab-evolution__intro">
+                    <p class="eyebrow reveal-left">05 / How Our Thinking Has Evolved</p>
+                    <h2 class="section-title reveal-left" id="abEvolutionTitle">A practice shaped by what we have seen
+                        work — and what has not.</h2>
+                    <p class="lead reveal-left">Our approach has developed through engagement with real organizations,
+                        real leaders and real constraints. The result is a point of view that is deliberate about
+                        structure, but honest about the messiness of change.</p>
+                </div>
+                <div class="ab-timeline">
+                    <a href="../404.html" class="ab-timeline__item reveal-left">
+                        <span class="ab-timeline__mark">Stage 01</span>
+                        <div class="ab-timeline__content">
+                            <h3>From frameworks to context</h3>
+                            <p>Early thinking leaned on universal models. Practice taught us that the same framework can be
+                                useful in one organization and misleading in another.</p>
+                        </div>
+                    </a>
+                    <a href="../404.html" class="ab-timeline__item reveal-right">
+                        <span class="ab-timeline__mark">Stage 02</span>
+                        <div class="ab-timeline__content">
+                            <h3>From HR activity to organizational decisions</h3>
+                            <p>We moved from thinking about HR as a service function toward thinking about people decisions
+                                as part of how the organization makes choices.</p>
+                        </div>
+                    </a>
+                    <a href="../404.html" class="ab-timeline__item reveal-left">
+                        <span class="ab-timeline__mark">Stage 03</span>
+                        <div class="ab-timeline__content">
+                            <h3>From program design to capability building</h3>
+                            <p>The most durable change has come when we have helped leaders and internal teams build their
+                                own capacity rather than depend on ours.</p>
+                        </div>
+                    </a>
+                    <a href="../404.html" class="ab-timeline__item reveal-right">
+                        <span class="ab-timeline__mark">Stage 04</span>
+                        <div class="ab-timeline__content">
+                            <h3>From certainty to judgment</h3>
+                            <p>Complex organizations rarely have clean answers. Our work today is more about helping leaders
+                                reason well than about telling them what to do.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 06 — The People Behind the Work -->
+        <section class="section ab-people" aria-labelledby="abPeopleTitle">
+            <div class="container">
+                <div class="ab-people__head">
+                    <div>
+                        <p class="eyebrow reveal-left">06 / The People Behind the Work</p>
+                        <h2 class="section-title reveal-left" id="abPeopleTitle">Consulting built around a small number
+                            of capabilities, done well.</h2>
+                    </div>
+                    <p class="lead reveal-right">The work is led by people who have spent time inside organizations —
+                        not only studying them. Roles below describe capabilities, not named individuals.</p>
+                </div>
+                <div class="ab-roles">
+                    <article class="ab-role reveal-left">
+                        <span class="ab-role__tag">Practice</span>
+                        <h3>People Strategy & Workforce</h3>
+                        <p>Workforce planning, capability mapping, succession thinking and critical-role decisions.</p>
+                    </article>
+                    <article class="ab-role reveal-left">
+                        <span class="ab-role__tag">Practice</span>
+                        <h3>Leadership & Organization Design</h3>
+                        <p>Leadership development, operating model choices, role clarity and decision rights.</p>
+                    </article>
+                    <article class="ab-role reveal-right">
+                        <span class="ab-role__tag">Practice</span>
+                        <h3>Employee Experience & Culture</h3>
+                        <p>Journey design, cultural evolution and the behaviors that shape how work actually feels.</p>
+                    </article>
+                    <article class="ab-role reveal-right">
+                        <span class="ab-role__tag">Practice</span>
+                        <h3>HR Transformation & Capability</h3>
+                        <p>Connected HR operating models, service design and internal capability building.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 07 — Our Relationship With Clients -->
+        <section class="section ab-clients section--dark" aria-labelledby="abClientsTitle">
+            <div class="container ab-clients__grid">
+                <div class="ab-clients__copy">
+                    <p class="eyebrow reveal-left">07 / Our Relationship With Clients</p>
+                    <h2 class="section-title reveal-left" id="abClientsTitle">Practical partnership, with discretion as
+                        a default.</h2>
+                    <p class="lead reveal-left">We work alongside leadership teams and internal HR functions — sometimes
+                        for a single decision, sometimes through a longer period of change. In both cases the same
+                        expectations apply.</p>
+                </div>
+                <div class="ab-clients__points">
+                    <article class="ab-client-point reveal-right">
+                        <span>Confidentiality</span>
+                        <p>Discretion is part of the practice. Engagement scope, participants and confidentiality
+                            expectations are agreed before work begins.</p>
+                    </article>
+                    <article class="ab-client-point reveal-right">
+                        <span>Collaboration</span>
+                        <p>Most of the work is done with internal teams, not around them. The aim is to strengthen
+                            internal decision-making rather than replace it.</p>
+                    </article>
+                    <article class="ab-client-point reveal-right">
+                        <span>Candor</span>
+                        <p>We say what needs to be said — clearly, and with context. Useful counsel is rarely the
+                            comfortable answer.</p>
+                    </article>
+                    <article class="ab-client-point reveal-right">
+                        <span>Follow-through</span>
+                        <p>We stay close enough to learn what happened next, so the next recommendation is better than
+                            the last one.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 08 — How We Think About Impact -->
+        <section class="section ab-impact" aria-labelledby="abImpactTitle">
+            <div class="container ab-impact__grid">
+                <div class="ab-impact__intro">
+                    <p class="eyebrow reveal-left">08 / How We Think About Impact</p>
+                    <h2 class="section-title reveal-left" id="abImpactTitle">Impact is measured in decisions made
+                        differently — not only in outcomes claimed.</h2>
+                    <p class="lead reveal-left">We deliberately avoid promising guaranteed business results. What we can
+                        describe is the shape of change we look for and the methodology we use to observe it.</p>
+                </div>
+                <div class="ab-impact__dimensions">
+                    <article class="ab-dimension reveal-left">
+                        <span class="ab-dimension__num">Dimension 01</span>
+                        <h3>Clarity</h3>
+                        <p>Do leaders and teams have a clearer understanding of roles, priorities and decisions?</p>
+                    </article>
+                    <article class="ab-dimension reveal-right">
+                        <span class="ab-dimension__num">Dimension 02</span>
+                        <h3>Capability</h3>
+                        <p>Has the organization built capability it did not have before the work?</p>
+                    </article>
+                    <article class="ab-dimension reveal-left">
+                        <span class="ab-dimension__num">Dimension 03</span>
+                        <h3>Alignment</h3>
+                        <p>Are leadership, structure and people systems pointing at the same direction?</p>
+                    </article>
+                    <article class="ab-dimension reveal-right">
+                        <span class="ab-dimension__num">Dimension 04</span>
+                        <h3>Experience</h3>
+                        <p>Has the everyday experience of work — for leaders and for people — improved in ways they can
+                            describe?</p>
+                    </article>
+                </div>
+                <p class="ab-impact__note reveal">These are qualitative dimensions we use to frame engagement reviews
+                    — not performance guarantees.</p>
+            </div>
+        </section>
+
+        <!-- 09 — Beyond HR -->
+        <section class="section ab-beyond" aria-labelledby="abBeyondTitle">
+            <div class="container ab-beyond__grid">
+                <figure class="ab-beyond__media image-reveal reveal-left">
+                    <img src="../assets/photo-1522071820081-009f0129c71c-1400w.webp"
+                        alt="Team in a working session around a shared table" loading="lazy">
+                </figure>
+                <div class="ab-beyond__copy">
+                    <p class="eyebrow reveal-right">09 / Beyond HR</p>
+                    <h2 class="section-title reveal-right" id="abBeyondTitle">People decisions do not sit in a single
+                        function.</h2>
+                    <p class="lead reveal-right">They show up in strategy, operations, leadership and organizational
+                        design. Our practice is deliberately connected to that wider picture.</p>
+                    <div class="ab-beyond__list reveal-right">
+                        <div><span>Strategy</span><span>What the organization is trying to become</span></div>
+                        <div><span>Operations</span><span>How work gets structured and delivered</span></div>
+                        <div><span>Leadership</span><span>What leaders decide, model and reinforce</span></div>
+                        <div><span>Organization</span><span>How roles, teams and decisions fit together</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10 — The Road Ahead -->
+        <section class="section ab-road" aria-labelledby="abRoadTitle">
+            <div class="container ab-road__inner">
+                <div class="ab-road__copy">
+                    <p class="eyebrow reveal-left">10 / The Road Ahead</p>
+                    <h2 class="section-title reveal-left" id="abRoadTitle">The future of work is still human.</h2>
+                    <p class="lead reveal-left">Technology will keep changing how work gets done. Structures will
+                        evolve. Skills will shift. What will continue to matter is the quality of leadership, the
+                        clarity of decisions and the trust organizations are able to build with the people inside them.
+                    </p>
+                    <p class="lead reveal-left">Our practice is built around that continuity — connecting modern
+                        organizational thinking with a respect for how people actually work.</p>
+                </div>
+                <figure class="ab-road__media image-reveal reveal-right">
+                    <img src="../assets/photo-1531482615713-2afd69097998-1400w.webp"
+                        alt="Leadership team collaborating in a modern workplace" loading="lazy">
+                </figure>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="ab-cta" aria-labelledby="abCtaTitle">
+            <div class="container ab-cta__inner">
+                <div class="reveal-left">
+                    <p class="eyebrow">Work With Us</p>
+                    <h2 id="abCtaTitle">Let's talk about your organization.</h2>
+                </div>
+                <div class="ab-cta__actions reveal-right">
+                    <a class="btn" href="contact.html">Talk to Us <span class="btn__arrow">→</span></a>
+                    <a class="btn btn--outline" href="services.html">Explore Services <span
+                            class="btn__arrow">→</span></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__main">
+            <div class="footer-brand">
+                <a href="../index.html" aria-label="Stackly home"><img src="../logo.webp" alt="Stackly"></a>
+                <p>Human resources consulting for leaders building clearer, more capable and more resilient
+                    organizations.</p>
+                <div class="footer-socials">
+                    <a href="../404.html" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                    </a>
+                    <a href="../404.html" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 0 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </a>
+                    <a href="../404.html" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                    <a href="../404.html" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <p class="footer-title">Navigation</p>
+                <nav class="footer-links">
+                    <a href="../index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="services.html">Services</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+            </div>
+            <div>
+                <p class="footer-title">Expertise</p>
+                <nav class="footer-links">
+                    <a href="../404.html">People Strategy</a>
+                    <a href="../404.html">Talent Advisory</a>
+                    <a href="../404.html">Leadership</a>
+                    <a href="../404.html">Organization Design</a>
+                    <a href="../404.html">HR Transformation</a>
+                </nav>
+            </div>
+            <div>
+                <p class="footer-title">Resources</p>
+                <nav class="footer-links">
+                    <a href="../404.html">Insights</a>
+                    <a href="../404.html">Guides</a>
+                    <a href="../404.html">FAQs</a>
+                    <a href="../404.html">Careers</a>
+                    <a href="../404.html">Privacy / Terms</a>
+                </nav>
+            </div>
+            <div class="footer-contact">
+                <p class="footer-title">Contact</p>
+                <strong>Stackly</strong>
+                <span>Salem, Tamil Nadu, India</span>
+                <span><br>Human Resources Consulting</span>
+                <span><br>Contact details available through our contact page.</span><br>
+                <a class="btn btn--light" href="contact.html">Start a conversation</a>
+            </div>
+        </div>
+        <div class="site-footer__bottom">
+            <span>© 2026 Stackly. All rights reserved.</span>
+            <span>People → Strategy → Clarity → Action</span>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.getElementById('siteHeader');
+            const toggle = document.getElementById('menuToggle');
+            const menu = document.getElementById('mobileMenu');
+            const close = document.getElementById('menuClose');
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            /* Header state */
+            const updateHeader = () => header.classList.toggle('is-scrolled', window.scrollY > 30);
+            updateHeader();
+            window.addEventListener('scroll', updateHeader, { passive: true });
+
+            /* Mobile menu */
+            const setMenu = (open) => {
+                document.body.classList.toggle('menu-open', open);
+                menu.classList.toggle('is-open', open);
+                menu.setAttribute('aria-hidden', String(!open));
+                toggle.setAttribute('aria-expanded', String(open));
+                toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+                if (open) close.focus(); else toggle.focus();
+            };
+            toggle.addEventListener('click', () => setMenu(!menu.classList.contains('is-open')));
+            close.addEventListener('click', () => setMenu(false));
+            menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape' && menu.classList.contains('is-open')) setMenu(false);
+            });
+
+            /* Animation */
+            if (window.gsap && window.ScrollTrigger && !reduce) {
+                gsap.registerPlugin(ScrollTrigger);
+
+                gsap.utils.toArray('.reveal').forEach((el, i) => {
+                    gsap.fromTo(el, { autoAlpha: 0, y: 26 }, {
+                        autoAlpha: 1, y: 0, duration: .8, ease: 'power3.out',
+                        delay: (i % 4) * .04,
+                        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+                    });
+                });
+                gsap.utils.toArray('.reveal-left').forEach((el, i) => {
+                    gsap.fromTo(el, { autoAlpha: 0, x: -55 }, {
+                        autoAlpha: 1, x: 0, duration: .85, ease: 'power3.out',
+                        delay: (i % 3) * .05,
+                        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+                    });
+                });
+                gsap.utils.toArray('.reveal-right').forEach((el, i) => {
+                    gsap.fromTo(el, { autoAlpha: 0, x: 55 }, {
+                        autoAlpha: 1, x: 0, duration: .85, ease: 'power3.out',
+                        delay: (i % 3) * .05,
+                        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+                    });
+                });
+
+                /* Hero entrance */
+                gsap.fromTo('.ab-hero__media img', { scale: 1.08 }, {
+                    scale: 1, duration: 1.8, ease: 'power3.out'
+                });
+            } else {
+                document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'none';
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

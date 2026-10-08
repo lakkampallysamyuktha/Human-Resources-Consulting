@@ -1,0 +1,2068 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#092328">
+    <meta name="description" content="Stackly User Dashboard — development, capability, learning and conversations.">
+    <meta name="robots" content="noindex">
+    <title>Dashboard | Stackly</title>
+    <link rel="stylesheet" href="../global.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <style>
+        /* ==========================================================================
+           User Dashboard — chart-first
+           Uses only tokens defined in global.css.
+           ========================================================================== */
+
+        :root {
+            --dash-header-h: 84px;
+            --dash-sidebar-w: 280px;
+            --chart-radius: 4px;
+        }
+
+        /* --------------------------------------------------------------------
+           Shell
+           -------------------------------------------------------------------- */
+        .dash-body {
+            margin: 0;
+            background: var(--hr-cream);
+            color: var(--hr-deep);
+            font-family: var(--sans);
+            min-height: 100svh;
+            overflow-x: clip;
+        }
+
+        .dash-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            height: var(--dash-header-h);
+            background: var(--hr-deep);
+            color: var(--hr-cream);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(245, 248, 244, .08);
+        }
+
+        .dash-brand {
+            width: var(--dash-sidebar-w);
+            height: 100%;
+            padding: 0 26px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 6px;
+            border-right: 1px solid rgba(245, 248, 244, .08);
+            text-decoration: none;
+            color: inherit;
+            flex-shrink: 0;
+        }
+
+        .dash-brand img {
+            width: 92px;
+            height: auto;
+            filter: brightness(0) invert(1);
+            display: block;
+        }
+
+        .dash-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: max-content;
+            padding: 3px 8px;
+            background: rgba(139, 187, 146, .16);
+            border: 1px solid rgba(139, 187, 146, .32);
+            color: var(--hr-sage);
+            font-size: .58rem;
+            font-weight: 800;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+        }
+
+        .dash-chip::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--hr-sage);
+        }
+
+        .dash-header__right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 20px;
+            padding: 0 28px;
+        }
+
+        .dash-greet {
+            font-family: var(--display);
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: var(--hr-cream);
+        }
+
+        .dash-greet span {
+            color: var(--hr-sage);
+            font-style: italic;
+        }
+
+        .dash-header__email {
+            display: none;
+            color: rgba(245, 248, 244, .6);
+            font-size: .78rem;
+        }
+
+        .dash-menu-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            background: transparent;
+            color: var(--hr-cream);
+            cursor: pointer;
+            border: 1px solid rgba(139, 187, 146, .28);
+            border-radius: 4px;
+            position: relative;
+            z-index: 105;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: border-color .3s ease, background-color .3s ease;
+        }
+
+        .dash-menu-toggle span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            margin: 3px 0;
+            background: currentColor;
+            transition: transform .3s ease, opacity .3s ease;
+            transform-origin: center;
+        }
+
+        .dash-body.sidebar-open .dash-menu-toggle span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .dash-body.sidebar-open .dash-menu-toggle span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .dash-body.sidebar-open .dash-menu-toggle span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        .dash-body.sidebar-open {
+            overflow: hidden !important;
+            touch-action: none;
+        }
+
+        /* Sidebar */
+        .dash-sidebar {
+            position: fixed;
+            top: var(--dash-header-h);
+            left: 0;
+            width: var(--dash-sidebar-w);
+            bottom: 0;
+            z-index: 90;
+            background: var(--hr-deep);
+            color: var(--hr-cream);
+            border-right: 1px solid rgba(245, 248, 244, .08);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            transition: transform .35s var(--ease);
+        }
+
+        .dash-nav {
+            padding: 24px 0 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dash-nav__label {
+            padding: 8px 28px 12px;
+            color: rgba(245, 248, 244, .4);
+            font-size: .62rem;
+            font-weight: 700;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+        }
+
+        .dash-nav__link {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 13px 28px;
+            color: rgba(245, 248, 244, .72);
+            font-size: .86rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background .25s ease, color .25s ease;
+        }
+
+        .dash-nav__link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 12%;
+            bottom: 12%;
+            width: 2px;
+            background: var(--hr-sage);
+            transform: scaleY(0);
+            transition: transform .3s var(--ease);
+        }
+
+        .dash-nav__link:hover,
+        .dash-nav__link:focus-visible {
+            outline: none;
+            background: rgba(139, 187, 146, .07);
+            color: var(--hr-cream);
+        }
+
+        .dash-nav__link[aria-current="page"] {
+            background: rgba(139, 187, 146, .1);
+            color: var(--hr-cream);
+        }
+
+        .dash-nav__link[aria-current="page"]::before {
+            transform: scaleY(1);
+        }
+
+        .dash-nav__num {
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            color: var(--hr-sage);
+            opacity: .8;
+        }
+
+        /* Sidebar footer */
+        .dash-sidebar__foot {
+            margin-top: auto;
+            padding: 20px 24px 26px;
+            border-top: 1px solid rgba(245, 248, 244, .1);
+        }
+
+        .dash-profile {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px;
+            background: rgba(139, 187, 146, .08);
+            border: 1px solid rgba(139, 187, 146, .18);
+            margin-bottom: 12px;
+        }
+
+        .dash-profile__avatar {
+            flex-shrink: 0;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: var(--hr-sage);
+            color: var(--hr-deep);
+            font-family: var(--display);
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .dash-profile__body {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .dash-profile__name {
+            display: block;
+            font-family: var(--display);
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--hr-cream);
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .dash-profile__email {
+            display: block;
+            color: rgba(245, 248, 244, .6);
+            font-size: .72rem;
+            line-height: 1.4;
+            word-break: break-all;
+        }
+
+        .dash-profile__role {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 2px 8px;
+            font-size: .58rem;
+            font-weight: 800;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--hr-sage);
+            background: rgba(139, 187, 146, .12);
+        }
+
+        .dash-logout {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 42px;
+            padding: 0 16px;
+            background: transparent;
+            border: 1px solid rgba(245, 248, 244, .22);
+            color: rgba(245, 248, 244, .78);
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background .25s ease, border-color .25s ease, color .25s ease;
+        }
+
+        .dash-logout:hover,
+        .dash-logout:focus-visible {
+            outline: none;
+            background: var(--hr-sage);
+            border-color: var(--hr-sage);
+            color: var(--hr-deep);
+        }
+
+        .dash-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 85;
+            background: rgba(9, 35, 40, .5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s ease;
+        }
+
+        .dash-body.sidebar-open .dash-backdrop {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Main */
+        .dash-main {
+            margin-left: var(--dash-sidebar-w);
+            padding-top: var(--dash-header-h);
+            min-height: 100svh;
+        }
+
+        .dash-section {
+            display: none;
+            padding: clamp(30px, 3.5vw, 44px) clamp(24px, 3vw, 48px) clamp(50px, 6vw, 80px);
+        }
+
+        .dash-section.is-active {
+            display: block;
+        }
+
+        /* Section header — minimal */
+        .dash-section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 24px;
+            margin-bottom: 30px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--hr-deep);
+        }
+
+        .dash-section-title {
+            margin: 0;
+            font-family: var(--display);
+            font-weight: 500;
+            font-size: clamp(1.5rem, 2.2vw, 2rem);
+            line-height: 1.1;
+            letter-spacing: -.02em;
+            color: var(--hr-deep);
+        }
+
+        .dash-section-title small {
+            display: block;
+            margin-bottom: 6px;
+            font-family: var(--sans);
+            font-size: .66rem;
+            font-weight: 800;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--hr-green);
+        }
+
+        .dash-sample-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 8px;
+            background: rgba(139, 187, 146, .18);
+            color: var(--hr-green);
+            font-size: .58rem;
+            font-weight: 800;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        /* --------------------------------------------------------------------
+           Chart grid — the heart of this dashboard
+           -------------------------------------------------------------------- */
+        .dash-charts {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .dash-chart {
+            background: var(--hr-white);
+            border: 1px solid var(--hr-line);
+            padding: 22px 22px 18px;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .dash-chart--wide {
+            grid-column: 1 / -1;
+        }
+
+        .dash-chart--dark {
+            background: var(--hr-deep);
+            border-color: var(--hr-deep);
+            color: var(--hr-cream);
+        }
+
+        .dash-chart--sage {
+            background: var(--hr-paper);
+        }
+
+        .dash-chart__head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .dash-chart__title {
+            margin: 0;
+            font-family: var(--display);
+            font-size: 1.05rem;
+            font-weight: 500;
+            line-height: 1.2;
+            color: inherit;
+        }
+
+        .dash-chart__meta {
+            color: var(--hr-muted);
+            font-size: .62rem;
+            font-weight: 700;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .dash-chart--dark .dash-chart__meta {
+            color: rgba(245, 248, 244, .5);
+        }
+
+        .dash-chart__body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 0;
+        }
+
+        .dash-chart__caption {
+            margin: 14px 0 0;
+            padding-top: 12px;
+            border-top: 1px solid var(--hr-line);
+            color: var(--hr-muted);
+            font-size: .68rem;
+            line-height: 1.55;
+            font-style: italic;
+        }
+
+        .dash-chart--dark .dash-chart__caption {
+            border-color: rgba(245, 248, 244, .14);
+            color: rgba(245, 248, 244, .55);
+        }
+
+        /* --------------------------------------------------------------------
+           Chart 1 — SVG radar
+           -------------------------------------------------------------------- */
+        .chart-radar {
+            display: grid;
+            grid-template-columns: 1fr 200px;
+            gap: 26px;
+            align-items: center;
+        }
+
+        .chart-radar svg {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .chart-radar__grid {
+            fill: none;
+            stroke: var(--hr-line);
+            stroke-width: 1;
+        }
+
+        .chart-radar__axis {
+            stroke: var(--hr-line);
+            stroke-width: 1;
+        }
+
+        .chart-radar__polygon {
+            fill: rgba(42, 131, 95, .22);
+            stroke: var(--hr-green);
+            stroke-width: 1.8;
+            stroke-linejoin: round;
+        }
+
+        .chart-radar__point {
+            fill: var(--hr-green);
+        }
+
+        .chart-radar__label {
+            fill: var(--hr-deep);
+            font-family: var(--sans);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .04em;
+        }
+
+        .chart-radar__legend {
+            border-top: 1px solid var(--hr-line);
+        }
+
+        .chart-radar__legend div {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 14px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--hr-line);
+            font-size: .82rem;
+        }
+
+        .chart-radar__legend span:first-child {
+            color: var(--hr-deep);
+        }
+
+        .chart-radar__legend span:last-child {
+            color: var(--hr-green);
+            font-weight: 700;
+            font-size: .78rem;
+        }
+
+        /* --------------------------------------------------------------------
+           Chart 2 — sparkline
+           -------------------------------------------------------------------- */
+        .chart-spark {
+            width: 100%;
+            display: block;
+        }
+
+        .chart-spark__path {
+            fill: none;
+            stroke: var(--hr-green);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .chart-spark__area {
+            fill: rgba(42, 131, 95, .12);
+        }
+
+        .chart-spark__grid {
+            stroke: var(--hr-line);
+            stroke-width: 1;
+            stroke-dasharray: 3 3;
+        }
+
+        .chart-spark__point {
+            fill: var(--hr-green);
+        }
+
+        .chart-spark__axis-label {
+            fill: var(--hr-muted);
+            font-family: var(--sans);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        /* --------------------------------------------------------------------
+           Chart 3 — donut / ring progress
+           -------------------------------------------------------------------- */
+        .chart-ring {
+            display: flex;
+            align-items: center;
+            gap: 26px;
+        }
+
+        .chart-ring__svg {
+            width: 132px;
+            height: 132px;
+            flex-shrink: 0;
+        }
+
+        .chart-ring__track {
+            fill: none;
+            stroke: var(--hr-line);
+            stroke-width: 10;
+        }
+
+        .chart-ring__fill {
+            fill: none;
+            stroke: var(--hr-green);
+            stroke-width: 10;
+            stroke-linecap: butt;
+            transform: rotate(-90deg);
+            transform-origin: center;
+            transition: stroke-dashoffset 1s var(--ease);
+        }
+
+        .chart-ring__value {
+            fill: var(--hr-deep);
+            font-family: var(--display);
+            font-size: 28px;
+            font-weight: 500;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        .chart-ring__unit {
+            fill: var(--hr-muted);
+            font-family: var(--sans);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-anchor: middle;
+            text-transform: uppercase;
+        }
+
+        .chart-ring__legend {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chart-ring__legend > div {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: .78rem;
+            color: var(--hr-deep);
+        }
+
+        .chart-ring__legend i {
+            display: block;
+            width: 10px;
+            height: 10px;
+            background: var(--hr-green);
+            flex-shrink: 0;
+        }
+
+        .chart-ring__legend i.is-sage {
+            background: var(--hr-sage);
+        }
+
+        .chart-ring__legend i.is-muted {
+            background: var(--hr-line);
+        }
+
+        /* --------------------------------------------------------------------
+           Chart 4 — vertical bars
+           -------------------------------------------------------------------- */
+        .chart-bars-v {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 8px;
+            align-items: end;
+            height: 150px;
+            padding-top: 16px;
+        }
+
+        .chart-bar-v {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
+            height: 100%;
+        }
+
+        .chart-bar-v__fill {
+            display: block;
+            width: 100%;
+            background: var(--hr-green);
+            height: 0;
+            min-height: 2px;
+            transition: height 1s var(--ease);
+        }
+
+        .chart-bar-v__fill--sage {
+            background: var(--hr-sage);
+        }
+
+        .chart-bar-v__fill--dark {
+            background: var(--hr-dark);
+        }
+
+        .chart-bar-v__label {
+            color: var(--hr-muted);
+            font-size: .6rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .dash-chart--dark .chart-bar-v__label {
+            color: rgba(245, 248, 244, .5);
+        }
+
+        /* --------------------------------------------------------------------
+           Chart 5 — horizontal bars (goal progress / capability)
+           -------------------------------------------------------------------- */
+        .chart-bars-h {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .chart-bar-h {
+            display: grid;
+            grid-template-columns: 170px 1fr 52px;
+            gap: 16px;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--hr-line);
+        }
+
+        .chart-bar-h:last-child {
+            border-bottom: 0;
+        }
+
+        .chart-bar-h__label {
+            font-size: .82rem;
+            color: var(--hr-deep);
+            line-height: 1.35;
+        }
+
+        .chart-bar-h__track {
+            width: 100%;
+            height: 8px;
+            background: var(--hr-line);
+            overflow: hidden;
+        }
+
+        .chart-bar-h__fill {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: var(--hr-green);
+            transition: width 1s var(--ease);
+        }
+
+        .chart-bar-h__fill--sage {
+            background: var(--hr-sage);
+        }
+
+        .chart-bar-h__fill--dark {
+            background: var(--hr-dark);
+        }
+
+        .chart-bar-h__value {
+            text-align: right;
+            color: var(--hr-deep);
+            font-size: .8rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* --------------------------------------------------------------------
+           Chart 6 — radial rings row (4 rings)
+           -------------------------------------------------------------------- */
+        .chart-rings4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            justify-items: center;
+        }
+
+        .chart-ring-mini {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-ring-mini svg {
+            width: 90px;
+            height: 90px;
+        }
+
+        .chart-ring-mini__track {
+            fill: none;
+            stroke: var(--hr-line);
+            stroke-width: 8;
+        }
+
+        .chart-ring-mini__fill {
+            fill: none;
+            stroke: var(--hr-green);
+            stroke-width: 8;
+            stroke-linecap: butt;
+            transform: rotate(-90deg);
+            transform-origin: center;
+            transition: stroke-dashoffset 1s var(--ease);
+        }
+
+        .chart-ring-mini__fill--sage {
+            stroke: var(--hr-sage);
+        }
+
+        .chart-ring-mini__value {
+            fill: var(--hr-deep);
+            font-family: var(--display);
+            font-size: 18px;
+            font-weight: 500;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        .chart-ring-mini__label {
+            font-size: .68rem;
+            color: var(--hr-muted);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        /* --------------------------------------------------------------------
+           Chart 7 — timeline (CSS)
+           -------------------------------------------------------------------- */
+        .chart-timeline {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            position: relative;
+            padding-top: 8px;
+        }
+
+        .chart-timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            right: 6px;
+            top: 18px;
+            height: 2px;
+            background: var(--hr-line);
+            z-index: 0;
+        }
+
+        .chart-timeline__step {
+            position: relative;
+            z-index: 1;
+            padding-right: 12px;
+        }
+
+        .chart-timeline__dot {
+            display: block;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--hr-cream);
+            border: 2px solid var(--hr-green);
+            margin-bottom: 16px;
+        }
+
+        .chart-timeline__step--done .chart-timeline__dot {
+            background: var(--hr-green);
+            border-color: var(--hr-green);
+        }
+
+        .chart-timeline__step--future .chart-timeline__dot {
+            border-color: var(--hr-line);
+            background: var(--hr-cream);
+        }
+
+        .chart-timeline__when {
+            display: block;
+            color: var(--hr-muted);
+            font-size: .62rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .chart-timeline__step h4 {
+            margin: 0;
+            font-family: var(--display);
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.2;
+            color: var(--hr-deep);
+        }
+
+        /* --------------------------------------------------------------------
+           Chart 8 — heatmap grid
+           -------------------------------------------------------------------- */
+        .chart-heat {
+            display: grid;
+            grid-template-columns: 90px repeat(12, 1fr);
+            gap: 4px;
+            font-size: .68rem;
+        }
+
+        .chart-heat__row-label {
+            color: var(--hr-muted);
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            font-size: .62rem;
+            align-self: center;
+            padding-right: 8px;
+        }
+
+        .chart-heat__cell {
+            aspect-ratio: 1;
+            background: var(--hr-line);
+            border-radius: 2px;
+            transition: background .3s ease;
+        }
+
+        .chart-heat__cell[data-level="1"] { background: rgba(139, 187, 146, .35); }
+        .chart-heat__cell[data-level="2"] { background: rgba(139, 187, 146, .6); }
+        .chart-heat__cell[data-level="3"] { background: var(--hr-sage); }
+        .chart-heat__cell[data-level="4"] { background: var(--hr-green); }
+
+        .chart-heat__axis {
+            display: contents;
+        }
+
+        .chart-heat__axis span {
+            color: var(--hr-muted);
+            font-size: .58rem;
+            font-weight: 700;
+            text-align: center;
+            padding-bottom: 6px;
+        }
+
+        /* --------------------------------------------------------------------
+           Chart 9 — career pathway SVG
+           -------------------------------------------------------------------- */
+        .chart-pathway {
+            width: 100%;
+            display: block;
+        }
+
+        .chart-pathway__rail {
+            stroke: var(--hr-line);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .chart-pathway__rail-progress {
+            stroke: var(--hr-green);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .chart-pathway__node {
+            fill: var(--hr-white);
+            stroke: var(--hr-muted);
+            stroke-width: 1.5;
+        }
+
+        .chart-pathway__node--done {
+            fill: var(--hr-sage);
+            stroke: var(--hr-sage);
+        }
+
+        .chart-pathway__node--current {
+            fill: var(--hr-green);
+            stroke: var(--hr-green);
+        }
+
+        .chart-pathway__node--future {
+            fill: var(--hr-white);
+            stroke: var(--hr-muted);
+            stroke-dasharray: 3 3;
+        }
+
+        .chart-pathway__label {
+            fill: var(--hr-deep);
+            font-family: var(--sans);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .04em;
+        }
+
+        .chart-pathway__sub {
+            fill: var(--hr-muted);
+            font-family: var(--sans);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        /* --------------------------------------------------------------------
+           Chart 10 — comparison bars (current vs target)
+           -------------------------------------------------------------------- */
+        .chart-compare {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .chart-compare__row {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .chart-compare__label {
+            font-size: .78rem;
+            color: var(--hr-deep);
+            line-height: 1.3;
+        }
+
+        .chart-compare__bars {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .chart-compare__bar {
+            height: 6px;
+            background: var(--hr-line);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-compare__bar span {
+            display: block;
+            height: 100%;
+            width: 0;
+            transition: width 1s var(--ease);
+        }
+
+        .chart-compare__bar--current span {
+            background: var(--hr-green);
+        }
+
+        .chart-compare__bar--target span {
+            background: var(--hr-sage);
+        }
+
+        .chart-compare__legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid var(--hr-line);
+            font-size: .68rem;
+            color: var(--hr-muted);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .chart-compare__legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-compare__legend i {
+            display: inline-block;
+            width: 14px;
+            height: 4px;
+            background: var(--hr-green);
+        }
+
+        .chart-compare__legend i.is-target {
+            background: var(--hr-sage);
+        }
+
+        /* --------------------------------------------------------------------
+           Chart 11 — activity list (compact)
+           -------------------------------------------------------------------- */
+        .chart-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-list__row {
+            display: grid;
+            grid-template-columns: 70px 1fr;
+            gap: 16px;
+            align-items: baseline;
+            padding: 11px 0;
+            border-bottom: 1px solid var(--hr-line);
+            font-size: .82rem;
+        }
+
+        .chart-list__row:last-child {
+            border-bottom: 0;
+        }
+
+        .chart-list__when {
+            color: var(--hr-green);
+            font-size: .62rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        .chart-list__what {
+            color: var(--hr-deep);
+            line-height: 1.45;
+        }
+
+        /* --------------------------------------------------------------------
+           Responsive
+           -------------------------------------------------------------------- */
+        @media (max-width: 1100px) {
+            .dash-charts {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-radar {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-rings4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .chart-timeline {
+                grid-template-columns: repeat(2, 1fr);
+                row-gap: 30px;
+            }
+
+            .chart-timeline::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 950px) {
+            .dash-brand {
+                width: auto;
+                border-right: 0;
+                padding: 0 20px;
+            }
+
+            .dash-menu-toggle {
+                display: flex;
+            }
+
+            .dash-sidebar {
+                width: 100%;
+                left: 0;
+                right: 0;
+                transform: translateX(-100%);
+                box-shadow: none;
+            }
+
+            .dash-body.sidebar-open .dash-sidebar {
+                transform: none;
+            }
+
+            .dash-main {
+                margin-left: 0;
+            }
+
+            .dash-header__email {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .dash-section-head {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .chart-bar-h {
+                grid-template-columns: 1fr 44px;
+                gap: 8px 14px;
+            }
+
+            .chart-bar-h__label {
+                grid-column: 1 / -1;
+            }
+
+            .chart-heat {
+                grid-template-columns: 70px repeat(12, 1fr);
+            }
+
+            .chart-rings4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .chart-ring {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .chart-compare__row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .chart-bars-v {
+                grid-template-columns: repeat(6, 1fr);
+                height: auto;
+                gap: 6px;
+            }
+
+            .chart-bar-v {
+                height: 100px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .chart-bar-h__fill,
+            .chart-bar-v__fill,
+            .chart-ring__fill,
+            .chart-ring-mini__fill,
+            .chart-compare__bar span,
+            .dash-sidebar,
+            .dash-nav__link,
+            .dash-nav__link::before,
+            .dash-logout,
+            .dash-backdrop {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="dash-body">
+    <a class="skip-link" href="#dashMain">Skip to content</a>
+
+    <!-- ============ HEADER ============ -->
+    <header class="dash-header">
+        <a class="dash-brand" href="#section-overview" data-section="overview"
+            aria-label="Stackly dashboard — go to Overview">
+            <img src="../logo.webp" alt="Stackly">
+            <span class="dash-chip">User</span>
+        </a>
+        <div class="dash-header__right">
+            <span class="dash-greet" id="dashGreet">Hello</span>
+            <span class="dash-header__email" id="dashHeaderEmail">—</span>
+            <button class="dash-menu-toggle" id="dashMenuToggle" type="button" aria-label="Open navigation"
+                aria-expanded="false" aria-controls="dashSidebar">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="dash-backdrop" id="dashBackdrop" aria-hidden="true"></div>
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="dash-sidebar" id="dashSidebar" aria-label="Dashboard navigation">
+        <nav class="dash-nav">
+            <p class="dash-nav__label">Your workspace</p>
+            <a class="dash-nav__link" href="#section-overview" data-section="overview" aria-current="page">
+                <span class="dash-nav__num">01</span> Overview
+            </a>
+            <a class="dash-nav__link" href="#section-development" data-section="development">
+                <span class="dash-nav__num">02</span> My Development
+            </a>
+            <a class="dash-nav__link" href="#section-career" data-section="career">
+                <span class="dash-nav__num">03</span> Career &amp; Capability
+            </a>
+            <a class="dash-nav__link" href="#section-learning" data-section="learning">
+                <span class="dash-nav__num">04</span> Learning
+            </a>
+            <a class="dash-nav__link" href="#section-conversations" data-section="conversations">
+                <span class="dash-nav__num">05</span> Conversations
+            </a>
+        </nav>
+
+        <div class="dash-sidebar__foot">
+            <div class="dash-profile">
+                <div class="dash-profile__avatar" id="dashAvatar" aria-hidden="true">·</div>
+                <div class="dash-profile__body">
+                    <span class="dash-profile__name" id="dashProfileName">Guest</span>
+                    <span class="dash-profile__email" id="dashProfileEmail">Not signed in</span>
+                    <span class="dash-profile__role">User</span>
+                </div>
+            </div>
+            <button class="dash-logout" id="dashLogout" type="button">Log out <span aria-hidden="true">→</span></button>
+        </div>
+    </aside>
+
+    <!-- ============ MAIN ============ -->
+    <main class="dash-main" id="dashMain">
+
+        <!-- ============ 01 · OVERVIEW ============ -->
+        <section class="dash-section is-active" id="section-overview" aria-labelledby="ovTitle">
+            <header class="dash-section-head">
+                <h1 class="dash-section-title" id="ovTitle"><small>01 / Overview</small>Capability, progress and
+                    activity at a glance.</h1>
+                <span class="dash-sample-tag">Sample data</span>
+            </header>
+
+            <div class="dash-charts">
+
+                <!-- Radar: capability profile -->
+                <div class="dash-chart dash-chart--wide">
+                    <div class="dash-chart__head">
+                        <h2 class="dash-chart__title">Capability profile</h2>
+                        <span class="dash-chart__meta">Self-assessed</span>
+                    </div>
+                    <div class="chart-radar">
+                        <svg viewBox="0 0 400 400" role="img"
+                            aria-label="Capability radar showing sample scores: Strategy 0.75, Execution 0.85, Collaboration 0.65, Leading teams 0.70, Communication 0.55, Judgment 0.80">
+                            <polygon class="chart-radar__grid" points="200,165 230.3,182.5 230.3,217.5 200,235 169.7,217.5 169.7,182.5" />
+                            <polygon class="chart-radar__grid" points="200,130 260.6,165 260.6,235 200,270 139.4,235 139.4,165" />
+                            <polygon class="chart-radar__grid" points="200,95 290.9,147.5 290.9,252.5 200,305 109.1,252.5 109.1,147.5" />
+                            <polygon class="chart-radar__grid" points="200,60 321.2,130 321.2,270 200,340 78.8,270 78.8,130" />
+                            <line class="chart-radar__axis" x1="200" y1="200" x2="200" y2="60" />
+                            <line class="chart-radar__axis" x1="200" y1="200" x2="321.2" y2="130" />
+                            <line class="chart-radar__axis" x1="200" y1="200" x2="321.2" y2="270" />
+                            <line class="chart-radar__axis" x1="200" y1="200" x2="200" y2="340" />
+                            <line class="chart-radar__axis" x1="200" y1="200" x2="78.8" y2="270" />
+                            <line class="chart-radar__axis" x1="200" y1="200" x2="78.8" y2="130" />
+                            <polygon class="chart-radar__polygon" data-radar
+                                points="200,95 303.1,140.5 278.8,245.5 200,298 133.3,238.5 103,144" />
+                            <circle class="chart-radar__point" cx="200" cy="95" r="3.5" />
+                            <circle class="chart-radar__point" cx="303.1" cy="140.5" r="3.5" />
+                            <circle class="chart-radar__point" cx="278.8" cy="245.5" r="3.5" />
+                            <circle class="chart-radar__point" cx="200" cy="298" r="3.5" />
+                            <circle class="chart-radar__point" cx="133.3" cy="238.5" r="3.5" />
+                            <circle class="chart-radar__point" cx="103" cy="144" r="3.5" />
+                            <text class="chart-radar__label" x="200" y="35" text-anchor="middle">Strategy</text>
+                            <text class="chart-radar__label" x="340" y="130" text-anchor="start">Execution</text>
+                            <text class="chart-radar__label" x="340" y="280" text-anchor="start">Collaboration</text>
+                            <text class="chart-radar__label" x="200" y="375" text-anchor="middle">Leading teams</text>
+                            <text class="chart-radar__label" x="60" y="280" text-anchor="end">Communication</text>
+                            <text class="chart-radar__label" x="60" y="130" text-anchor="end">Judgment</text>
+                        </svg>
+                        <div class="chart-radar__legend">
+                            <div><span>Strategy</span><span>0.75</span></div>
+                            <div><span>Execution</span><span>0.85</span></div>
+                            <div><span>Collaboration</span><span>0.65</span></div>
+                            <div><span>Leading teams</span><span>0.70</span></div>
+                            <div><span>Communication</span><span>0.55</span></div>
+                            <div><span>Judgment</span><span>0.80</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sparkline: development hours -->
+                <div class="dash-chart">
+                    <div class="dash-chart__head">
+                        <h2 class="dash-chart__title">Development hours</h2>
+                        <span class="dash-chart__meta">12 weeks</span>
+                    </div>
+                    <div class="dash-chart__body">
+                        <svg class="chart-spark" viewBox="0 0 400 110" role="img"
+                            aria-label="Line chart of sample development hours across the last 12 weeks, ranging from 2 to 7 hours per week">
+                            <line class="chart-spark__grid" x1="10" y1="90" x2="390" y2="90" />
+                            <line class="chart-spark__grid" x1="10" y1="50" x2="390" y2="50" />
+                            <line class="chart-spark__grid" x1="10" y1="10" x2="390" y2="10" />
+                            <path class="chart-spark__area"
+                                d="M10,67.2 L44.5,55.7 L79.1,44.3 L113.6,55.7 L148.2,32.9 L182.7,21.4 L217.3,32.9 L251.8,44.3 L286.4,21.4 L320.9,10 L355.5,32.9 L390,44.3 L390,90 L10,90 Z" />
+                            <path class="chart-spark__path" data-spark
+                                d="M10,67.2 L44.5,55.7 L79.1,44.3 L113.6,55.7 L148.2,32.9 L182.7,21.4 L217.3,32.9 L251.8,44.3 L286.4,21.4 L320.9,10 L355.5,32.9 L390,44.3" />
+                            <circle class="chart-spark__point" cx="320.9" cy="10" r="3.5" />
+                            <text class="chart-spark__axis-label" x="10" y="105">W1</text>
+                            <text class="chart-spark__axis-label" x="320.9" y="105">W10</text>
+                            <text class="chart-spark__axis-label" x="390" y="105" text-anchor="end">W12</text>
+                        </svg>
+                    </div>
+                    <p class="dash-chart__caption">Peak week W10 — 7 hours. Rolling 12-week view.</p>
+                </div>
+
+                <!-- Ring: overall progress -->
+                <div class="dash-chart">
+                    <div class="dash-chart__head">
+                        <h2 class="dash-chart__title">Overall progress</h2>
+                        <span class="dash-chart__meta">Goals</span>
+                    </div>
+                    <div class="dash-chart__body">
+                        <div class="chart-ring">
+                            <svg class="chart-ring__svg" viewBox="0 0 132 132" role="img"
+                                aria-label="Donut chart showing sample goal completion: 62 percent complete, 24 percent in progress, 14 percent not started">
+                                <circle class="chart-ring__track" cx="66" cy="66" r="52" />
+                                <circle class="chart-ring__fill" data-ring="62" cx="66" cy="66" r="52"
+                                    stroke-dasharray="326.7" stroke-dashoffset="326.7" />
+                                <text class="chart-ring__value" x="66" y="60">62</text>
+                                <text class="chart-ring__unit" x="66" y="80">Percent</text>
+                            </svg>
+                            <div class="chart-ring__legend">
+                                <div><i></i> Complete · 62%</div>
+                                <div><i class="is-sage"></i> In progress · 24%</div>
+                                <div><i class="is-muted"></i> Not started · 14%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="dash-chart__caption">Four active goals — two near completion.</p>
+                </div>
+
+                <!-- Vertical bars: weekly activity -->
+                <div class="dash-chart dash-chart--wide">
+                    <div class="dash-chart__head">
+                        <h2 class="dash-chart__title">Weekly activity</h2>
+                        <span class="dash-chart__meta">Minutes / day</span>
+                    </div>
+                    <div class="dash-chart__body">
+                        <div class="chart-bars-v">
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="30"></span><span class="chart-bar-v__label">Mon</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="55"></span><span class="chart-bar-v__label">Tue</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="20"></span><span class="chart-bar-v__label">Wed</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="80"></span><span class="chart-bar-v__label">Thu</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="45"></span><span class="chart-bar-v__label">Fri</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill chart-bar-v__fill--sage" data-bar-v="10"></span><span class="chart-bar-v__label">Sat</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="40"></span><span class="chart-bar-v__label">Sun</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="65"></span><span class="chart-bar-v__label">Mon</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="35"></span><span class="chart-bar-v__label">Tue</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="90"></span><span class="chart-bar-v__label">Wed</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="50"></span><span class="chart-bar-v__label">Thu</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="25"></span><span class="chart-bar-v__label">Fri</span></div>
+                        </div>
+                    </div>
+                    <p class="dash-chart__caption">Last 12 days. Sample activity minutes.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ============ 02 · MY DEVELOPMENT ============ -->
+        <section class="dash-section" id="section-development" aria-labelledby="devTitle">
+            <header class="dash-section-head">
+                <h2 class="dash-section-title" id="devTitle"><small>02 / My Development</small>Goals, focus and
+                    progression.</h2>
+                <span class="dash-sample-tag">Sample data</span>
+            </header>
+
+            <div class="dash-charts">
+
+                <!-- Goal bars horizontal -->
+                <div class="dash-chart dash-chart--wide">
+                    <div class="dash-chart__head">
+                        <h2 class="dash-chart__title">Goal progress</h2>
+                        <span class="dash-chart__meta">4 active</span>
+                    </div>
+                    <div class="chart-bars-h">
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Structured thinking</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="72"></span></span>
+                            <span class="chart-bar-h__value">72%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Cross-functional exposure</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="45"></span></span>
+                            <span class="chart-bar-h__value">45%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Facilitation craft</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="88"></span></span>
+                            <span class="chart-bar-h__value">88%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Coaching practice</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="60"></span></span>
+                            <span class="chart-bar-h__value">60%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Focus areas radial rings x4 -->
+                <div class="dash-chart dash-chart--wide">
+                    <div class="dash-chart__head">
+                        <h2 class="dash-chart__title">Focus areas</h2>
+                        <span class="dash-chart__meta">Self-rated</span>
+                    </div>
+                    <div class="chart-rings4">
+                        <div class="chart-ring-mini">
+                            <svg viewBox="0 0 90 90" role="img" aria-label="Decision making 70 percent">
+                                <circle class="chart-ring-mini__track" cx="45" cy="45" r="34" />
+                                <circle class="chart-ring-mini__fill" data-ring-mini="70" cx="45" cy="45" r="34"
+                                    stroke-dasharray="213.6" stroke-dashoffset="213.6" />
+                                <text class="chart-ring-mini__value" x="45" y="48">70</text>
+                            </svg>
+                            <span class="chart-ring-mini__label">Decision making</span>
+                        </div>
+                        <div class="chart-ring-mini">
+                            <svg viewBox="0 0 90 90" role="img" aria-label="Influence 55 percent">
+                                <circle class="chart-ring-mini__track" cx="45" cy="45" r="34" />
+                                <circle class="chart-ring-mini__fill chart-ring-mini__fill--sage" data-ring-mini="55"
+                                    cx="45" cy="45" r="34" stroke-dasharray="213.6" stroke-dashoffset="213.6" />
+                                <text class="chart-ring-mini__value" x="45" y="48">55</text>
+                            </svg>
+                            <span class="chart-ring-mini__label">Influence</span>
+                        </div>
+                        <div class="chart-ring-mini">
+                            <svg viewBox="0 0 90 90" role="img" aria-label="Communication 62 percent">
+                                <circle class="chart-ring-mini__track" cx="45" cy="45" r="34" />
+                                <circle class="chart-ring-mini__fill" data-ring-mini="62" cx="45" cy="45" r="34"
+                                    stroke-dasharray="213.6" stroke-dashoffset="213.6" />
+                                <text class="chart-ring-mini__value" x="45" y="48">62</text>
+                            </svg>
+                            <span class="chart-ring-mini__label">Communication</span>
+                        </div>
+                        <div class="chart-ring-mini">
+                            <svg viewBox="0 0 90 90" role="img" aria-label="Resilience 78 percent">
+                                <circle class="chart-ring-mini__track" cx="45" cy="45" r="34" />
+                                <circle class="chart-ring-mini__fill chart-ring-mini__fill--sage" data-ring-mini="78"
+                                    cx="45" cy="45" r="34" stroke-dasharray="213.6" stroke-dashoffset="213.6" />
+                                <text class="chart-ring-mini__value" x="45" y="48">78</text>
+                            </svg>
+                            <span class="chart-ring-mini__label">Resilience</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline -->
+                <div class="dash-chart dash-chart--wide">
+                    <div class="dash-chart__head">
+                        <h2 class="dash-chart__title">Development timeline</h2>
+                        <span class="dash-chart__meta">Q1 → Q4</span>
+                    </div>
+                    <div class="chart-timeline">
+                        <div class="chart-timeline__step chart-timeline__step--done">
+                            <span class="chart-timeline__dot"></span>
+                            <span class="chart-timeline__when">Q1 · Done</span>
+                            <h4>Foundations</h4>
+                        </div>
+                        <div class="chart-timeline__step chart-timeline__step--done">
+                            <span class="chart-timeline__dot"></span>
+                            <span class="chart-timeline__when">Q2 · Done</span>
+                            <h4>Structured feedback</h4>
+                        </div>
+                        <div class="chart-timeline__step">
+                            <span class="chart-timeline__dot"></span>
+                            <span class="chart-timeline__when">Q3 · Now</span>
+                            <h4>Applied practice</h4>
+                        </div>
+                        <div class="chart-timeline__step chart-timeline__step--future">
+                            <span class="chart-timeline__dot"></span>
+                            <span class="chart-timeline__when">Q4 · Planned</span>
+                            <h4>Consolidation</h4>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ============ 03 · CAREER & CAPABILITY ============ -->
+        <section class="dash-section" id="section-career" aria-labelledby="careerTitle">
+            <header class="dash-section-head">
+                <h2 class="dash-section-title" id="careerTitle"><small>03 / Career &amp; Capability</small>Direction
+                    and readiness signals.</h2>
+                <span class="dash-sample-tag">Sample data</span>
+            </header>
+
+            <div class="dash-charts">
+
+                <!-- Pathway -->
+                <div class="dash-chart dash-chart--wide">
+                    <div class="dash-chart__head">
+                        <h2 class="dash-chart__title">Illustrative pathway</h2>
+                        <span class="dash-chart__meta">Not a guarantee</span>
+                    </div>
+                    <svg class="chart-pathway" viewBox="0 0 960 180" role="img"
+                        aria-label="Illustrative career pathway with four stages: Associate (current), Senior Associate, Lead or Manager, and Principal">
+                        <line class="chart-pathway__rail" x1="80" y1="90" x2="880" y2="90" />
+                        <line class="chart-pathway__rail-progress" x1="80" y1="90" x2="320" y2="90" />
+                        <circle class="chart-pathway__node--done" cx="80" cy="90" r="9" />
+                        <circle class="chart-pathway__node--current" cx="320" cy="90" r="11" />
+                        <circle class="chart-pathway__node--future" cx="600" cy="90" r="9" />
+                        <circle class="chart-pathway__node--future" cx="880" cy="90" r="9" />
+                        <text class="chart-pathway__label" x="80" y="60" text-anchor="middle">Associate</text>
+                        <text class="chart-pathway__sub" x="80" y="130" text-anchor="middle">Past</text>
+                        <text class="chart-pathway__label" x="320" y="60" text-anchor="middle">Senior Associate</text>
+                        <text class="chart-pathway__sub" x="320" y="130" text-anchor="middle">Current · 2–3 yrs</text>
+                        <text class="chart-pathway__label" x="600" y="60" text-anchor="middle">Lead / Manager</text>
+                        <text class="chart-pathway__sub" x="600" y="130" text-anchor="middle">Future · 4–6 yrs</text>
+                        <text class="chart-pathway__label" x="880" y="60" text-anchor="middle">Principal</text>
+                        <text class="chart-pathway__sub" x="880" y="130" text-anchor="middle">Future · 7+ yrs</text>
+                    </svg>
+                </div>
+
+                <!-- Capability comparison bars -->
+                <div class="dash-chart">
+                    <div class="dash-chart__head">
+                        <h2 class="dash-chart__title">Current vs target</h2>
+                        <span class="dash-chart__meta">Self-assessed</span>
+                    </div>
+                    <div class="chart-compare">
+                        <div class="chart-compare__row">
+                            <span class="chart-compare__label">Consulting craft</span>
+                            <div class="chart-compare__bars">
+                                <div class="chart-compare__bar chart-compare__bar--current"><span data-bar-h="80"></span></div>
+                                <div class="chart-compare__bar chart-compare__bar--target"><span data-bar-h="90"></span></div>
+                            </div>
+                        </div>
+                        <div class="chart-compare__row">
+                            <span class="chart-compare__label">Stakeholder mgmt</span>
+                            <div class="chart-compare__bars">
+                                <div class="chart-compare__bar chart-compare__bar--current"><span data-bar-h="65"></span></div>
+                                <div class="chart-compare__bar chart-compare__bar--target"><span data-bar-h="85"></span></div>
+                            </div>
+                        </div>
+                        <div class="chart-compare__row">
+                            <span class="chart-compare__label">Org understanding</span>
+                            <div class="chart-compare__bars">
+                                <div class="chart-compare__bar chart-compare__bar--current"><span data-bar-h="72"></span></div>
+                                <div class="chart-compare__bar chart-compare__bar--target"><span data-bar-h="80"></span></div>
+                            </div>
+                        </div>
+                        <div class="chart-compare__row">
+                            <span class="chart-compare__label">Leadership presence</span>
+                            <div class="chart-compare__bars">
+                                <div class="chart-compare__bar chart-compare__bar--current"><span data-bar-h="58"></span></div>
+                                <div class="chart-compare__bar chart-compare__bar--target"><span data-bar-h="80"></span></div>
+                            </div>
+                        </div>
+                        <div class="chart-compare__row">
+                            <span class="chart-compare__label">Commercial awareness</span>
+                            <div class="chart-compare__bars">
+                                <div class="chart-compare__bar chart-compare__bar--current"><span data-bar-h="68"></span></div>
+                                <div class="chart-compare__bar chart-compare__bar--target"><span data-bar-h="75"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-compare__legend">
+                        <span><i></i> Current</span>
+                        <span><i class="is-target"></i> Target</span>
+                    </div>
+                </div>
+
+                <!-- Heatmap: capability maturity over months -->
+                <div class="dash-chart">
+                    <div class="dash-chart__head">
+                        <h2 class="dash-chart__title">Practice cadence</h2>
+                        <span class="dash-chart__meta">12 weeks</span>
+                    </div>
+                    <div class="chart-heat">
+                        <div class="chart-heat__row-label">Consulting</div>
+                        <span class="chart-heat__cell" data-level="2"></span>
+                        <span class="chart-heat__cell" data-level="2"></span>
+                        <span class="chart-heat__cell" data-level="3"></span>
+                        <span class="chart-heat__cell" data-level="3"></span>
+                        <span class="chart-heat__cell" data-level="4"></span>
+                        <span class="chart-heat__cell" data-level="4"></span>
+                        <span class="chart-heat__cell" data-level="3"></span>
+                        <span class="chart-heat__cell" data-level="4"></span>
+                        <span class="chart-heat__cell" data-level="4"></span>
+                        <span class="chart-heat__cell" data-level="3"></span>
+                        <span class="chart-heat__cell" data-level="4"></span>
+                        <span class="chart-heat__cell" data-level="4"></span>
+
+                        <div class="chart-heat__row-label">Stakeholder</div>
+                        <span class="chart-heat__cell" data-level="1"></span>
+                        <span class="chart-heat__cell" data-level="2"></span>
+                        <span class="chart-heat__cell" data-level="2"></span>
+                        <span class="chart-heat__cell" data-level="3"></span>
+                        <span class="chart-heat__cell" data-level="2"></span>
+                        <span class="chart-heat__cell" data-level="3"></span>
+                        <span class="chart-heat__cell" data-level="3"></span>
+                        <span class="chart-heat__cell" data-level="2"></span>
+                        <span class="chart-heat__cell" data-level="3"></span>
+                        <span class="chart-heat__cell" data-level="3"></span>
+                        <span class="chart-heat__cell" data-level="4"></span>
+                        <span class="chart-heat__cell" data-level="3"></span>
+
+                        <div class="chart-heat__row-label">Leadership</div>
+                        <span class="chart-heat__cell" data-level="1"></span>
+                        <span class="chart-heat__cell" data-level="1"></span>
+                        <span class="chart-heat__cell" data-level="2"></span>
+                        <span class="chart-heat__cell" data-level="2"></span>
+                        <span class="chart-heat__cell" data-level="2"></span>
+                        <span class="chart-heat__cell" data-level="3"></span>
+                        <span class="chart-heat__cell" data-level="2"></span>
+                        <span class="chart-heat__cell" data-level="3"></span>
+                        <span class="chart-heat__cell" data-level="3"></span>
+                        <span class="chart-heat__cell" data-level="3"></span>
+                        <span class="chart-heat__cell" data-level="4"></span>
+                        <span class="chart-heat__cell" data-level="3"></span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ============ 04 · LEARNING ============ -->
+        <section class="dash-section" id="section-learning" aria-labelledby="learnTitle">
+            <header class="dash-section-head">
+                <h2 class="dash-section-title" id="learnTitle"><small>04 / Learning</small>Completion, cadence and
+                    module progress.</h2>
+                <span class="dash-sample-tag">Sample data</span>
+            </header>
+
+            <div class="dash-charts">
+
+                <!-- Donut: overall completion -->
+                <div class="dash-chart">
+                    <div class="dash-chart__head">
+                        <h2 class="dash-chart__title">Overall completion</h2>
+                        <span class="dash-chart__meta">All modules</span>
+                    </div>
+                    <div class="dash-chart__body">
+                        <div class="chart-ring">
+                            <svg class="chart-ring__svg" viewBox="0 0 132 132" role="img"
+                                aria-label="Donut chart showing sample overall learning completion of 62 percent">
+                                <circle class="chart-ring__track" cx="66" cy="66" r="52" />
+                                <circle class="chart-ring__fill" data-ring="62" cx="66" cy="66" r="52"
+                                    stroke-dasharray="326.7" stroke-dashoffset="326.7" />
+                                <text class="chart-ring__value" x="66" y="60">62</text>
+                                <text class="chart-ring__unit" x="66" y="80">Percent</text>
+                            </svg>
+                            <div class="chart-ring__legend">
+                                <div><i></i> 11 completed</div>
+                                <div><i class="is-sage"></i> 3 in progress</div>
+                                <div><i class="is-muted"></i> 2 queued</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vertical bars: weekly learning minutes -->
+                <div class="dash-chart">
+                    <div class="dash-chart__head">
+                        <h2 class="dash-chart__title">Learning minutes</h2>
+                        <span class="dash-chart__meta">This week</span>
+                    </div>
+                    <div class="dash-chart__body">
+                        <div class="chart-bars-v">
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="0"></span><span class="chart-bar-v__label">M</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="55"></span><span class="chart-bar-v__label">T</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="30"></span><span class="chart-bar-v__label">W</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="80"></span><span class="chart-bar-v__label">T</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="45"></span><span class="chart-bar-v__label">F</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill chart-bar-v__fill--sage" data-bar-v="15"></span><span class="chart-bar-v__label">S</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill chart-bar-v__fill--sage" data-bar-v="20"></span><span class="chart-bar-v__label">S</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module progress bars -->
+                <div class="dash-chart dash-chart--wide">
+                    <div class="dash-chart__head">
+                        <h2 class="dash-chart__title">Module progress</h2>
+                        <span class="dash-chart__meta">5 modules</span>
+                    </div>
+                    <div class="chart-bars-h">
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Facilitation practice lab</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="78"></span></span>
+                            <span class="chart-bar-h__value">78%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Structuring difficult conversations</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="62"></span></span>
+                            <span class="chart-bar-h__value">62%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Organization design — foundations</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="34"></span></span>
+                            <span class="chart-bar-h__value">34%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Giving and receiving feedback</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill chart-bar-h__fill--sage" data-bar-h="100"></span></span>
+                            <span class="chart-bar-h__value">100%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Workforce planning — introduction</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill chart-bar-h__fill--sage" data-bar-h="100"></span></span>
+                            <span class="chart-bar-h__value">100%</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ============ 05 · CONVERSATIONS ============ -->
+        <section class="dash-section" id="section-conversations" aria-labelledby="convoTitle">
+            <header class="dash-section-head">
+                <h2 class="dash-section-title" id="convoTitle"><small>05 / Conversations</small>Frequency, cadence
+                    and themes.</h2>
+                <span class="dash-sample-tag">Sample data</span>
+            </header>
+
+            <div class="dash-charts">
+
+                <!-- Bar chart: conversations per month -->
+                <div class="dash-chart dash-chart--wide">
+                    <div class="dash-chart__head">
+                        <h2 class="dash-chart__title">Conversation cadence</h2>
+                        <span class="dash-chart__meta">12 months</span>
+                    </div>
+                    <div class="dash-chart__body">
+                        <div class="chart-bars-v">
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="20"></span><span class="chart-bar-v__label">Jan</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="40"></span><span class="chart-bar-v__label">Feb</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="30"></span><span class="chart-bar-v__label">Mar</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="55"></span><span class="chart-bar-v__label">Apr</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="45"></span><span class="chart-bar-v__label">May</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="75"></span><span class="chart-bar-v__label">Jun</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="50"></span><span class="chart-bar-v__label">Jul</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="35"></span><span class="chart-bar-v__label">Aug</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="70"></span><span class="chart-bar-v__label">Sep</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="85"></span><span class="chart-bar-v__label">Oct</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="55"></span><span class="chart-bar-v__label">Nov</span></div>
+                            <div class="chart-bar-v"><span class="chart-bar-v__fill" data-bar-v="40"></span><span class="chart-bar-v__label">Dec</span></div>
+                        </div>
+                    </div>
+                    <p class="dash-chart__caption">Peak month October — sample cadence.</p>
+                </div>
+
+                <!-- Themes comparison -->
+                <div class="dash-chart">
+                    <div class="dash-chart__head">
+                        <h2 class="dash-chart__title">Recurring themes</h2>
+                        <span class="dash-chart__meta">From notes</span>
+                    </div>
+                    <div class="chart-bars-h">
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Structuring ambiguity</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="80"></span></span>
+                            <span class="chart-bar-h__value">80%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Senior-room presence</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="65"></span></span>
+                            <span class="chart-bar-h__value">65%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Concise communication</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="55"></span></span>
+                            <span class="chart-bar-h__value">55%</span>
+                        </div>
+                        <div class="chart-bar-h">
+                            <span class="chart-bar-h__label">Prioritisation</span>
+                            <span class="chart-bar-h__track"><span class="chart-bar-h__fill" data-bar-h="45"></span></span>
+                            <span class="chart-bar-h__value">45%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent conversations list -->
+                <div class="dash-chart">
+                    <div class="dash-chart__head">
+                        <h2 class="dash-chart__title">Recent &amp; upcoming</h2>
+                        <span class="dash-chart__meta">Sample</span>
+                    </div>
+                    <div class="chart-list">
+                        <div class="chart-list__row">
+                            <span class="chart-list__when">In 2 wks</span>
+                            <span class="chart-list__what">Quarterly development check-in</span>
+                        </div>
+                        <div class="chart-list__row">
+                            <span class="chart-list__when">In 6 wks</span>
+                            <span class="chart-list__what">Practice reflection — with practice leader</span>
+                        </div>
+                        <div class="chart-list__row">
+                            <span class="chart-list__when">1 wk ago</span>
+                            <span class="chart-list__what">Development conversation with manager</span>
+                        </div>
+                        <div class="chart-list__row">
+                            <span class="chart-list__when">3 wks ago</span>
+                            <span class="chart-list__what">Peer feedback exchange</span>
+                        </div>
+                        <div class="chart-list__row">
+                            <span class="chart-list__when">5 wks ago</span>
+                            <span class="chart-list__what">Capability review</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            /* -----------------------------------------------------------------
+               1. Greeting & profile (from stored email)
+               ----------------------------------------------------------------- */
+            const email = (() => { try { return localStorage.getItem('stackly.email') || ''; } catch (_) { return ''; } })();
+            const localPart = email.split('@')[0] || '';
+            const displayName = localPart ? localPart.charAt(0).toUpperCase() + localPart.slice(1) : '';
+
+            const greetEl = document.getElementById('dashGreet');
+            const headerEmailEl = document.getElementById('dashHeaderEmail');
+            const profileNameEl = document.getElementById('dashProfileName');
+            const profileEmailEl = document.getElementById('dashProfileEmail');
+            const avatarEl = document.getElementById('dashAvatar');
+
+            if (displayName) {
+                greetEl.innerHTML = 'Hello <span>' + displayName + '</span>';
+                profileNameEl.textContent = displayName;
+                avatarEl.textContent = displayName.charAt(0).toUpperCase();
+            }
+            headerEmailEl.textContent = email || 'Not signed in';
+            profileEmailEl.textContent = email || 'Not signed in';
+
+            /* -----------------------------------------------------------------
+               2. Mobile sidebar
+               ----------------------------------------------------------------- */
+            const body = document.body;
+            const menuToggle = document.getElementById('dashMenuToggle');
+            const backdrop = document.getElementById('dashBackdrop');
+
+            const setSidebar = (open) => {
+                body.classList.toggle('sidebar-open', open);
+                menuToggle.setAttribute('aria-expanded', String(open));
+                menuToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+                document.body.style.overflow = open ? 'hidden' : '';
+            };
+            menuToggle.addEventListener('click', () => setSidebar(!body.classList.contains('sidebar-open')));
+            backdrop.addEventListener('click', () => setSidebar(false));
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && body.classList.contains('sidebar-open')) setSidebar(false);
+            });
+
+            /* -----------------------------------------------------------------
+               3. Chart animation — one function per chart type
+               ----------------------------------------------------------------- */
+            const animateChart = (root) => {
+                /* Horizontal bars */
+                root.querySelectorAll('[data-bar-h]').forEach((bar, i) => {
+                    const w = bar.dataset.barH + '%';
+                    if (window.gsap && !reduce) {
+                        gsap.fromTo(bar, { width: 0 }, { width: w, duration: 1, delay: i * .05, ease: 'power2.out' });
+                    } else { bar.style.width = w; }
+                });
+
+                /* Vertical bars — animate height to a percentage of parent */
+                root.querySelectorAll('[data-bar-v]').forEach((bar, i) => {
+                    const h = bar.dataset.barV + '%';
+                    if (window.gsap && !reduce) {
+                        gsap.fromTo(bar, { height: '0%' }, { height: h, duration: .9, delay: i * .04, ease: 'power2.out' });
+                    } else { bar.style.height = h; }
+                });
+
+                /* Big ring */
+                const ring = root.querySelector('[data-ring]');
+                if (ring) {
+                    const pct = parseFloat(ring.dataset.ring) / 100;
+                    const c = parseFloat(ring.getAttribute('stroke-dasharray'));
+                    const target = c * (1 - pct);
+                    if (window.gsap && !reduce) {
+                        gsap.fromTo(ring, { strokeDashoffset: c }, { strokeDashoffset: target, duration: 1.2, ease: 'power2.out', delay: .1 });
+                    } else { ring.setAttribute('stroke-dashoffset', target); }
+                }
+
+                /* Mini rings */
+                root.querySelectorAll('[data-ring-mini]').forEach((ring, i) => {
+                    const pct = parseFloat(ring.dataset.ringMini) / 100;
+                    const c = parseFloat(ring.getAttribute('stroke-dasharray'));
+                    const target = c * (1 - pct);
+                    if (window.gsap && !reduce) {
+                        gsap.fromTo(ring, { strokeDashoffset: c }, { strokeDashoffset: target, duration: 1.1, delay: .15 + i * .08, ease: 'power2.out' });
+                    } else { ring.setAttribute('stroke-dashoffset', target); }
+                });
+
+                /* Radar polygon */
+                const radar = root.querySelector('[data-radar]');
+                if (radar && window.gsap && !reduce) {
+                    gsap.fromTo(radar,
+                        { scale: .55, autoAlpha: 0, svgOrigin: '200 200' },
+                        { scale: 1, autoAlpha: 1, duration: 1.1, ease: 'power3.out', delay: .1 });
+                }
+
+                /* Sparkline path */
+                const spark = root.querySelector('[data-spark]');
+                if (spark && window.gsap && !reduce) {
+                    const len = spark.getTotalLength ? spark.getTotalLength() : 500;
+                    gsap.fromTo(spark,
+                        { strokeDasharray: len, strokeDashoffset: len },
+                        { strokeDashoffset: 0, duration: 1.4, ease: 'power2.out', delay: .15 });
+                }
+
+                /* Heatmap cells */
+                const heatCells = root.querySelectorAll('.chart-heat__cell');
+                if (heatCells.length && window.gsap && !reduce) {
+                    gsap.fromTo(heatCells,
+                        { autoAlpha: 0, scale: .6 },
+                        { autoAlpha: 1, scale: 1, duration: .4, stagger: .006, ease: 'power2.out' });
+                }
+            };
+
+            /* -----------------------------------------------------------------
+               4. Section switching
+               ----------------------------------------------------------------- */
+            const sections = Array.from(document.querySelectorAll('.dash-section'));
+            const navLinks = Array.from(document.querySelectorAll('[data-section]'));
+
+            const activate = (name, { animate = true } = {}) => {
+                let active = null;
+                sections.forEach(s => {
+                    const isActive = s.id === 'section-' + name;
+                    s.classList.toggle('is-active', isActive);
+                    if (isActive) active = s;
+                });
+                navLinks.forEach(l => {
+                    if (l.dataset.section === name) l.setAttribute('aria-current', 'page');
+                    else l.removeAttribute('aria-current');
+                });
+                setSidebar(false);
+                window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+                if (animate && active) requestAnimationFrame(() => animateChart(active));
+            };
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    activate(link.dataset.section);
+                });
+            });
+
+            /* -----------------------------------------------------------------
+               5. Logout
+               ----------------------------------------------------------------- */
+            document.getElementById('dashLogout').addEventListener('click', () => {
+                try {
+                    localStorage.removeItem('stackly.email');
+                    localStorage.removeItem('stackly.role');
+                } catch (_) { }
+                window.location.href = 'login.html';
+            });
+
+            /* -----------------------------------------------------------------
+               6. Initial animation for Overview
+               ----------------------------------------------------------------- */
+            const overview = document.getElementById('section-overview');
+            requestAnimationFrame(() => animateChart(overview));
+        });
+    </script>
+</body>
+
+</html>
