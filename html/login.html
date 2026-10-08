@@ -100,7 +100,7 @@
                                 aria-describedby="loginRoleErr">
                                 <span class="lg__select-value" data-value
                                     data-placeholder="Select a role">Select a role</span>
-                                <span class="lg__select-chevron" aria-hidden="true">▾</span>
+                                <span class="lg__select-chevron" aria-hidden="true"><svg class="icon-chevron" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9l6 6 6-6"/></svg></span>
                             </button>
                             <ul class="lg__select-list" id="loginRoleList" role="listbox"
                                 aria-labelledby="loginRoleLabel" tabindex="-1">
@@ -116,7 +116,7 @@
                         <a class="lg__link" href="../404.html">Forgot password?</a>
                     </div>
 
-                    <button class="btn lg__submit" type="submit">Login <span class="btn__arrow">→</span></button>
+                    <button class="btn lg__submit" type="submit">Login <span class="btn__arrow"><svg class="icon-arrow" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-bottom: 2px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></button>
 
                     <p class="lg__switch">
                         New to Stackly? <a class="lg__link" href="signup.html">Create an account</a>
@@ -319,7 +319,7 @@
             });
 
             /* ------------------------------------------------------------------
-               5. Social buttons → 404.html (no real provider integration)
+               5. Social buttons <svg class="icon-arrow" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-bottom: 2px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg> 404.html (no real provider integration)
                ------------------------------------------------------------------ */
             document.querySelectorAll('[data-social]').forEach(btn => {
                 btn.addEventListener('click', () => { window.location.href = '../404.html'; });
@@ -360,7 +360,7 @@
                     const btn = form.querySelector('.lg__submit');
                     if (btn) {
                         btn.disabled = false;
-                        btn.innerHTML = 'Login <span class="btn__arrow">→</span>';
+                        btn.innerHTML = 'Login <span class="btn__arrow"><svg class="icon-arrow" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-bottom: 2px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>';
                     }
                 }
             }

@@ -137,7 +137,7 @@
                                 aria-describedby="signupRoleErr">
                                 <span class="sg__select-value" data-value
                                     data-placeholder="Select an account type">Select an account type</span>
-                                <span class="sg__select-chevron" aria-hidden="true">▾</span>
+                                <span class="sg__select-chevron" aria-hidden="true"><svg class="icon-chevron" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M6 9l6 6 6-6"/></svg></span>
                             </button>
                             <ul class="sg__select-list" id="signupRoleList" role="listbox"
                                 aria-labelledby="signupRoleLabel" tabindex="-1">
@@ -149,7 +149,7 @@
                         <p class="sg__error" id="signupRoleErr" role="alert" hidden></p>
                     </div>
 
-                    <button class="btn sg__submit" type="submit">Create Account <span class="btn__arrow">→</span></button>
+                    <button class="btn sg__submit" type="submit">Create Account <span class="btn__arrow"><svg class="icon-arrow" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-bottom: 2px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></button>
 
                     <p class="sg__switch">
                         Already have an account? <a class="sg__link" href="login.html">Sign in</a>
@@ -392,7 +392,7 @@
                     const btn = form.querySelector('.sg__submit');
                     if (btn) {
                         btn.disabled = false;
-                        btn.innerHTML = 'Create Account <span class="btn__arrow">→</span>';
+                        btn.innerHTML = 'Create Account <span class="btn__arrow"><svg class="icon-arrow" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-bottom: 2px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>';
                     }
                 }
             }
