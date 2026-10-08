@@ -434,8 +434,26 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
    -------------------------------------------------------------------------- */
 .lg__meta {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     margin-top: -6px;
+}
+
+.lg__checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: .82rem;
+    color: var(--hr-charcoal);
+}
+
+.lg__checkbox input[type="checkbox"] {
+    accent-color: var(--hr-green);
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    cursor: pointer;
 }
 
 .lg__link {
